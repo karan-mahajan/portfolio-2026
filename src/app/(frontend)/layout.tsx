@@ -8,6 +8,8 @@ import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
+import Footer from '@/components/Footer'
+import Particle from '@/components/Particle'
 import { getServerSideURL } from '@/utilities/getURL'
 import './styles.css'
 
@@ -19,7 +21,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
         <Providers>
@@ -28,9 +29,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               preview: isEnabled,
             }}
           />
-
+          <Particle />
           <Header />
           <main>{children}</main>
+          <Footer />
         </Providers>
       </body>
     </html>

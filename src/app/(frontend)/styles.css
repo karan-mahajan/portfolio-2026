@@ -8,6 +8,10 @@
   }
 }
 
+@theme {
+  --color-secondary: #16f2b3;
+}
+
 :root {
   --font-mono: 'Roboto Mono', monospace;
 }
@@ -74,7 +78,7 @@ h1 {
 }
 
 p {
-  margin: 24px 0;
+  margin: 4px 0;
 
   @media (max-width: 1024px) {
     margin: calc(var(--base) * 0.75) 0;
