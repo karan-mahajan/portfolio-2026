@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { anyone } from '@/access/anyone'
+import { authenticated } from '@/access/authenticated'
 import {
   FixedToolbarFeature,
   InlineToolbarFeature,
@@ -13,6 +15,12 @@ const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  access: {
+    create: authenticated,
+    delete: authenticated,
+    read: anyone,
+    update: authenticated,
+  },
   folders: true,
   fields: [
     {
