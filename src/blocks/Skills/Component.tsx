@@ -3,8 +3,16 @@
 import React from 'react'
 import type { SkillsBlock as SkillsBlockProps } from '@/payload-types'
 import { ICON_MAP, type IconKey } from './icons'
+import SkillsIconCloud from './IconCloud'
 
-export const SkillsBlock: React.FC<SkillsBlockProps> = ({ title, skills }) => {
+// Extended until types are regenerated
+type Props = SkillsBlockProps & { showCloud?: boolean | null }
+
+export const SkillsBlock: React.FC<Props> = ({ title, skills, showCloud }) => {
+  const iconKeys = (skills ?? [])
+    .map((s) => s.icon)
+    .filter((k): k is IconKey => !!k)
+
   return (
     <section className="py-16 text-center">
       <h2 className="text-4xl font-light tracking-wide text-gray-900 mb-12">{title ?? 'Skills'}</h2>
@@ -16,7 +24,7 @@ export const SkillsBlock: React.FC<SkillsBlockProps> = ({ title, skills }) => {
           return (
             <li
               key={i}
-              className="flex flex-col items-center w-24 text-gray-900 transition-transform duration-300 hover:scale-110"
+              className="flex flex-col items-center w-24 transition-transform duration-300 hover:scale-110"
             >
               {iconSrc && (
                 <img
@@ -32,6 +40,12 @@ export const SkillsBlock: React.FC<SkillsBlockProps> = ({ title, skills }) => {
           )
         })}
       </ul>
+
+      {showCloud !== false && iconKeys.length > 0 && (
+        <div className="mt-4 max-w-3xl mx-auto">
+          <SkillsIconCloud iconKeys={iconKeys} />
+        </div>
+      )}
     </section>
   )
 }

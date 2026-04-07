@@ -6,6 +6,7 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { plugins } from './plugins'
 
+import { Experience } from './collections/Experience'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Users } from './collections/Users'
@@ -43,7 +44,7 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, Pages],
+  collections: [Users, Media, Pages, Experience],
   globals: [Header],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

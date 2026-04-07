@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     pages: Page;
+    experiences: Experience;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-folders': FolderInterface;
@@ -86,6 +87,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -327,7 +329,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | SkillsBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | SkillsBlock | ExperienceBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -450,6 +452,10 @@ export interface MediaBlock {
  */
 export interface SkillsBlock {
   title?: string | null;
+  /**
+   * Display the animated 3D icon cloud below the skills grid
+   */
+  showCloud?: boolean | null;
   skills: {
     name: string;
     icon?:
@@ -482,6 +488,62 @@ export interface SkillsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'skills';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ExperienceBlock".
+ */
+export interface ExperienceBlock {
+  /**
+   * Section heading
+   */
+  title?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'experience';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experiences".
+ */
+export interface Experience {
+  id: number;
+  /**
+   * Company or institution name
+   */
+  name: string;
+  /**
+   * Job title or degree name
+   */
+  role: string;
+  /**
+   * e.g. "Feb 2025" or "May 2024"
+   */
+  startDate: string;
+  /**
+   * e.g. "Present" or "Aug 2024". Leave blank if ongoing.
+   */
+  endDate?: string | null;
+  type: 'experience' | 'education';
+  /**
+   * Which side of the timeline this card appears on (desktop)
+   */
+  cardSide: 'left' | 'right';
+  /**
+   * Bullet points describing the role (optional for education)
+   */
+  description?:
+    | {
+        point: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Lower numbers appear first (top of timeline)
+   */
+  order: number;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -610,6 +672,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'experiences';
+        value: number | Experience;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -809,6 +875,7 @@ export interface PagesSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         skills?: T | SkillsBlockSelect<T>;
+        experience?: T | ExperienceBlockSelect<T>;
       };
   meta?:
     | T
@@ -889,6 +956,7 @@ export interface MediaBlockSelect<T extends boolean = true> {
  */
 export interface SkillsBlockSelect<T extends boolean = true> {
   title?: T;
+  showCloud?: T;
   skills?:
     | T
     | {
@@ -898,6 +966,36 @@ export interface SkillsBlockSelect<T extends boolean = true> {
       };
   id?: T;
   blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ExperienceBlock_select".
+ */
+export interface ExperienceBlockSelect<T extends boolean = true> {
+  title?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experiences_select".
+ */
+export interface ExperiencesSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  startDate?: T;
+  endDate?: T;
+  type?: T;
+  cardSide?: T;
+  description?:
+    | T
+    | {
+        point?: T;
+        id?: T;
+      };
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

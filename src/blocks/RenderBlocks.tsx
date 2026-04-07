@@ -4,12 +4,14 @@ import type { Page } from '@/payload-types'
 
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
+import { ExperienceBlockComponent } from '@/blocks/Experience/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { SkillsBlock } from './Skills/Component'
 
 const blockComponents = {
   content: ContentBlock,
   cta: CallToActionBlock,
+  experience: ExperienceBlockComponent,
   mediaBlock: MediaBlock,
   skills: SkillsBlock,
 }

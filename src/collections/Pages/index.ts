@@ -2,6 +2,7 @@ import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { CallToAction } from '@/blocks/CallToAction/config'
 import { Content } from '@/blocks/Content/config'
+import { ExperienceBlock } from '@/blocks/Experience/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { Skills } from '@/blocks/Skills/config'
 import { hero } from '@/heros/config'
@@ -65,7 +66,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Skills],
+              blocks: [CallToAction, Content, MediaBlock, Skills, ExperienceBlock],
               required: true,
               admin: {
                 initCollapsed: true,

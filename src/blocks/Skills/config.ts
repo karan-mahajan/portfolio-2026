@@ -15,6 +15,15 @@ export const Skills: Block = {
       defaultValue: 'Skills',
     },
     {
+      name: 'showCloud',
+      type: 'checkbox',
+      label: 'Show Icon Cloud',
+      defaultValue: true,
+      admin: {
+        description: 'Display the animated 3D icon cloud below the skills grid',
+      },
+    },
+    {
       name: 'skills',
       type: 'array',
       required: true,
