@@ -20,7 +20,16 @@ const nextConfig: NextConfig = {
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
       '.mjs': ['.mts', '.mjs'],
     }
+    const fileLoaderRule = webpackConfig.module.rules.find((rule: any) => rule.test?.test?.('.svg'))
 
+    // Exclude svg from default loader
+    fileLoaderRule.exclude = /\.svg$/i
+
+    webpackConfig.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    })
     return webpackConfig
   },
   turbopack: {

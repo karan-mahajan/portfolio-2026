@@ -26,6 +26,7 @@
     "@payloadcms/richtext-lexical": "3.81.0",
     "@payloadcms/ui": "3.81.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@svgr/webpack": "^8.1.0",
     "@tsparticles/engine": "^3.9.1",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",

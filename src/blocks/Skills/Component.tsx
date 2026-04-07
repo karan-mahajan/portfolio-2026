@@ -1,0 +1,37 @@
+'use client'
+
+import React from 'react'
+import type { SkillsBlock as SkillsBlockProps } from '@/payload-types'
+import { ICON_MAP, type IconKey } from './icons'
+
+export const SkillsBlock: React.FC<SkillsBlockProps> = ({ title, skills }) => {
+  return (
+    <section className="py-16 text-center">
+      <h2 className="text-4xl font-light tracking-wide text-gray-900 mb-12">{title ?? 'Skills'}</h2>
+
+      <ul className="flex flex-wrap justify-center gap-x-6 gap-y-10 max-w-5xl mx-auto px-4">
+        {skills?.map((skill, i) => {
+          const iconSrc = skill.icon ? ICON_MAP[skill.icon as IconKey] : undefined
+
+          return (
+            <li
+              key={i}
+              className="flex flex-col items-center w-24 text-gray-900 transition-transform duration-300 hover:scale-110"
+            >
+              {iconSrc && (
+                <img
+                  src={iconSrc}
+                  width={72}
+                  height={72}
+                  alt={skill.name}
+                  className="object-contain"
+                />
+              )}
+              <span className="mt-3 text-sm text-gray-600">{skill.name}</span>
+            </li>
+          )
+        })}
+      </ul>
+    </section>
+  )
+}

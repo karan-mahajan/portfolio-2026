@@ -20,7 +20,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
-        <link href="/favicon.ico" rel="icon" sizes="32x32" />
       </head>
       <body>
         <Providers>
@@ -41,6 +40,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [{ url: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' }],
+  },
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',

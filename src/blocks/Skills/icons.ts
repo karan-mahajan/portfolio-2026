@@ -1,0 +1,25 @@
+export const ICON_MAP = {
+  bootstrap: '/images/skills/bootstrap.svg',
+  c: '/images/skills/c.svg',
+  canva: '/images/skills/canva.svg',
+  css: '/images/skills/css.svg',
+  django: '/images/skills/django.svg',
+  figma: '/images/skills/figma.svg',
+  firebase: '/images/skills/firebase.svg',
+  git: '/images/skills/git.svg',
+  html: '/images/skills/html.svg',
+  javascript: '/images/skills/javascript.svg',
+  materialui: '/images/skills/materialui.svg',
+  microsoftoffice: '/images/skills/microsoftoffice.svg',
+  mongodb: '/images/skills/mongoDB.svg',
+  mysql: '/images/skills/mysql.svg',
+  next: '/images/skills/nextjs.svg',
+  postgresql: '/images/skills/postgresql.svg',
+  python: '/images/skills/python.svg',
+  react: '/images/skills/react.svg',
+  tailwind: '/images/skills/tailwind.svg',
+  typescript: '/images/skills/typescript.svg',
+  wordpress: '/images/skills/wordpress.svg',
+} as const
+
+export type IconKey = keyof typeof ICON_MAP
