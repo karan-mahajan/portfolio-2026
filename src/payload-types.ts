@@ -291,45 +291,7 @@ export interface FolderInterface {
 export interface Page {
   id: number;
   title: string;
-  hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?: {
-              relationTo: 'pages';
-              value: number | Page;
-            } | null;
-            url?: string | null;
-            label: string;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'outline') | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    media?: (number | null) | Media;
-  };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | SkillsBlock | ExperienceBlock)[];
+  layout: (HeroBlock | AboutBlock | CallToActionBlock | ContentBlock | MediaBlock | SkillsBlock | ExperienceBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -347,6 +309,74 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock".
+ */
+export interface HeroBlock {
+  name: string;
+  /**
+   * Hex color for the name highlight, e.g. #16f2b3
+   */
+  nameColor?: string | null;
+  typewriterStrings: {
+    text: string;
+    id?: string | null;
+  }[];
+  /**
+   * Hex color used for typewriter text and social icons, e.g. #ec4899 (pink)
+   */
+  accentColor?: string | null;
+  socialLinks?: {
+    github?: string | null;
+    linkedin?: string | null;
+    facebook?: string | null;
+    steam?: string | null;
+  };
+  /**
+   * Upload your resume PDF file
+   */
+  resume?: (number | null) | Media;
+  /**
+   * Anchor or URL the Contact Me button points to
+   */
+  contactHref?: string | null;
+  /**
+   * Colors that cycle in the animated radial background gradient
+   */
+  gradientColors?:
+    | {
+        /**
+         * Hex color code, e.g. #13FFAA
+         */
+        color: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutBlock".
+ */
+export interface AboutBlock {
+  image: number | Media;
+  /**
+   * The rotated label shown on the left side (desktop only)
+   */
+  sectionLabel?: string | null;
+  heading?: string | null;
+  /**
+   * Hex color for the heading text, e.g. #16f2b3
+   */
+  headingColor?: string | null;
+  description: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -846,31 +876,11 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
-  hero?:
-    | T
-    | {
-        type?: T;
-        richText?: T;
-        links?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    reference?: T;
-                    url?: T;
-                    label?: T;
-                    appearance?: T;
-                  };
-              id?: T;
-            };
-        media?: T;
-      };
   layout?:
     | T
     | {
+        heroBlock?: T | HeroBlockSelect<T>;
+        aboutBlock?: T | AboutBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -890,6 +900,52 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock_select".
+ */
+export interface HeroBlockSelect<T extends boolean = true> {
+  name?: T;
+  nameColor?: T;
+  typewriterStrings?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  accentColor?: T;
+  socialLinks?:
+    | T
+    | {
+        github?: T;
+        linkedin?: T;
+        facebook?: T;
+        steam?: T;
+      };
+  resume?: T;
+  contactHref?: T;
+  gradientColors?:
+    | T
+    | {
+        color?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutBlock_select".
+ */
+export interface AboutBlockSelect<T extends boolean = true> {
+  image?: T;
+  sectionLabel?: T;
+  heading?: T;
+  headingColor?: T;
+  description?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

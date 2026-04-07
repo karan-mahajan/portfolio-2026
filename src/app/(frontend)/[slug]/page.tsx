@@ -6,9 +6,8 @@ import { notFound } from 'next/navigation'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { cache } from 'react'
 
-import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
-import { RenderHero } from '@/heros/RenderHero'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 
@@ -57,15 +56,13 @@ export default async function Page({ params: paramsPromise }: Args) {
     return notFound()
   }
 
-  const { hero, layout } = page
+  const { layout } = page
 
   return (
-    <article className="pt-16 pb-24">
+    <article className="bg-[#0e172a]">
       <PageClient />
 
       {draft && <LivePreviewListener />}
-
-      <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
     </article>
   )

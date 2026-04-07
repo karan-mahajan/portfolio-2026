@@ -1,21 +1,19 @@
 'use client'
 
-import React from 'react'
 import type { SkillsBlock as SkillsBlockProps } from '@/payload-types'
-import { ICON_MAP, type IconKey } from './icons'
+import React from 'react'
 import SkillsIconCloud from './IconCloud'
+import { ICON_MAP, type IconKey } from './icons'
 
 // Extended until types are regenerated
 type Props = SkillsBlockProps & { showCloud?: boolean | null }
 
 export const SkillsBlock: React.FC<Props> = ({ title, skills, showCloud }) => {
-  const iconKeys = (skills ?? [])
-    .map((s) => s.icon)
-    .filter((k): k is IconKey => !!k)
+  const iconKeys = (skills ?? []).map((s) => s.icon).filter((k): k is IconKey => !!k)
 
   return (
     <section className="py-16 text-center">
-      <h2 className="text-4xl font-light tracking-wide text-gray-900 mb-12">{title ?? 'Skills'}</h2>
+      <h2 className="text-4xl font-light tracking-wide text-white mb-12">{title ?? 'Skills'}</h2>
 
       <ul className="flex flex-wrap justify-center gap-x-6 gap-y-10 max-w-5xl mx-auto px-4">
         {skills?.map((skill, i) => {
@@ -35,7 +33,7 @@ export const SkillsBlock: React.FC<Props> = ({ title, skills, showCloud }) => {
                   className="object-contain"
                 />
               )}
-              <span className="mt-3 text-sm text-gray-600">{skill.name}</span>
+              <span className="mt-3 text-sm text-white">{skill.name}</span>
             </li>
           )
         })}

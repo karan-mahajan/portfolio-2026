@@ -1,7 +1,7 @@
-import React from 'react'
-import { getPayload } from 'payload'
-import config from '@payload-config'
 import type { Experience, ExperienceBlock as ExperienceBlockProps } from '@/payload-types'
+import config from '@payload-config'
+import { getPayload } from 'payload'
+import React from 'react'
 
 async function getExperiences(): Promise<Experience[]> {
   const payload = await getPayload({ config })
@@ -38,47 +38,40 @@ const TimelineIcon = ({ type }: { type: 'experience' | 'education' }) => {
   )
 }
 
-const ExperienceCard = ({
-  item,
-  side,
-}: {
-  item: Experience
-  side: 'left' | 'right'
-}) => {
+const ExperienceCard = ({ item, side }: { item: Experience; side: 'left' | 'right' }) => {
   const isExperience = item.type === 'experience'
   const dateRange = item.endDate ? `${item.startDate} – ${item.endDate}` : item.startDate
 
-  const accentBorder = isExperience ? 'border-blue-500/40' : 'border-amber-500/40'
-  const accentBg = isExperience ? 'bg-blue-500/[0.07]' : 'bg-amber-500/[0.07]'
-  const accentText = isExperience ? 'text-blue-300' : 'text-amber-300'
-  const accentBadgeBorder = isExperience ? 'border-blue-500/30' : 'border-amber-500/30'
-  const accentBadgeBg = isExperience ? 'bg-blue-500/10' : 'bg-amber-500/10'
-  const bulletColor = isExperience ? 'bg-blue-400/70' : 'bg-amber-400/70'
-  const iconBg = isExperience
-    ? 'bg-blue-600 shadow-blue-600/40'
-    : 'bg-amber-600 shadow-amber-600/40'
+  const accentBorder = isExperience ? 'border-blue-500/60' : 'border-amber-500/60'
+  const accentText = isExperience ? 'text-blue-400' : 'text-amber-400'
+  const accentBadgeBorder = isExperience ? 'border-blue-500/50' : 'border-amber-500/50'
+  const accentBadgeBg = isExperience ? 'bg-blue-500/15' : 'bg-amber-500/15'
+  const bulletColor = isExperience ? 'bg-blue-400' : 'bg-amber-400'
+  const iconBg = isExperience ? 'bg-blue-600' : 'bg-amber-600'
+  const cardGlow = isExperience
+    ? 'shadow-[0_0_24px_0_rgba(59,130,246,0.12)]'
+    : 'shadow-[0_0_24px_0_rgba(245,158,11,0.12)]'
 
   return (
     <div
       className={`
         relative flex w-full items-start
         ${side === 'left' ? 'md:flex-row-reverse' : 'md:flex-row'}
-        flex-row
+        flex-row pl-14 md:pl-0
       `}
     >
       {/* Card */}
       <div
         className={`
-          w-full md:w-[45%] shrink-0
+          flex-1 min-w-0 md:w-[45%] md:flex-none md:shrink-0
           ${side === 'left' ? 'md:mr-auto' : 'md:ml-auto'}
-          ml-12 md:ml-0
         `}
       >
         <div
           className={`
-            rounded-xl border ${accentBorder} ${accentBg}
-            bg-white/4 backdrop-blur-sm p-5
-            shadow-xl shadow-black/40
+            rounded-xl border ${accentBorder} ${cardGlow}
+            bg-[#0d1526] p-5
+            shadow-xl shadow-black/50
             transition-transform duration-300 hover:-translate-y-1
           `}
         >
@@ -100,7 +93,7 @@ const ExperienceCard = ({
           {item.description && item.description.length > 0 && (
             <ul className="mt-3 space-y-2">
               {item.description.map((d, i) => (
-                <li key={i} className="flex gap-2.5 text-sm text-gray-400 leading-relaxed">
+                <li key={i} className="flex gap-2.5 text-sm text-slate-300 leading-relaxed">
                   <span className={`mt-2 shrink-0 w-1.5 h-1.5 rounded-full ${bulletColor}`} />
                   {d.point}
                 </li>
@@ -132,7 +125,7 @@ export const ExperienceBlockComponent: React.FC<ExperienceBlockProps> = async ({
   const items = await getExperiences()
 
   return (
-    <section className="py-16 px-4 max-w-5xl mx-auto">
+    <section className="container">
       {title && (
         <h2 className="text-center text-3xl md:text-4xl font-extrabold text-white mb-16 tracking-tight">
           {title}

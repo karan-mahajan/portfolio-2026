@@ -1,11 +1,12 @@
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+import { AboutBlock } from '@/blocks/About/config'
 import { CallToAction } from '@/blocks/CallToAction/config'
 import { Content } from '@/blocks/Content/config'
 import { ExperienceBlock } from '@/blocks/Experience/config'
+import { HeroBlock } from '@/blocks/Hero/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { Skills } from '@/blocks/Skills/config'
-import { hero } from '@/heros/config'
 import { populatePublishedAt } from '@/hooks/populatePublishedAt'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import {
@@ -58,15 +59,19 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
-          fields: [hero],
-          label: 'Hero',
-        },
-        {
           fields: [
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Skills, ExperienceBlock],
+              blocks: [
+                HeroBlock,
+                AboutBlock,
+                CallToAction,
+                Content,
+                MediaBlock,
+                Skills,
+                ExperienceBlock,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,
