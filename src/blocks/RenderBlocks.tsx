@@ -37,7 +37,7 @@ export const RenderBlocks: React.FC<{
           const { blockType } = block
 
           if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType]
+            const Block = blockComponents[blockType] as React.ComponentType<any>
 
             if (Block) {
               return fullWidthBlocks.has(blockType) ? (
