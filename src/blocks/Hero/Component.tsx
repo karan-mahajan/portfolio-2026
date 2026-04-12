@@ -64,7 +64,7 @@ const SpotlightButton: React.FC<SpotlightButtonProps> = ({
       target={type === 'resume' ? '_blank' : undefined}
       rel={type === 'resume' ? 'noopener noreferrer' : undefined}
       style={{ border, boxShadow }}
-      className="relative inline-flex items-center gap-2 overflow-hidden bg-slate-950 px-8 py-2 rounded-full text-base font-medium text-white"
+      className="font-sans relative inline-flex items-center gap-2 overflow-hidden bg-slate-950 px-8 py-2 rounded-full text-base font-medium text-white"
     >
       <span className="pointer-events-none relative z-10 mix-blend-difference flex items-center gap-2">
         {title}
@@ -162,7 +162,7 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
         <div className="container">
           <div className="flex flex-col items-start justify-center p-2 pb-20 md:pb-10 lg:pt-10">
             {/* Heading */}
-            <h1 className="text-3xl font-bold leading-10 text-white md:font-extrabold lg:text-[2.6rem] lg:leading-14">
+            <h1 className="font-display text-3xl font-bold leading-10 text-white md:font-extrabold lg:text-[2.6rem] lg:leading-14">
               Hello, <br />
               I&apos;m <span style={{ color: nameColor ?? '#16f2b3' }}>{name}</span>
               {`, I'm a`}

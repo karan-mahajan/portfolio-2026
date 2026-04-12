@@ -10,6 +10,8 @@
 
 @theme {
   --color-secondary: #16f2b3;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
 }
 
 :root {
@@ -36,7 +38,7 @@ body,
 }
 
 body {
-  font-family: system-ui;
+  font-family: var(--font-sans);
   font-size: 18px;
   line-height: 32px;
 

@@ -127,7 +127,7 @@ export const ExperienceBlockComponent: React.FC<ExperienceBlockProps> = async ({
   return (
     <section id="experience" className="container">
       {title && (
-        <h2 className="text-center text-3xl md:text-4xl font-extrabold text-white mb-16 tracking-tight">
+        <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-16 tracking-tight">
           {title}
         </h2>
       )}

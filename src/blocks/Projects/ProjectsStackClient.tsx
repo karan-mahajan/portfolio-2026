@@ -163,7 +163,7 @@ const ProjectCard = React.forwardRef<HTMLDivElement, { project: ProjectData; ind
               <p className="text-xs text-gray-500 font-medium tracking-wide">
                 {project.year} &middot; {project.category}
               </p>
-              <h3 className="text-xl md:text-2xl font-semibold text-gray-900 leading-snug">
+              <h3 className="font-display text-xl md:text-2xl font-semibold text-gray-900 leading-snug">
                 {project.title}
               </h3>
               <p className="text-sm font-semibold" style={{ color: '#6d28d9' }}>
@@ -451,7 +451,7 @@ export const ProjectsStackClient: React.FC<{
         {/* ── Header row ────────────────────────────────────────────────── */}
         <div className="flex items-baseline justify-between mb-6 shrink-0">
           {title && (
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
               {title}
             </h2>
           )}

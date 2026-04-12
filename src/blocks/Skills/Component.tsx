@@ -12,8 +12,10 @@ export const SkillsBlock: React.FC<Props> = ({ title, skills, showCloud }) => {
   const iconKeys = (skills ?? []).map((s) => s.icon).filter((k): k is IconKey => !!k)
 
   return (
-    <section id="skills" className="py-16 text-center">
-      <h2 className="text-4xl font-light tracking-wide text-white mb-12">{title ?? 'Skills'}</h2>
+    <section id="skills" className="py-16 container">
+      <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-16 tracking-tight">
+        {title ?? 'Skills'}
+      </h2>
 
       <ul className="flex flex-wrap justify-center gap-x-6 gap-y-10 max-w-5xl mx-auto px-4">
         {skills?.map((skill, i) => {
