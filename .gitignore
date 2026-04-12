@@ -48,3 +48,11 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Claude Code
+.agents/
+.mcp.json
+skills-lock.json
+
+# local test env
+test.env
