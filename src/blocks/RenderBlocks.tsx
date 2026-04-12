@@ -8,6 +8,7 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { ExperienceBlockComponent } from '@/blocks/Experience/Component'
 import { HeroBlockComponent } from '@/blocks/Hero/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ProjectsBlockComponent } from '@/blocks/Projects/Component'
 import { SkillsBlock } from './Skills/Component'
 
 const blockComponents = {
@@ -18,10 +19,11 @@ const blockComponents = {
   experience: ExperienceBlockComponent,
   mediaBlock: MediaBlock,
   skills: SkillsBlock,
+  projects: ProjectsBlockComponent,
 }
 
 // These blocks manage their own spacing/layout and should not be wrapped
-const fullWidthBlocks = new Set(['heroBlock'])
+const fullWidthBlocks = new Set(['heroBlock', 'projects'])
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]

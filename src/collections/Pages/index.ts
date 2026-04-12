@@ -6,6 +6,7 @@ import { Content } from '@/blocks/Content/config'
 import { ExperienceBlock } from '@/blocks/Experience/config'
 import { HeroBlock } from '@/blocks/Hero/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { ProjectsBlock } from '@/blocks/Projects/config'
 import { Skills } from '@/blocks/Skills/config'
 import { populatePublishedAt } from '@/hooks/populatePublishedAt'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
@@ -71,6 +72,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 MediaBlock,
                 Skills,
                 ExperienceBlock,
+                ProjectsBlock,
               ],
               required: true,
               admin: {

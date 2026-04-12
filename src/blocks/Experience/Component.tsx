@@ -125,7 +125,7 @@ export const ExperienceBlockComponent: React.FC<ExperienceBlockProps> = async ({
   const items = await getExperiences()
 
   return (
-    <section className="container">
+    <section id="experience" className="container">
       {title && (
         <h2 className="text-center text-3xl md:text-4xl font-extrabold text-white mb-16 tracking-tight">
           {title}

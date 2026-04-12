@@ -129,7 +129,7 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
   return (
     <motion.section
       style={{ backgroundImage }}
-      className="relative grid place-content-center bg-gray-950 text-gray-200 overflow-hidden"
+      className="relative bg-gray-950 text-gray-200 overflow-hidden"
     >
       {/* Stars */}
       {particlesReady && (
@@ -159,10 +159,10 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
 
       {/* Content */}
       <div className="relative z-10 w-full px-6 py-4">
-        <div className="max-w-5xl mx-auto">
+        <div className="container">
           <div className="flex flex-col items-start justify-center p-2 pb-20 md:pb-10 lg:pt-10">
             {/* Heading */}
-            <h1 className="text-3xl font-bold leading-10 text-white md:font-extrabold lg:text-[2.6rem] lg:leading-[3.5rem]">
+            <h1 className="text-3xl font-bold leading-10 text-white md:font-extrabold lg:text-[2.6rem] lg:leading-14">
               Hello, <br />
               I&apos;m <span style={{ color: nameColor ?? '#16f2b3' }}>{name}</span>
               {`, I'm a`}

@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     pages: Page;
     experiences: Experience;
+    projects: Project;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-folders': FolderInterface;
@@ -88,6 +89,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -291,7 +293,16 @@ export interface FolderInterface {
 export interface Page {
   id: number;
   title: string;
-  layout: (HeroBlock | AboutBlock | CallToActionBlock | ContentBlock | MediaBlock | SkillsBlock | ExperienceBlock)[];
+  layout: (
+    | HeroBlock
+    | AboutBlock
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | SkillsBlock
+    | ExperienceBlock
+    | ProjectsBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -534,6 +545,19 @@ export interface ExperienceBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectsBlock".
+ */
+export interface ProjectsBlock {
+  /**
+   * Section heading shown above the card stack
+   */
+  title?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'projects';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "experiences".
  */
 export interface Experience {
@@ -570,6 +594,62 @@ export interface Experience {
     | null;
   /**
    * Lower numbers appear first (top of timeline)
+   */
+  order: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  /**
+   * Year the project was completed or started
+   */
+  year: number;
+  /**
+   * e.g. "Web App", "Mobile", "Open Source"
+   */
+  category: string;
+  /**
+   * Your role on the project, e.g. "Full Stack Developer"
+   */
+  role: string;
+  /**
+   * Short project description (shown in the card)
+   */
+  description: string;
+  technologies?:
+    | {
+        tech: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Project thumbnail image (right side of card)
+   */
+  thumbnail?: (number | null) | Media;
+  /**
+   * Hex colour used as background when no thumbnail (e.g. #7c3aed)
+   */
+  accentColor?: string | null;
+  /**
+   * Live site URL — leave blank if not deployed
+   */
+  liveUrl?: string | null;
+  /**
+   * GitHub repository URL
+   */
+  githubUrl?: string | null;
+  /**
+   * Mark as private — disables live/GitHub links and shows "Private client" label
+   */
+  isPrivate?: boolean | null;
+  /**
+   * Lower numbers appear first in the stack
    */
   order: number;
   updatedAt: string;
@@ -706,6 +786,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'experiences';
         value: number | Experience;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -886,6 +970,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         skills?: T | SkillsBlockSelect<T>;
         experience?: T | ExperienceBlockSelect<T>;
+        projects?: T | ProjectsBlockSelect<T>;
       };
   meta?:
     | T
@@ -1034,6 +1119,15 @@ export interface ExperienceBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectsBlock_select".
+ */
+export interface ProjectsBlockSelect<T extends boolean = true> {
+  title?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "experiences_select".
  */
 export interface ExperiencesSelect<T extends boolean = true> {
@@ -1049,6 +1143,31 @@ export interface ExperiencesSelect<T extends boolean = true> {
         point?: T;
         id?: T;
       };
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  year?: T;
+  category?: T;
+  role?: T;
+  description?: T;
+  technologies?:
+    | T
+    | {
+        tech?: T;
+        id?: T;
+      };
+  thumbnail?: T;
+  accentColor?: T;
+  liveUrl?: T;
+  githubUrl?: T;
+  isPrivate?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;

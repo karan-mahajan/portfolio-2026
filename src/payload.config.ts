@@ -9,6 +9,7 @@ import { plugins } from './plugins'
 import { Experience } from './collections/Experience'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
+import { Projects } from './collections/Projects'
 import { Users } from './collections/Users'
 import { Header } from './Header/config'
 
@@ -44,7 +45,7 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, Pages, Experience],
+  collections: [Users, Media, Pages, Experience, Projects],
   globals: [Header],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -54,7 +55,6 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
-      max: 1,
     },
   }),
   sharp,
