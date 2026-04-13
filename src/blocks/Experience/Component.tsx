@@ -75,7 +75,7 @@ const ExperienceCard = ({ item, side }: { item: Experience; side: 'left' | 'righ
             transition-transform duration-300 hover:-translate-y-1
           `}
         >
-          <div className="flex items-start justify-between gap-3 mb-1">
+          <div className="flex items-start flex-col md:flex-row justify-between gap-3 mb-1">
             <div>
               <h3 className="text-white font-semibold text-base leading-snug">{item.name}</h3>
               <p className={`text-sm font-medium mt-0.5 ${accentText}`}>{item.role}</p>
@@ -125,7 +125,7 @@ export const ExperienceBlockComponent: React.FC<ExperienceBlockProps> = async ({
   const items = await getExperiences()
 
   return (
-    <section id="experience" className="container">
+    <section id="experience" className="container px-4 mx-auto">
       {title && (
         <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-16 tracking-tight">
           {title}

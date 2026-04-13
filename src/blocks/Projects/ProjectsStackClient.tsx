@@ -32,11 +32,12 @@ export interface ProjectData {
 
 const DURATION = 0.52
 const EASE = 'cubic-bezier(0.4, 0, 0.2, 1)'
-const MAX_STACK = 3
-const SCALE_STEP = 0.04
-const Y_STEP = 9
+const MAX_STACK = 3 // how many back cards are visible
+const SCALE_STEP = 0.035 // each back card scales down by this amount
+const Y_STEP = 30 // px each back card shifts upward (peek from top)
 const OPACITY_STEP = 0.18
-const SCROLL_PER_CARD = 1 // × window.innerHeight
+const PEEK_OFFSET = MAX_STACK * Y_STEP // 60px — top space reserved for peeking cards
+const SCROLL_PER_CARD = 1 // scroll distance per card in units of window.innerHeight
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
@@ -112,10 +113,12 @@ const DotPattern = ({ color }: { color: string }) => (
 )
 
 // ─── Single card ─────────────────────────────────────────────────────────────
+//
+// Cards are positioned with top = PEEK_OFFSET so back cards can shift upward
+// into the peek zone (the top PEEK_OFFSET pixels of the stack container).
 
 const ProjectCard = React.forwardRef<HTMLDivElement, { project: ProjectData; index: number }>(
   ({ project, index }, ref) => {
-    const displayNum = String(project.order).padStart(2, '0')
     const hasThumbnail = Boolean(project.thumbnail?.url)
 
     const linkHref = project.isPrivate ? null : (project.liveUrl ?? project.githubUrl ?? null)
@@ -126,40 +129,71 @@ const ProjectCard = React.forwardRef<HTMLDivElement, { project: ProjectData; ind
       <div
         ref={ref}
         data-card-index={index}
-        style={{ willChange: 'transform, opacity' }}
-        className="absolute inset-0 flex items-center justify-center"
+        style={{
+          position: 'absolute',
+          top: PEEK_OFFSET, // leaves room above for peeking back-cards
+          left: 0,
+          right: 0,
+          bottom: 0,
+          willChange: 'transform, opacity',
+        }}
       >
         {/* Card shell */}
-        <div className="w-full h-full max-h-105 rounded-2xl border border-black/8 bg-white shadow-xl shadow-black/20 overflow-hidden flex">
-          {/* ── Left: text content ── */}
-          <div className="flex-1 min-w-0 flex flex-col justify-between p-6 md:p-8">
-            {/* Top row: number + tech tags */}
-            <div className="flex items-start justify-between gap-3 flex-wrap">
-              <span
-                className="shrink-0 text-xs font-bold px-3 py-1 rounded-full border border-gray-300 text-gray-500 font-mono tracking-widest"
-                aria-label={`Project ${displayNum}`}
-              >
-                {displayNum}
-              </span>
-              <div className="flex flex-wrap gap-1.5 justify-end">
-                {(project.technologies ?? []).slice(0, 5).map((t) => (
-                  <span
-                    key={t.tech}
-                    className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-gray-900 text-gray-100 whitespace-nowrap"
-                  >
-                    {t.tech}
+        <div className="w-full h-full rounded-2xl border border-black/8 bg-white shadow-xl shadow-black/20 overflow-hidden flex flex-col sm:flex-row">
+          {/* ── Mobile-only: top image / accent strip ── */}
+          <div
+            className="relative sm:hidden h-36 shrink-0"
+            style={{ backgroundColor: hasThumbnail ? '#f3f4f6' : project.accentColor }}
+          >
+            {hasThumbnail && project.thumbnail ? (
+              <>
+                <Image
+                  src={project.thumbnail.url}
+                  alt={project.thumbnail.alt}
+                  fill
+                  sizes="100vw"
+                  className="object-cover object-top"
+                  unoptimized
+                  loading="lazy"
+                />
+                <div
+                  className="absolute inset-x-0 bottom-0 h-10 pointer-events-none"
+                  style={{ background: 'linear-gradient(to bottom, transparent, #ffffff)' }}
+                />
+              </>
+            ) : (
+              <>
+                <DotPattern color={project.accentColor} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-6xl font-black text-white/30 select-none">
+                    {project.title.charAt(0).toUpperCase()}
                   </span>
-                ))}
-                {(project.technologies ?? []).length > 5 && (
-                  <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-gray-700 text-gray-200">
-                    +{(project.technologies ?? []).length - 5}
-                  </span>
-                )}
-              </div>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* ── Text content ── */}
+          <div className="flex-1 min-w-0 flex flex-col justify-between p-4 sm:p-6 md:p-8 overflow-y-auto">
+            {/* Top row: tech tags */}
+            <div className="flex flex-wrap gap-1.5">
+              {(project.technologies ?? []).slice(0, 5).map((t) => (
+                <span
+                  key={t.tech}
+                  className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-gray-900 text-gray-100 whitespace-nowrap"
+                >
+                  {t.tech}
+                </span>
+              ))}
+              {(project.technologies ?? []).length > 5 && (
+                <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-gray-700 text-gray-200">
+                  +{(project.technologies ?? []).length - 5}
+                </span>
+              )}
             </div>
 
             {/* Middle: meta, title, role, description */}
-            <div className="flex-1 flex flex-col justify-center gap-2 py-4">
+            <div className="flex-1 flex flex-col justify-center gap-1.5 py-3">
               <p className="text-xs text-gray-500 font-medium tracking-wide">
                 {project.year} &middot; {project.category}
               </p>
@@ -170,10 +204,10 @@ const ProjectCard = React.forwardRef<HTMLDivElement, { project: ProjectData; ind
                 {project.role}
               </p>
               <p
-                className="text-sm text-gray-600 leading-relaxed mt-1"
+                className="text-sm text-gray-600 leading-relaxed mt-0.5"
                 style={{
                   display: '-webkit-box',
-                  WebkitLineClamp: 2,
+                  WebkitLineClamp: 3,
                   WebkitBoxOrient: 'vertical',
                   overflow: 'hidden',
                 }}
@@ -205,11 +239,11 @@ const ProjectCard = React.forwardRef<HTMLDivElement, { project: ProjectData; ind
             </div>
           </div>
 
-          {/* ── Right: thumbnail or accent block ── */}
+          {/* ── Right: thumbnail or accent block (sm+) ── */}
           <div
             className="relative shrink-0 hidden sm:block"
             style={{
-              width: 240,
+              width: 400,
               backgroundColor: hasThumbnail ? '#f3f4f6' : project.accentColor,
             }}
           >
@@ -219,11 +253,11 @@ const ProjectCard = React.forwardRef<HTMLDivElement, { project: ProjectData; ind
                   src={project.thumbnail.url}
                   alt={project.thumbnail.alt}
                   fill
-                  sizes="240px"
+                  sizes="400px"
                   className="object-cover object-top"
+                  unoptimized
                   loading="lazy"
                 />
-                {/* Left-edge fade so image blends into card */}
                 <div
                   className="absolute inset-y-0 left-0 w-10 pointer-events-none"
                   style={{ background: 'linear-gradient(to right, #ffffff, transparent)' }}
@@ -232,7 +266,6 @@ const ProjectCard = React.forwardRef<HTMLDivElement, { project: ProjectData; ind
             ) : (
               <>
                 <DotPattern color={project.accentColor} />
-                {/* Centred initial letter */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="text-7xl font-black text-white/30 select-none">
                     {project.title.charAt(0).toUpperCase()}
@@ -260,7 +293,9 @@ export const ProjectsStackClient: React.FC<{
   // Refs — kept outside React state so GSAP callbacks never see stale values
   const activeRef = useRef(0)
   const isAnimating = useRef(false)
-  const lastScrollIndex = useRef(0)
+  const isWrapping = useRef(false) // suppresses ScrollTrigger during wrap transitions
+  const pendingTargetRef = useRef(-1) // queues the last requested index during an animation
+  const stRef = useRef<ReturnType<typeof ScrollTrigger.create> | null>(null)
   const touchStartY = useRef(0)
 
   const containerRef = useRef<HTMLDivElement>(null)
@@ -277,12 +312,12 @@ export const ProjectsStackClient: React.FC<{
     const props = visible
       ? {
           scale: 1 - diff * SCALE_STEP,
-          y: diff * Y_STEP,
-          opacity: diff === 0 ? 1 : 1 - diff * OPACITY_STEP,
+          y: -diff * Y_STEP, // negative = shift UP into the peek zone
+          opacity: diff === 0 ? 1 : Math.max(0, 1 - diff * OPACITY_STEP),
           zIndex: 10 - diff,
           pointerEvents: diff === 0 ? 'auto' : 'none',
         }
-      : { opacity: 0, zIndex: 0, pointerEvents: 'none' }
+      : { opacity: 0, zIndex: 0, pointerEvents: 'none', y: 0, scale: 1 }
 
     if (animate) {
       gsap.to(cardEl, { ...props, duration: DURATION, ease: EASE, overwrite: 'auto' })
@@ -306,29 +341,38 @@ export const ProjectsStackClient: React.FC<{
 
   const goTo = useCallback(
     (newRawIndex: number) => {
-      if (isAnimating.current || N === 0) return
+      if (N === 0) return
       const normalized = ((newRawIndex % N) + N) % N
+
+      // Always store the latest requested target so we can catch up after an animation
+      pendingTargetRef.current = normalized
+
+      // If already animating, let the delayedCall below handle it when done
+      if (isAnimating.current) return
       if (normalized === activeRef.current) return
 
       isAnimating.current = true
       const oldActive = activeRef.current
       const cards = cardRefs.current
 
-      // Outgoing active card: fly upward
+      // Update UI immediately so dots/counter don't lag behind the animation
+      setActiveIndex(normalized)
+
+      // Outgoing active card: fly upward and out of the peek zone
       const outCard = cards[oldActive]
       if (outCard) {
         gsap.to(outCard, {
           scale: 0.94,
-          y: -38,
+          y: -(PEEK_OFFSET + 50), // clear above the container
           opacity: 0,
           zIndex: 11,
-          duration: DURATION * 0.5,
+          duration: DURATION * 0.55,
           ease: EASE,
           overwrite: 'auto',
         })
       }
 
-      // All other cards animate to new positions
+      // All other cards animate to their new stack positions
       projects.forEach((_, i) => {
         if (i === oldActive) return
         const card = cards[i]
@@ -336,26 +380,81 @@ export const ProjectsStackClient: React.FC<{
         setCardPosition(card, forwardDist(i, normalized), true)
       })
 
-      // After transition: update ref, update React state, reset outgoing card
+      // After transition: commit state and handle any pending jump
       gsap.delayedCall(DURATION, () => {
         activeRef.current = normalized
-        setActiveIndex(normalized)
 
-        // Place the outgoing card at its new circular position
+        // Reset the outgoing card to its new circular position instantly
         const newDiffForOld = forwardDist(oldActive, normalized)
-        if (outCard) {
-          setCardPosition(outCard, newDiffForOld) // instant (set not to)
-        }
+        if (outCard) setCardPosition(outCard, newDiffForOld)
 
         isAnimating.current = false
+
+        // If scroll moved further while we were animating, process the final target
+        const pending = pendingTargetRef.current
+        if (pending !== normalized) {
+          goTo(pending)
+        }
       })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [N, setCardPosition],
   )
 
-  const goNext = useCallback(() => goTo(activeRef.current + 1), [goTo])
-  const goPrev = useCallback(() => goTo(activeRef.current - 1), [goTo])
+  // ── Arrow / dot navigation — syncs the scroll position so ScrollTrigger
+  //    stays in agreement. Falls back to direct goTo when trigger isn't ready.
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const scrollToCardIndex = useCallback(
+    (idx: number) => {
+      // Clamp to valid range (arrows don't wrap)
+      const clamped = Math.max(0, Math.min(N - 1, idx))
+      const st = stRef.current
+      if (st) {
+        // target scroll = pin-start + card-index × one-screen-height
+        const targetScroll = st.start + clamped * SCROLL_PER_CARD * window.innerHeight
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' })
+      } else {
+        goTo(clamped)
+      }
+    },
+    [N, goTo],
+  )
+
+  const goNext = useCallback(() => {
+    const next = activeRef.current + 1
+    if (next >= N) {
+      // Wrap to first: animate directly and silently teleport scroll afterward
+      isWrapping.current = true
+      goTo(0)
+      gsap.delayedCall(DURATION + 0.05, () => {
+        const st = stRef.current
+        if (st) window.scrollTo({ top: st.start })
+        isWrapping.current = false
+      })
+    } else {
+      scrollToCardIndex(next)
+    }
+  }, [N, goTo, scrollToCardIndex])
+
+  const goPrev = useCallback(() => {
+    const prev = activeRef.current - 1
+    if (prev < 0) {
+      // Wrap to last: animate directly and silently teleport scroll afterward
+      isWrapping.current = true
+      goTo(N - 1)
+      gsap.delayedCall(DURATION + 0.05, () => {
+        const st = stRef.current
+        if (st) window.scrollTo({ top: st.end })
+        isWrapping.current = false
+      })
+    } else {
+      scrollToCardIndex(prev)
+    }
+  }, [N, goTo, scrollToCardIndex])
+
+  // Dot / number navigation also keeps scroll in sync
+  const goToByClick = useCallback((idx: number) => scrollToCardIndex(idx), [scrollToCardIndex])
 
   // ── GSAP ScrollTrigger ────────────────────────────────────────────────────
 
@@ -374,16 +473,18 @@ export const ProjectsStackClient: React.FC<{
       pin: true,
       pinSpacing: true,
       onUpdate: (self) => {
+        if (isWrapping.current) return
+        // Derive the target card index from scroll progress
         const newIndex = Math.min(Math.floor(self.progress * N), N - 1)
-        if (newIndex !== lastScrollIndex.current) {
-          lastScrollIndex.current = newIndex
-          goTo(newIndex)
-        }
+        goTo(newIndex)
       },
     })
 
+    stRef.current = st
+
     return () => {
       st.kill()
+      stRef.current = null
     }
   }, [N, goTo])
 
@@ -444,12 +545,12 @@ export const ProjectsStackClient: React.FC<{
     <div
       ref={containerRef}
       className="relative"
-      style={{ height: '100vh', overflow: 'hidden' }}
+      style={{ height: '100vh', overflow: 'hidden', zIndex: 110 }}
       id="projects"
     >
       <div className="container h-full flex flex-col py-8">
         {/* ── Header row ────────────────────────────────────────────────── */}
-        <div className="flex items-baseline justify-between mb-6 shrink-0">
+        <div className="flex items-baseline justify-between mb-4 shrink-0">
           {title && (
             <h2 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
               {title}
@@ -462,9 +563,10 @@ export const ProjectsStackClient: React.FC<{
         </div>
 
         {/* ── Card stack ────────────────────────────────────────────────── */}
+        {/* overflow-hidden clips peek cards at the container boundary      */}
         <div
           ref={stackRef}
-          className="relative flex-1 min-h-0"
+          className="relative flex-1 min-h-0 overflow-hidden"
           role="region"
           aria-label="Projects"
           aria-live="polite"
@@ -482,7 +584,7 @@ export const ProjectsStackClient: React.FC<{
         </div>
 
         {/* ── Navigation ────────────────────────────────────────────────── */}
-        <div className="shrink-0 pt-6 flex items-center justify-center gap-4">
+        <div className="shrink-0 pt-5 flex items-center justify-center gap-4">
           {/* Prev */}
           <button
             onClick={goPrev}
@@ -500,7 +602,7 @@ export const ProjectsStackClient: React.FC<{
                 role="tab"
                 aria-selected={i === activeIndex}
                 aria-label={`Go to project ${i + 1}`}
-                onClick={() => goTo(i)}
+                onClick={() => goToByClick(i)}
                 style={{
                   transition: `width ${DURATION}s ${EASE}, background-color ${DURATION}s ${EASE}`,
                   width: i === activeIndex ? 28 : 8,
