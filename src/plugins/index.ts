@@ -1,6 +1,7 @@
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
-import { Plugin } from 'payload'
+import { Plugin } from 'payload';
+import { s3Storage } from '@payloadcms/storage-s3'
 
 import { Page } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -20,4 +21,21 @@ export const plugins: Plugin[] = [
     generateTitle,
     generateURL,
   }),
+  s3Storage({
+        collections: {
+          media: {
+            prefix: 'media',
+          }
+        },
+        bucket: process.env.S3_BUCKET!,
+        config: {
+          forcePathStyle: true,
+          credentials: {
+            accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+            secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+          },
+          region: process.env.S3_REGION!,
+          endpoint: process.env.S3_ENDPOINT!,
+        },
+      }),
 ]
