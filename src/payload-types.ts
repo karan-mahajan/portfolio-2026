@@ -506,6 +506,7 @@ export interface SkillsBlock {
           | 'c'
           | 'canva'
           | 'css'
+          | 'drupal'
           | 'django'
           | 'figma'
           | 'firebase'

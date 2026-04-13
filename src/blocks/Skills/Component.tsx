@@ -32,7 +32,7 @@ export const SkillsBlock: React.FC<Props> = ({ title, skills, showCloud }) => {
                   width={72}
                   height={72}
                   alt={skill.name}
-                  className="object-contain"
+                  className="object-contain h-18 w-18"
                 />
               )}
               <span className="mt-3 text-sm text-white">{skill.name}</span>

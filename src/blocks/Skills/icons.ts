@@ -3,6 +3,7 @@ export const ICON_MAP = {
   c: '/images/skills/c.svg',
   canva: '/images/skills/canva.svg',
   css: '/images/skills/css.svg',
+  drupal: '/images/skills/drupal.svg',
   django: '/images/skills/django.svg',
   figma: '/images/skills/figma.svg',
   firebase: '/images/skills/firebase.svg',

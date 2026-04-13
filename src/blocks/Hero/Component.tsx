@@ -158,9 +158,9 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
       )}
 
       {/* Content */}
-      <div className="relative z-10 w-full px-6 py-4">
-        <div className="container">
-          <div className="flex flex-col items-start justify-center p-2 pb-20 md:pb-10 lg:pt-10">
+      <div className="relative z-10 w-full md:px-6 py-4">
+        <div className="container px-3 md:px-5">
+          <div className="flex flex-col items-start justify-center md:p-2 pb-6 md:pb-10 lg:pt-10">
             {/* Heading */}
             <h1 className="font-display text-3xl font-bold leading-10 text-white md:font-extrabold lg:text-[2.6rem] lg:leading-14">
               Hello, <br />
@@ -179,7 +179,7 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
             </h1>
 
             {/* Social Icons */}
-            <div className="mb-8 mt-8 flex items-center gap-5">
+            <div className="my-4 md:mb-8 md:mt-8 flex items-center gap-5">
               {socialLinks?.github && (
                 <a
                   href={socialLinks.github}

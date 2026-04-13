@@ -70,7 +70,7 @@ const ExperienceCard = ({ item, side }: { item: Experience; side: 'left' | 'righ
         <div
           className={`
             rounded-xl border ${accentBorder} ${cardGlow}
-            bg-[#0d1526] p-5
+            bg-white p-5
             shadow-xl shadow-black/50
             transition-transform duration-300 hover:-translate-y-1
           `}
@@ -93,7 +93,7 @@ const ExperienceCard = ({ item, side }: { item: Experience; side: 'left' | 'righ
           {item.description && item.description.length > 0 && (
             <ul className="mt-3 space-y-2">
               {item.description.map((d, i) => (
-                <li key={i} className="flex gap-2.5 text-sm text-slate-300 leading-relaxed">
+                <li key={i} className="flex gap-2.5 mix-blend-difference text-sm text-slate-300 leading-relaxed">
                   <span className={`mt-2 shrink-0 w-1.5 h-1.5 rounded-full ${bulletColor}`} />
                   {d.point}
                 </li>

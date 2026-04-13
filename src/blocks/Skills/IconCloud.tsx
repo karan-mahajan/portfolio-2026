@@ -52,6 +52,7 @@ const SLUG_MAP: Record<string, string> = {
   c: 'c',
   canva: 'canva',
   css: 'css3',
+  drupal: 'drupal',
   django: 'django',
   figma: 'figma',
   firebase: 'firebase',
