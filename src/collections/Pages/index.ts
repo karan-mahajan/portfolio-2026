@@ -2,6 +2,7 @@ import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { AboutBlock } from '@/blocks/About/config'
 import { CallToAction } from '@/blocks/CallToAction/config'
+import { ContactBlock } from '@/blocks/Contact/config'
 import { Content } from '@/blocks/Content/config'
 import { ExperienceBlock } from '@/blocks/Experience/config'
 import { HeroBlock } from '@/blocks/Hero/config'
@@ -73,6 +74,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 Skills,
                 ExperienceBlock,
                 ProjectsBlock,
+                ContactBlock,
               ],
               required: true,
               admin: {

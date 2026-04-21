@@ -303,6 +303,7 @@ export interface Page {
     | SkillsBlock
     | ExperienceBlock
     | ProjectsBlock
+    | ContactBlock
   )[];
   meta?: {
     title?: string | null;
@@ -557,6 +558,25 @@ export interface ProjectsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'projects';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock".
+ */
+export interface ContactBlock {
+  /**
+   * Leave blank to use default "Let's work together."
+   */
+  title?: string | null;
+  /**
+   * Short description below the title.
+   */
+  subtitle?: string | null;
+  email?: string | null;
+  linkedinUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -974,6 +994,7 @@ export interface PagesSelect<T extends boolean = true> {
         skills?: T | SkillsBlockSelect<T>;
         experience?: T | ExperienceBlockSelect<T>;
         projects?: T | ProjectsBlockSelect<T>;
+        contact?: T | ContactBlockSelect<T>;
       };
   meta?:
     | T
@@ -1126,6 +1147,18 @@ export interface ExperienceBlockSelect<T extends boolean = true> {
  */
 export interface ProjectsBlockSelect<T extends boolean = true> {
   title?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock_select".
+ */
+export interface ContactBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  email?: T;
+  linkedinUrl?: T;
   id?: T;
   blockName?: T;
 }

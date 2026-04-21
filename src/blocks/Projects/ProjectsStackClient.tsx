@@ -1,9 +1,6 @@
 'use client'
 
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Image from 'next/image'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -28,606 +25,390 @@ export interface ProjectData {
   isPrivate: boolean
 }
 
-// ─── Constants ───────────────────────────────────────────────────────────────
+// ─── Fake browser preview ────────────────────────────────────────────────────
 
-const DURATION = 0.52
-const EASE = 'cubic-bezier(0.4, 0, 0.2, 1)'
-const MAX_STACK = 3 // how many back cards are visible
-const SCALE_STEP = 0.035 // each back card scales down by this amount
-const Y_STEP = 30 // px each back card shifts upward (peek from top)
-const OPACITY_STEP = 0.18
-const PEEK_OFFSET = MAX_STACK * Y_STEP // 60px — top space reserved for peeking cards
-const SCROLL_PER_CARD = 1 // scroll distance per card in units of window.innerHeight
+const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ project, index }) => {
+  const accent = project.accentColor || '#4f8ef7'
 
-// ─── Sub-components ──────────────────────────────────────────────────────────
-
-const ExternalLinkIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-    className="w-3.5 h-3.5"
-  >
-    <path
-      fillRule="evenodd"
-      d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z"
-      clipRule="evenodd"
-    />
-    <path
-      fillRule="evenodd"
-      d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z"
-      clipRule="evenodd"
-    />
-  </svg>
-)
-
-const GithubIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className="w-3.5 h-3.5"
-  >
-    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z" />
-  </svg>
-)
-
-const ArrowIcon = ({ dir }: { dir: 'left' | 'right' }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-    className="w-5 h-5"
-  >
-    {dir === 'left' ? (
-      <path
-        fillRule="evenodd"
-        d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-        clipRule="evenodd"
-      />
-    ) : (
-      <path
-        fillRule="evenodd"
-        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-        clipRule="evenodd"
-      />
-    )}
-  </svg>
-)
-
-// ─── Decorative pattern for no-thumbnail right panel ─────────────────────────
-
-const DotPattern = ({ color }: { color: string }) => (
-  <svg
-    className="absolute inset-0 w-full h-full"
-    style={{ opacity: 0.15 }}
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <defs>
-      <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-        <circle cx="2" cy="2" r="1.5" fill={color === '#ffffff' ? '#000000' : '#ffffff'} />
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#dots)" />
-  </svg>
-)
-
-// ─── Single card ─────────────────────────────────────────────────────────────
-//
-// Cards are positioned with top = PEEK_OFFSET so back cards can shift upward
-// into the peek zone (the top PEEK_OFFSET pixels of the stack container).
-
-const ProjectCard = React.forwardRef<HTMLDivElement, { project: ProjectData; index: number }>(
-  ({ project, index }, ref) => {
-    const hasThumbnail = Boolean(project.thumbnail?.url)
-
-    const linkHref = project.isPrivate ? null : (project.liveUrl ?? project.githubUrl ?? null)
-    const linkLabel = project.liveUrl && !project.isPrivate ? 'Live site' : 'GitHub'
-    const linkIsGithub = !project.liveUrl || !project.liveUrl.trim()
-
-    return (
+  // Different preview layouts per card slot
+  const layouts = [
+    // Layout 0 — two-pane editor
+    <div
+      key="0"
+      style={{
+        position: 'absolute',
+        inset: 16,
+        display: 'grid',
+        gridTemplateColumns: '160px 1fr',
+        gap: 12,
+      }}
+    >
       <div
-        ref={ref}
-        data-card-index={index}
         style={{
-          position: 'absolute',
-          top: PEEK_OFFSET, // leaves room above for peeking back-cards
-          left: 0,
-          right: 0,
-          bottom: 0,
-          willChange: 'transform, opacity',
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid var(--border)',
+          borderRadius: 10,
+          padding: 12,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 8,
         }}
       >
-        {/* Card shell */}
-        <div className="w-full h-full rounded-2xl border border-black/8 bg-white shadow-xl shadow-black/20 overflow-hidden flex flex-col sm:flex-row">
-          {/* ── Mobile-only: top image / accent strip ── */}
+        {[60, 80, 50, 70, 40].map((w, i) => (
           <div
-            className="relative sm:hidden h-36 shrink-0"
-            style={{ backgroundColor: hasThumbnail ? '#f3f4f6' : project.accentColor }}
-          >
-            {hasThumbnail && project.thumbnail ? (
-              <>
-                <Image
-                  src={project.thumbnail.url}
-                  alt={project.thumbnail.alt}
-                  fill
-                  sizes="100vw"
-                  className="object-cover object-top"
-                  unoptimized
-                  loading="lazy"
-                />
-                <div
-                  className="absolute inset-x-0 bottom-0 h-10 pointer-events-none"
-                  style={{ background: 'linear-gradient(to bottom, transparent, #ffffff)' }}
-                />
-              </>
-            ) : (
-              <>
-                <DotPattern color={project.accentColor} />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-6xl font-black text-white/30 select-none">
-                    {project.title.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* ── Text content ── */}
-          <div className="flex-1 min-w-0 flex flex-col justify-between p-4 sm:p-6 md:p-8 overflow-y-auto">
-            {/* Top row: tech tags */}
-            <div className="flex flex-wrap gap-1.5">
-              {(project.technologies ?? []).slice(0, 5).map((t) => (
-                <span
-                  key={t.tech}
-                  className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-gray-900 text-gray-100 whitespace-nowrap"
-                >
-                  {t.tech}
-                </span>
-              ))}
-              {(project.technologies ?? []).length > 5 && (
-                <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-gray-700 text-gray-200">
-                  +{(project.technologies ?? []).length - 5}
-                </span>
-              )}
-            </div>
-
-            {/* Middle: meta, title, role, description */}
-            <div className="flex-1 flex flex-col justify-center gap-1.5 py-3">
-              <p className="text-xs text-gray-500 font-medium tracking-wide">
-                {project.year} &middot; {project.category}
-              </p>
-              <h3 className="font-display text-xl md:text-2xl font-semibold text-gray-900 leading-snug">
-                {project.title}
-              </h3>
-              <p className="text-sm font-semibold" style={{ color: '#6d28d9' }}>
-                {project.role}
-              </p>
-              <p
-                className="text-sm text-gray-600 leading-relaxed mt-0.5"
-                style={{
-                  display: '-webkit-box',
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                }}
-              >
-                {project.description}
-              </p>
-            </div>
-
-            {/* Bottom row: link + year */}
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                {project.isPrivate ? (
-                  <span className="text-xs text-gray-400 italic">Private client</span>
-                ) : linkHref ? (
-                  <a
-                    href={linkHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border border-gray-300 text-gray-700 hover:text-gray-900 hover:border-gray-400 transition-colors duration-200"
-                  >
-                    {linkIsGithub ? <GithubIcon /> : <ExternalLinkIcon />}
-                    {linkLabel}
-                  </a>
-                ) : (
-                  <span className="text-xs text-gray-400 italic">In progress</span>
-                )}
-              </div>
-              <span className="text-xs text-gray-400 font-mono shrink-0">{project.year}</span>
-            </div>
-          </div>
-
-          {/* ── Right: thumbnail or accent block (sm+) ── */}
-          <div
-            className="relative shrink-0 hidden sm:block"
+            key={i}
             style={{
-              width: 400,
-              backgroundColor: hasThumbnail ? '#f3f4f6' : project.accentColor,
+              height: i === 0 ? 8 : 6,
+              width: `${w}%`,
+              background: i === 0 ? accent : 'rgba(255,255,255,0.1)',
+              borderRadius: 3,
+              opacity: i === 0 ? 0.8 : 1,
+            }}
+          />
+        ))}
+      </div>
+      <div
+        style={{
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid var(--border)',
+          borderRadius: 10,
+          padding: 16,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+        }}
+      >
+        <div style={{ height: 14, width: '60%', background: 'rgba(255,255,255,0.15)', borderRadius: 4 }} />
+        {[95, 88, 92, 70].map((w, i) => (
+          <div key={i} style={{ height: 6, width: `${w}%`, background: 'rgba(255,255,255,0.08)', borderRadius: 3 }} />
+        ))}
+        <div
+          style={{
+            marginTop: 8,
+            height: 40,
+            background: `rgba(${accent === '#4f8ef7' ? '79,142,247' : '122,108,255'},0.08)`,
+            border: `1px dashed ${accent}44`,
+            borderRadius: 6,
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 12px',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            color: accent,
+          }}
+        >
+          ▍ AI-powered workflow…
+        </div>
+      </div>
+    </div>,
+
+    // Layout 1 — product grid
+    <div
+      key="1"
+      style={{ position: 'absolute', inset: 16, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }}
+    >
+      {[0, 1, 2].map((i) => (
+        <div
+          key={i}
+          style={{
+            background: 'rgba(255,255,255,0.04)',
+            borderRadius: 10,
+            aspectRatio: '3/4',
+            position: 'relative',
+            border: '1px solid var(--border)',
+          }}
+        >
+          <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10 }}>
+            <div style={{ height: 8, width: '70%', background: 'rgba(255,255,255,0.6)', borderRadius: 3, marginBottom: 6 }} />
+            <div style={{ height: 6, width: '40%', background: accent, borderRadius: 3, opacity: 0.8 }} />
+          </div>
+        </div>
+      ))}
+    </div>,
+
+    // Layout 2 — dashboard stats
+    <div
+      key="2"
+      style={{ position: 'absolute', inset: 16, display: 'grid', gridTemplateRows: 'auto 1fr', gap: 12 }}
+    >
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10 }}>
+        {[
+          { label: 'TOTAL', val: '1,284', color: 'var(--text)' },
+          { label: 'ON TIME', val: '94%', color: '#47d78a' },
+          { label: 'REVENUE', val: '$2.4M', color: 'var(--text)' },
+          { label: 'ALERTS', val: '3', color: '#ff8a68' },
+        ].map(({ label, val, color }, i) => (
+          <div
+            key={i}
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid var(--border)',
+              borderRadius: 8,
+              padding: 10,
             }}
           >
-            {hasThumbnail && project.thumbnail ? (
-              <>
-                <Image
-                  src={project.thumbnail.url}
-                  alt={project.thumbnail.alt}
-                  fill
-                  sizes="400px"
-                  className="object-cover object-top"
-                  unoptimized
-                  loading="lazy"
-                />
-                <div
-                  className="absolute inset-y-0 left-0 w-10 pointer-events-none"
-                  style={{ background: 'linear-gradient(to right, #ffffff, transparent)' }}
-                />
-              </>
-            ) : (
-              <>
-                <DotPattern color={project.accentColor} />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-7xl font-black text-white/30 select-none">
-                    {project.title.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-              </>
-            )}
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-mute)', marginBottom: 4 }}>{label}</div>
+            <div style={{ fontSize: 18, fontWeight: 600, color }}>{val}</div>
           </div>
-        </div>
+        ))}
       </div>
-    )
-  },
-)
-ProjectCard.displayName = 'ProjectCard'
-
-// ─── Main client component ────────────────────────────────────────────────────
-
-export const ProjectsStackClient: React.FC<{
-  projects: ProjectData[]
-  title?: string | null
-}> = ({ projects, title }) => {
-  const N = projects.length
-  const [activeIndex, setActiveIndex] = useState(0)
-
-  // Refs — kept outside React state so GSAP callbacks never see stale values
-  const activeRef = useRef(0)
-  const isAnimating = useRef(false)
-  const isWrapping = useRef(false) // suppresses ScrollTrigger during wrap transitions
-  const pendingTargetRef = useRef(-1) // queues the last requested index during an animation
-  const stRef = useRef<ReturnType<typeof ScrollTrigger.create> | null>(null)
-  const touchStartY = useRef(0)
-
-  const containerRef = useRef<HTMLDivElement>(null)
-  const stackRef = useRef<HTMLDivElement>(null)
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
-
-  // ── Helpers ──────────────────────────────────────────────────────────────
-
-  /** How many steps forward from `active` is card `i` (circular, 0 = active) */
-  const forwardDist = (i: number, active: number) => (i - active + N) % N
-
-  const setCardPosition = useCallback((cardEl: HTMLDivElement, diff: number, animate = false) => {
-    const visible = diff <= MAX_STACK
-    const props = visible
-      ? {
-          scale: 1 - diff * SCALE_STEP,
-          y: -diff * Y_STEP, // negative = shift UP into the peek zone
-          opacity: diff === 0 ? 1 : Math.max(0, 1 - diff * OPACITY_STEP),
-          zIndex: 10 - diff,
-          pointerEvents: diff === 0 ? 'auto' : 'none',
-        }
-      : { opacity: 0, zIndex: 0, pointerEvents: 'none', y: 0, scale: 1 }
-
-    if (animate) {
-      gsap.to(cardEl, { ...props, duration: DURATION, ease: EASE, overwrite: 'auto' })
-    } else {
-      gsap.set(cardEl, props)
-    }
-  }, [])
-
-  // ── Initialise card positions on mount ───────────────────────────────────
-
-  useEffect(() => {
-    if (N === 0) return
-    projects.forEach((_, i) => {
-      const card = cardRefs.current[i]
-      if (card) setCardPosition(card, forwardDist(i, 0))
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [N])
-
-  // ── Core transition ───────────────────────────────────────────────────────
-
-  const goTo = useCallback(
-    (newRawIndex: number) => {
-      if (N === 0) return
-      const normalized = ((newRawIndex % N) + N) % N
-
-      // Always store the latest requested target so we can catch up after an animation
-      pendingTargetRef.current = normalized
-
-      // If already animating, let the delayedCall below handle it when done
-      if (isAnimating.current) return
-      if (normalized === activeRef.current) return
-
-      isAnimating.current = true
-      const oldActive = activeRef.current
-      const cards = cardRefs.current
-
-      // Update UI immediately so dots/counter don't lag behind the animation
-      setActiveIndex(normalized)
-
-      // Outgoing active card: fly upward and out of the peek zone
-      const outCard = cards[oldActive]
-      if (outCard) {
-        gsap.to(outCard, {
-          scale: 0.94,
-          y: -(PEEK_OFFSET + 50), // clear above the container
-          opacity: 0,
-          zIndex: 11,
-          duration: DURATION * 0.55,
-          ease: EASE,
-          overwrite: 'auto',
-        })
-      }
-
-      // All other cards animate to their new stack positions
-      projects.forEach((_, i) => {
-        if (i === oldActive) return
-        const card = cards[i]
-        if (!card) return
-        setCardPosition(card, forwardDist(i, normalized), true)
-      })
-
-      // After transition: commit state and handle any pending jump
-      gsap.delayedCall(DURATION, () => {
-        activeRef.current = normalized
-
-        // Reset the outgoing card to its new circular position instantly
-        const newDiffForOld = forwardDist(oldActive, normalized)
-        if (outCard) setCardPosition(outCard, newDiffForOld)
-
-        isAnimating.current = false
-
-        // If scroll moved further while we were animating, process the final target
-        const pending = pendingTargetRef.current
-        if (pending !== normalized) {
-          goTo(pending)
-        }
-      })
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [N, setCardPosition],
-  )
-
-  // ── Arrow / dot navigation — syncs the scroll position so ScrollTrigger
-  //    stays in agreement. Falls back to direct goTo when trigger isn't ready.
-  // ─────────────────────────────────────────────────────────────────────────
-
-  const scrollToCardIndex = useCallback(
-    (idx: number) => {
-      // Clamp to valid range (arrows don't wrap)
-      const clamped = Math.max(0, Math.min(N - 1, idx))
-      const st = stRef.current
-      if (st) {
-        // target scroll = pin-start + card-index × one-screen-height
-        const targetScroll = st.start + clamped * SCROLL_PER_CARD * window.innerHeight
-        window.scrollTo({ top: targetScroll, behavior: 'smooth' })
-      } else {
-        goTo(clamped)
-      }
-    },
-    [N, goTo],
-  )
-
-  const goNext = useCallback(() => {
-    const next = activeRef.current + 1
-    if (next >= N) {
-      // Wrap to first: animate directly and silently teleport scroll afterward
-      isWrapping.current = true
-      goTo(0)
-      gsap.delayedCall(DURATION + 0.05, () => {
-        const st = stRef.current
-        if (st) window.scrollTo({ top: st.start })
-        isWrapping.current = false
-      })
-    } else {
-      scrollToCardIndex(next)
-    }
-  }, [N, goTo, scrollToCardIndex])
-
-  const goPrev = useCallback(() => {
-    const prev = activeRef.current - 1
-    if (prev < 0) {
-      // Wrap to last: animate directly and silently teleport scroll afterward
-      isWrapping.current = true
-      goTo(N - 1)
-      gsap.delayedCall(DURATION + 0.05, () => {
-        const st = stRef.current
-        if (st) window.scrollTo({ top: st.end })
-        isWrapping.current = false
-      })
-    } else {
-      scrollToCardIndex(prev)
-    }
-  }, [N, goTo, scrollToCardIndex])
-
-  // Dot / number navigation also keeps scroll in sync
-  const goToByClick = useCallback((idx: number) => scrollToCardIndex(idx), [scrollToCardIndex])
-
-  // ── GSAP ScrollTrigger ────────────────────────────────────────────────────
-
-  useEffect(() => {
-    if (N === 0) return
-
-    gsap.registerPlugin(ScrollTrigger)
-
-    const container = containerRef.current
-    if (!container) return
-
-    const st = ScrollTrigger.create({
-      trigger: container,
-      start: 'top top',
-      end: `+=${(N - 1) * SCROLL_PER_CARD * window.innerHeight}px`,
-      pin: true,
-      pinSpacing: true,
-      onUpdate: (self) => {
-        if (isWrapping.current) return
-        // Derive the target card index from scroll progress
-        const newIndex = Math.min(Math.floor(self.progress * N), N - 1)
-        goTo(newIndex)
-      },
-    })
-
-    stRef.current = st
-
-    return () => {
-      st.kill()
-      stRef.current = null
-    }
-  }, [N, goTo])
-
-  // ── Touch swipe ───────────────────────────────────────────────────────────
-
-  useEffect(() => {
-    const stack = stackRef.current
-    if (!stack) return
-
-    const onTouchStart = (e: TouchEvent) => {
-      touchStartY.current = e.touches[0].clientY
-    }
-    const onTouchEnd = (e: TouchEvent) => {
-      const delta = touchStartY.current - e.changedTouches[0].clientY
-      if (Math.abs(delta) > 40) {
-        if (delta > 0) goNext()
-        else goPrev()
-      }
-    }
-
-    stack.addEventListener('touchstart', onTouchStart, { passive: true })
-    stack.addEventListener('touchend', onTouchEnd, { passive: true })
-    return () => {
-      stack.removeEventListener('touchstart', onTouchStart)
-      stack.removeEventListener('touchend', onTouchEnd)
-    }
-  }, [goNext, goPrev])
-
-  // ── Keyboard ──────────────────────────────────────────────────────────────
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault()
-        goNext()
-      }
-      if (e.key === 'ArrowUp') {
-        e.preventDefault()
-        goPrev()
-      }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [goNext, goPrev])
-
-  // ─────────────────────────────────────────────────────────────────────────
-
-  if (N === 0) {
-    return (
-      <div className="container py-20 text-center text-white/40 text-sm">
-        No projects added yet.
+      <div
+        style={{
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid var(--border)',
+          borderRadius: 10,
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        <svg viewBox="0 0 300 100" preserveAspectRatio="none" style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
+          <defs>
+            <linearGradient id={`g${index}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stopColor={accent} stopOpacity="0.4" />
+              <stop offset="1" stopColor={accent} stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M0,80 L30,65 L60,72 L90,45 L120,55 L150,25 L180,35 L210,18 L240,30 L270,8 L300,20 L300,100 L0,100 Z"
+            fill={`url(#g${index})`}
+          />
+          <path
+            d="M0,80 L30,65 L60,72 L90,45 L120,55 L150,25 L180,35 L210,18 L240,30 L270,8 L300,20"
+            fill="none"
+            stroke={accent}
+            strokeWidth="1.5"
+          />
+        </svg>
       </div>
-    )
-  }
+    </div>,
 
-  return (
-    /* Outer: this is the ScrollTrigger pin target */
+    // Layout 3 — editorial / CMS
     <div
-      ref={containerRef}
-      className="relative"
-      style={{ height: '100vh', overflow: 'hidden', zIndex: 110 }}
-      id="projects"
+      key="3"
+      style={{ position: 'absolute', inset: 16, display: 'grid', gridTemplateRows: 'auto 1fr', gap: 12 }}
     >
-      <div className="container h-full flex flex-col py-8">
-        {/* ── Header row ────────────────────────────────────────────────── */}
-        <div className="flex items-baseline justify-between mb-4 shrink-0">
-          {title && (
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
-              {title}
-            </h2>
-          )}
-          <span className="text-sm text-white/40 font-mono ml-auto">
-            {String(activeIndex + 1).padStart(2, '0')}&thinsp;/&thinsp;
-            {String(N).padStart(2, '0')}
-          </span>
-        </div>
-
-        {/* ── Card stack ────────────────────────────────────────────────── */}
-        {/* overflow-hidden clips peek cards at the container boundary      */}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div style={{ height: 10, width: 90, background: 'rgba(255,255,255,0.6)', borderRadius: 3 }} />
+        <div style={{ flex: 1 }} />
+        <div style={{ height: 6, width: 40, background: accent, borderRadius: 3 }} />
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 12 }}>
         <div
-          ref={stackRef}
-          className="relative flex-1 min-h-0 overflow-hidden"
-          role="region"
-          aria-label="Projects"
-          aria-live="polite"
+          style={{
+            background: 'rgba(255,255,255,0.04)',
+            borderRadius: 10,
+            padding: 16,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            gap: 8,
+            border: '1px solid var(--border)',
+          }}
         >
-          {projects.map((project, i) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              index={i}
-              ref={(el) => {
-                cardRefs.current[i] = el
+          <div style={{ height: 14, width: '80%', background: 'rgba(255,255,255,0.8)', borderRadius: 3 }} />
+          <div style={{ height: 8, width: '50%', background: accent, opacity: 0.7, borderRadius: 3 }} />
+        </div>
+        <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', gap: 10 }}>
+          {[0, 1].map((i) => (
+            <div
+              key={i}
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid var(--border)',
+                borderRadius: 8,
+                padding: 12,
               }}
-            />
+            >
+              <div style={{ height: 8, width: '75%', background: 'rgba(255,255,255,0.6)', borderRadius: 3, marginBottom: 6 }} />
+              <div style={{ height: 6, width: '40%', background: accent, opacity: 0.7, borderRadius: 3 }} />
+            </div>
           ))}
         </div>
+      </div>
+    </div>,
+  ]
 
-        {/* ── Navigation ────────────────────────────────────────────────── */}
-        <div className="shrink-0 pt-5 flex items-center justify-center gap-4">
-          {/* Prev */}
-          <button
-            onClick={goPrev}
-            aria-label="Previous project"
-            className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-colors duration-200"
-          >
-            <ArrowIcon dir="left" />
-          </button>
+  // Cycle through layouts or use thumbnail
+  const layoutIndex = index % layouts.length
 
-          {/* Dots */}
-          <div className="flex items-center gap-1.5" role="tablist" aria-label="Project indicators">
-            {projects.map((_, i) => (
-              <button
-                key={i}
-                role="tab"
-                aria-selected={i === activeIndex}
-                aria-label={`Go to project ${i + 1}`}
-                onClick={() => goToByClick(i)}
-                style={{
-                  transition: `width ${DURATION}s ${EASE}, background-color ${DURATION}s ${EASE}`,
-                  width: i === activeIndex ? 28 : 8,
-                  height: 8,
-                  borderRadius: 4,
-                  backgroundColor: i === activeIndex ? '#7c3aed' : 'rgba(255,255,255,0.2)',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
-                  flexShrink: 0,
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Next */}
-          <button
-            onClick={goNext}
-            aria-label="Next project"
-            className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-colors duration-200"
-          >
-            <ArrowIcon dir="right" />
-          </button>
-        </div>
+  return (
+    <div className="km-project-preview">
+      <div className="km-preview-chrome">
+        <span className="km-pdot" />
+        <span className="km-pdot" />
+        <span className="km-pdot" />
+        <span className="km-preview-url">
+          {project.liveUrl
+            ? project.liveUrl.replace(/^https?:\/\//, '')
+            : `${project.title.toLowerCase().replace(/\s+/g, '-')}.dev`}
+        </span>
+      </div>
+      <div
+        className="km-preview-body"
+        style={{
+          background: `radial-gradient(ellipse at 30% 20%, ${accent}22, transparent 55%), linear-gradient(135deg, var(--preview-bg), var(--bg-2))`,
+          position: 'relative',
+        }}
+      >
+        {project.thumbnail?.url ? (
+          <img
+            src={project.thumbnail.url}
+            alt={project.thumbnail.alt}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
+          />
+        ) : (
+          layouts[layoutIndex]
+        )}
       </div>
     </div>
+  )
+}
+
+// ─── Main component ──────────────────────────────────────────────────────────
+
+interface Props {
+  projects: ProjectData[]
+  title?: string | null
+}
+
+export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
+  const pinsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const container = pinsRef.current
+    if (!container) return
+
+    const pins = [...container.querySelectorAll<HTMLElement>('.km-project-pin')]
+    if (!pins.length) return
+
+    let rafId: number | null = null
+
+    const update = () => {
+      const vh = window.innerHeight
+      pins.forEach((pin, i) => {
+        const card = pin.querySelector<HTMLElement>('.km-project-card')
+        if (!card) return
+        const next = pins[i + 1]
+        if (!next) {
+          card.style.transform = ''
+          card.style.opacity = ''
+          card.style.filter = ''
+          return
+        }
+        const nextRect = next.getBoundingClientRect()
+        let p = 1 - Math.min(1, Math.max(0, nextRect.top / vh))
+        const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2
+        const scale = 1 - e * 0.08
+        const ty = -e * 24
+        const op = 1 - e * 0.35
+        card.style.transform = `translateY(${ty}px) scale(${scale})`
+        card.style.opacity = String(op)
+        card.style.filter = `blur(${e * 1.2}px)`
+      })
+    }
+
+    const onScroll = () => {
+      if (rafId) return
+      rafId = requestAnimationFrame(() => {
+        update()
+        rafId = null
+      })
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    update()
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
+  }, [projects])
+
+  if (!projects.length) return null
+
+  return (
+    <section id="projects">
+      <div className="km-container">
+        <div className="km-eyebrow km-reveal">03 — Projects</div>
+        <h2 className="km-section-title km-reveal">{title ?? 'Selected work.'}</h2>
+        <p className="km-section-sub km-reveal">
+          Scroll to flip through the deck — each card pins until the next one takes over.
+        </p>
+      </div>
+
+      <div className="km-projects-deck" ref={pinsRef}>
+        {projects.map((project, i) => (
+          <div className="km-project-pin" key={project.id}>
+            <div className="km-project-card">
+              {/* Left — copy */}
+              <div className="km-project-copy">
+                <div className="km-project-index">
+                  Project {String(i + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+                </div>
+                <h3 className="km-project-name">{project.title}</h3>
+                <p className="km-project-desc">{project.description}</p>
+
+                <div className="km-project-tags">
+                  {project.technologies.map(({ tech }, ti) => (
+                    <span key={ti} className="km-project-tag">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="km-project-links">
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="km-project-link"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M15 3h6v6M10 14 21 3M21 14v7h-7M3 10V3h7" />
+                      </svg>
+                      Live demo
+                    </a>
+                  )}
+                  {project.githubUrl && !project.isPrivate && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="km-project-link"
+                    >
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.94c.57.1.78-.25.78-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.7.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.76 2.69 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.3-5.23-1.28-5.23-5.67 0-1.25.45-2.28 1.18-3.08-.12-.3-.51-1.47.11-3.07 0 0 .96-.31 3.16 1.18a11 11 0 0 1 5.75 0c2.2-1.5 3.16-1.18 3.16-1.18.62 1.6.23 2.77.11 3.07.74.8 1.18 1.83 1.18 3.08 0 4.4-2.69 5.37-5.25 5.66.42.36.78 1.05.78 2.12v3.14c0 .3.21.66.78.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z" />
+                      </svg>
+                      GitHub
+                    </a>
+                  )}
+                  {project.isPrivate && (
+                    <span className="km-project-link" style={{ opacity: 0.5, cursor: 'default' }}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      </svg>
+                      Private repo
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Right — fake browser */}
+              <ProjectPreview project={project} index={i} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="km-container">
+        <p className="km-project-footer-note">
+          More work available on request — <a href="#contact">let&apos;s talk</a>.
+        </p>
+      </div>
+    </section>
   )
 }

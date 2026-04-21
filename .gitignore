@@ -53,6 +53,7 @@ node_modules/
 .agents/
 .mcp.json
 skills-lock.json
+memory/
 
 # local test env
 test.env

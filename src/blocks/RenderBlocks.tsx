@@ -4,6 +4,7 @@ import type { Page } from '@/payload-types'
 
 import { AboutBlockComponent } from '@/blocks/About/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { ContactBlockComponent } from '@/blocks/Contact/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { ExperienceBlockComponent } from '@/blocks/Experience/Component'
 import { HeroBlockComponent } from '@/blocks/Hero/Component'
@@ -16,14 +17,15 @@ const blockComponents = {
   aboutBlock: AboutBlockComponent,
   content: ContentBlock,
   cta: CallToActionBlock,
+  contact: ContactBlockComponent,
   experience: ExperienceBlockComponent,
   mediaBlock: MediaBlock,
   skills: SkillsBlock,
   projects: ProjectsBlockComponent,
 }
 
-// These blocks manage their own spacing/layout and should not be wrapped
-const fullWidthBlocks = new Set(['heroBlock', 'projects'])
+// These blocks manage their own full-width layout
+const fullWidthBlocks = new Set(['heroBlock', 'projects', 'contact', 'experience', 'skills', 'aboutBlock'])
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]

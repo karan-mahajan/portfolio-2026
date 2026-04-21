@@ -1,99 +1,165 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
-import Link from 'next/link'
+
 import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import type { Header } from '@/payload-types'
-
 import { CMSLink } from '@/components/Link'
-import { Logo } from '@/components/Logo/Logo'
+import { useTheme } from '@/providers/Theme'
 
 interface HeaderClientProps {
   data: Header
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  const [theme, setTheme] = useState<string | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
+  const { theme, setTheme } = useTheme()
   const pathname = usePathname()
+  const hamburgerRef = useRef<HTMLButtonElement>(null)
+  const mobileMenuRef = useRef<HTMLDivElement>(null)
 
   const navItems = data?.navItems || []
 
   useEffect(() => {
-    setHeaderTheme(null)
     setIsMenuOpen(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark')
+  }
+
+  const toggleMenu = () => {
+    const next = !isMenuOpen
+    setIsMenuOpen(next)
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = next ? 'hidden' : ''
+    }
+  }
+
+  const closeMenu = () => {
+    setIsMenuOpen(false)
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = ''
+    }
+  }
 
   return (
-    <header className="container relative z-20" {...(theme ? { 'data-theme': theme } : {})}>
-      {/* Top bar */}
-      <div className="py-4 flex justify-between items-center">
-        <Link href="/" aria-label="Home">
-          <Logo className="text-secondary" />
-        </Link>
+    <>
+      <header className="km-nav" aria-label="Site navigation">
+        <div className="km-nav-inner">
+          {/* Logo */}
+          <a href="#hero" className="km-nav-logo">
+            <span className="km-nav-logo-mark">K</span>
+            <span>
+              karan<span style={{ color: 'var(--accent)' }}>.</span>mahajan
+            </span>
+          </a>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
-          {navItems.map(({ link }, i) => (
-            <CMSLink
-              key={i}
-              {...link}
-              appearance="inline"
-              className="text-sm font-medium text-gray-300 hover:text-secondary transition-colors duration-200 tracking-wide"
+          {/* Desktop nav links — from CMS or fallback anchors */}
+          <nav aria-label="Main navigation">
+            <ul className="km-nav-links">
+              {navItems.length > 0 ? (
+                navItems.map(({ link }, i) => (
+                  <li key={i}>
+                    <CMSLink {...link} appearance="inline" />
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li><a href="#about">About</a></li>
+                  <li><a href="#skills">Skills</a></li>
+                  <li><a href="#projects">Projects</a></li>
+                  <li><a href="#experience">Experience</a></li>
+                  <li><a href="#contact">Contact</a></li>
+                </>
+              )}
+            </ul>
+          </nav>
+
+          {/* Available badge */}
+          <a href="#contact" className="km-nav-cta">
+            <span
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                background: '#20c070',
+                boxShadow: '0 0 8px #20c070',
+                display: 'inline-block',
+              }}
             />
-          ))}
-        </nav>
+            Available for work
+          </a>
 
-        {/* Hamburger button — mobile only */}
-        <button
-          className="md:hidden flex flex-col justify-center gap-1.25 w-8 h-8 text-white cursor-pointer"
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={isMenuOpen}
-        >
-          <span
-            className={`block h-0.5 w-full bg-current origin-center transition-transform duration-300 ${
-              isMenuOpen ? 'rotate-45 translate-y-1.75' : ''
-            }`}
-          />
-          <span
-            className={`block h-0.5 w-full bg-current transition-opacity duration-300 ${
-              isMenuOpen ? 'opacity-0' : ''
-            }`}
-          />
-          <span
-            className={`block h-0.5 w-full bg-current origin-center transition-transform duration-300 ${
-              isMenuOpen ? '-rotate-45 -translate-y-1.75' : ''
-            }`}
-          />
-        </button>
-      </div>
+          {/* Theme toggle */}
+          <button
+            className="km-theme-toggle"
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            onClick={toggleTheme}
+          >
+            {/* Sun icon */}
+            <svg
+              className="icon-sun"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+            {/* Moon icon */}
+            <svg
+              className="icon-moon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+            </svg>
+          </button>
 
-      {/* Mobile nav dropdown */}
-      {isMenuOpen && (
-        <nav
-          className="md:hidden border-t border-white/10 py-5 flex flex-col gap-5"
-          aria-label="Mobile navigation"
-        >
-          {navItems.map(({ link }, i) => (
-            <div key={i} onClick={() => setIsMenuOpen(false)}>
-              <CMSLink
-                {...link}
-                appearance="inline"
-                className="block text-base font-medium text-gray-300 hover:text-secondary transition-colors duration-200"
-              />
+          {/* Hamburger — mobile only */}
+          <button
+            ref={hamburgerRef}
+            className={`km-nav-hamburger${isMenuOpen ? ' open' : ''}`}
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
+            onClick={toggleMenu}
+          >
+            <span />
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile menu overlay */}
+      <div
+        ref={mobileMenuRef}
+        className={`km-mobile-menu${isMenuOpen ? ' open' : ''}`}
+        role="dialog"
+        aria-label="Mobile navigation"
+      >
+        {navItems.length > 0 ? (
+          navItems.map(({ link }, i) => (
+            <div key={i} onClick={closeMenu}>
+              <CMSLink {...link} appearance="inline" />
             </div>
-          ))}
-        </nav>
-      )}
-    </header>
+          ))
+        ) : (
+          <>
+            <a href="#about" onClick={closeMenu}>About</a>
+            <a href="#skills" onClick={closeMenu}>Skills</a>
+            <a href="#projects" onClick={closeMenu}>Projects</a>
+            <a href="#experience" onClick={closeMenu}>Experience</a>
+            <a href="#contact" onClick={closeMenu}>Contact</a>
+          </>
+        )}
+      </div>
+    </>
   )
 }

@@ -59,7 +59,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { layout } = page
 
   return (
-    <article className="bg-[#0e172a]">
+    <article>
       <PageClient />
 
       {draft && <LivePreviewListener />}

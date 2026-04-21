@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
-import { Inter, Playfair_Display } from 'next/font/google'
+import { JetBrains_Mono, Outfit } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
+import { GlobalInteractions } from '@/components/GlobalInteractions'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
@@ -10,19 +11,18 @@ import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
 import Footer from '@/components/Footer'
-import Particle from '@/components/Particle'
 import { getServerSideURL } from '@/utilities/getURL'
 import './styles.css'
 
-const inter = Inter({
+const outfit = Outfit({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-outfit',
   display: 'swap',
 })
 
-const playfair = Playfair_Display({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  variable: '--font-jetbrains',
   display: 'swap',
 })
 
@@ -30,7 +30,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { isEnabled } = await draftMode()
 
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${outfit.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
         <InitTheme />
       </head>
@@ -41,7 +45,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               preview: isEnabled,
             }}
           />
-          <Particle />
+
+          {/* Custom cursor */}
+          <div className="cursor-dot" aria-hidden="true" />
+          <div className="cursor-ring" aria-hidden="true" />
+
+          {/* Page loader */}
+          <div className="km-loader" id="km-loader" aria-hidden="true">
+            <div className="km-loader-name" id="km-loader-name">
+              KARAN.MAHAJAN
+            </div>
+          </div>
+
+          <GlobalInteractions />
           <Header />
           <main>{children}</main>
           <Footer />
