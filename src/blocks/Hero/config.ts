@@ -123,5 +123,79 @@ export const HeroBlock: Block = {
         },
       ],
     },
+    {
+      name: 'status',
+      type: 'text',
+      label: 'Status Bar Text',
+      defaultValue: 'Based in Ontario · Open to new projects',
+      admin: {
+        description: 'Text shown in the status pill at the top of the hero',
+      },
+    },
+    {
+      name: 'title',
+      type: 'text',
+      label: 'Title / Role Line',
+      defaultValue: 'Developer.',
+      admin: {
+        description: 'Second line of the h1 (shown with gradient), e.g. "Developer."',
+      },
+    },
+    {
+      name: 'tagline',
+      type: 'text',
+      label: 'Tagline',
+      defaultValue: 'I build fast, scalable web applications — and I use AI to do it better.',
+      admin: {
+        description: 'One-liner paragraph below the typewriter',
+      },
+    },
+    {
+      name: 'photo',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Profile Photo',
+      admin: {
+        description: 'Your profile photo shown on the right side of the hero',
+      },
+    },
+    {
+      name: 'location',
+      type: 'text',
+      label: 'Location',
+      defaultValue: 'Windsor, ON',
+      admin: {
+        description: 'Shown on the floating card below the photo',
+      },
+    },
+    {
+      name: 'statusCardText',
+      type: 'text',
+      label: 'Status Card Text',
+      defaultValue: 'online · coding',
+      admin: {
+        description: 'Text on the floating card above the photo',
+      },
+    },
+    {
+      name: 'metaItems',
+      type: 'array',
+      label: 'Meta Stats',
+      defaultValue: [
+        { label: '5+ years' },
+        { label: '20+ shipped' },
+        { label: 'Full stack' },
+      ],
+      admin: {
+        description: 'Up to 3 stat badges shown below the tagline (icons auto-assigned by position)',
+      },
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
   ],
 }

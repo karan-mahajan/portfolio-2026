@@ -51,7 +51,7 @@ const TimelineEntry = ({
   )
 }
 
-export const ExperienceBlockComponent: React.FC<ExperienceBlockProps> = async ({ title }) => {
+export const ExperienceBlockComponent: React.FC<ExperienceBlockProps> = async ({ title, subtitle }) => {
   const items = await getExperiences()
 
   return (
@@ -59,10 +59,10 @@ export const ExperienceBlockComponent: React.FC<ExperienceBlockProps> = async ({
       <div className="km-container">
         <div className="km-eyebrow km-reveal">04 — Experience</div>
         <h2 className="km-section-title km-reveal">
-          {title ?? 'Where I\'ve built.'}
+          {title ?? "Where I've built."}
         </h2>
         <p className="km-section-sub km-reveal">
-          Five years across two countries — agency, in-house, and independent.
+          {subtitle ?? 'Five years across two countries — agency, in-house, and independent.'}
         </p>
 
         <div className="km-timeline">

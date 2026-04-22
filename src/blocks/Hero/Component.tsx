@@ -1,6 +1,7 @@
 'use client'
 
 import type { HeroBlock as HeroBlockProps, Media } from '@/payload-types'
+import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
 // ─── Particle canvas ─────────────────────────────────────────────────────────
@@ -163,18 +164,46 @@ const TypewriterWord: React.FC<{ words: string[] }> = ({ words }) => {
 
 // ─── Hero Block ──────────────────────────────────────────────────────────────
 
+const META_ICONS = [
+  // globe — years of experience
+  <svg key="globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="12" r="10" />
+    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z" />
+  </svg>,
+  // checkmark — shipped
+  <svg key="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M20 7 9 18l-5-5" />
+  </svg>,
+  // layers — full stack
+  <svg key="layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M12 2 2 7l10 5 10-5-10-5Z" />
+    <path d="m2 17 10 5 10-5M2 12l10 5 10-5" />
+  </svg>,
+]
+
 export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
   name,
   typewriterStrings,
   socialLinks,
   resume,
   contactHref,
+  status,
+  title,
+  tagline,
+  photo,
+  location,
+  statusCardText,
+  metaItems,
 }) => {
   const words =
     (typewriterStrings ?? []).map((s) => s.text).filter((t): t is string => !!t)
 
   const resumeMedia = resume && typeof resume === 'object' ? (resume as Media) : null
   const resumeUrl = resumeMedia?.url ?? null
+
+  const photoMedia = photo && typeof photo === 'object' ? (photo as Media) : null
+
+  const stats = (metaItems ?? []).filter((m): m is { label: string; id?: string | null } => !!m.label)
 
   return (
     <section id="hero" className="km-hero">
@@ -185,23 +214,13 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
         <div className="km-hero-copy">
           <div className="km-hero-status km-reveal">
             <span className="km-hero-status-dot" />
-            Based in Ontario · Open to new projects
+            {status ?? 'Based in Ontario · Open to new projects'}
           </div>
 
           <h1 className="km-reveal">
-            {name ? (
-              <>
-                {name}
-                <br />
-                <span className="km-grad">Developer.</span>
-              </>
-            ) : (
-              <>
-                Full Stack
-                <br />
-                <span className="km-grad">Developer.</span>
-              </>
-            )}
+            {name ?? 'Full Stack'}
+            <br />
+            <span className="km-grad">{title ?? 'Developer.'}</span>
           </h1>
 
           <div className="km-reveal">
@@ -209,8 +228,7 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
           </div>
 
           <p className="km-hero-one-liner km-reveal">
-            I build <strong>fast, scalable web applications</strong> — and I use{' '}
-            <strong>AI</strong> to do it better.
+            {tagline ?? 'I build fast, scalable web applications — and I use AI to do it better.'}
           </p>
 
           <div className="km-hero-cta km-reveal">
@@ -237,28 +255,16 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
             )}
           </div>
 
-          <div className="km-hero-meta km-reveal">
-            <div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z" />
-              </svg>
-              5+ years
+          {stats.length > 0 && (
+            <div className="km-hero-meta km-reveal">
+              {stats.slice(0, 3).map((item, i) => (
+                <div key={item.id ?? i}>
+                  {META_ICONS[i] ?? META_ICONS[0]}
+                  {item.label}
+                </div>
+              ))}
             </div>
-            <div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 7 9 18l-5-5" />
-              </svg>
-              20+ shipped
-            </div>
-            <div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 2 2 7l10 5 10-5-10-5Z" />
-                <path d="m2 17 10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-              Full stack
-            </div>
-          </div>
+          )}
 
           {/* Social links */}
           {(socialLinks?.github || socialLinks?.linkedin) && (
@@ -298,21 +304,34 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
           )}
         </div>
 
-        {/* Right column — photo placeholder */}
+        {/* Right column — photo */}
         <div className="km-hero-photo-wrap km-reveal km-reveal-right">
           <div className="km-hero-photo-card tl">
             <span className="km-dot" />
-            online · coding
+            {statusCardText ?? 'online · coding'}
           </div>
           <div className="km-hero-photo">
-            <div className="km-hero-photo-placeholder">
-              <div className="km-initials">KM</div>
-              <div className="km-ph-label">Photo placeholder</div>
-            </div>
+            {photoMedia?.url ? (
+              <Image
+                src={photoMedia.url}
+                alt={photoMedia.alt ?? name ?? 'Profile photo'}
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 240px, 320px"
+                priority
+              />
+            ) : (
+              <div className="km-hero-photo-placeholder">
+                <div className="km-initials">
+                  {name ? name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase() : 'KM'}
+                </div>
+                <div className="km-ph-label">Upload a photo in the CMS</div>
+              </div>
+            )}
           </div>
           <div className="km-hero-photo-card br">
             <span className="km-dot km-dot-v" />
-            Windsor, ON
+            {location ?? 'Windsor, ON'}
           </div>
         </div>
       </div>

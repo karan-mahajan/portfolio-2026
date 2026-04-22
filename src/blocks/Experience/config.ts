@@ -16,5 +16,14 @@ export const ExperienceBlock: Block = {
         description: 'Section heading',
       },
     },
+    {
+      name: 'subtitle',
+      type: 'text',
+      label: 'Subtitle',
+      defaultValue: 'Five years across two countries — agency, in-house, and independent.',
+      admin: {
+        description: 'Short paragraph shown below the section heading',
+      },
+    },
   ],
 }

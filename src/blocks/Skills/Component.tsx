@@ -50,7 +50,7 @@ function abbrev(name: string): string {
   return name.slice(0, 2).toUpperCase()
 }
 
-export const SkillsBlock: React.FC<Props> = ({ title, skills }) => {
+export const SkillsBlock: React.FC<Props> = ({ title, subtitle, skills }) => {
   const allSkills = skills ?? []
 
   // Group skills
@@ -86,7 +86,7 @@ export const SkillsBlock: React.FC<Props> = ({ title, skills }) => {
         <div className="km-eyebrow km-reveal">02 — Skills</div>
         <h2 className="km-section-title km-reveal">{title ?? 'The stack I reach for.'}</h2>
         <p className="km-section-sub km-reveal">
-          Tools I use in production every week — grouped by where they live in the stack.
+          {subtitle ?? 'Tools I use in production every week — grouped by where they live in the stack.'}
         </p>
 
         {useGroups ? (

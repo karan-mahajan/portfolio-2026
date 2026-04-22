@@ -367,6 +367,39 @@ export interface HeroBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Text shown in the status pill at the top of the hero
+   */
+  status?: string | null;
+  /**
+   * Second line of the h1 (shown with gradient), e.g. "Developer."
+   */
+  title?: string | null;
+  /**
+   * One-liner paragraph below the typewriter
+   */
+  tagline?: string | null;
+  /**
+   * Your profile photo shown on the right side of the hero
+   */
+  photo?: (number | null) | Media;
+  /**
+   * Shown on the floating card below the photo
+   */
+  location?: string | null;
+  /**
+   * Text on the floating card above the photo
+   */
+  statusCardText?: string | null;
+  /**
+   * Up to 3 stat badges shown below the tagline (icons auto-assigned by position)
+   */
+  metaItems?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'heroBlock';
@@ -376,7 +409,6 @@ export interface HeroBlock {
  * via the `definition` "AboutBlock".
  */
 export interface AboutBlock {
-  image: number | Media;
   /**
    * The rotated label shown on the left side (desktop only)
    */
@@ -387,6 +419,30 @@ export interface AboutBlock {
    */
   headingColor?: string | null;
   description: string;
+  /**
+   * Large heading shown below the eyebrow label
+   */
+  sectionTitle?: string | null;
+  /**
+   * Small line shown at the bottom of the bio with a checkmark icon
+   */
+  openToText?: string | null;
+  /**
+   * Stat cards shown on the right side of the about section
+   */
+  stats?:
+    | {
+        /**
+         * e.g. "5+" or "20+"
+         */
+        value: string;
+        /**
+         * e.g. "Years Experience"
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'aboutBlock';
@@ -496,6 +552,10 @@ export interface MediaBlock {
 export interface SkillsBlock {
   title?: string | null;
   /**
+   * Short paragraph shown below the section heading
+   */
+  subtitle?: string | null;
+  /**
    * Display the animated 3D icon cloud below the skills grid
    */
   showCloud?: boolean | null;
@@ -542,6 +602,10 @@ export interface ExperienceBlock {
    * Section heading
    */
   title?: string | null;
+  /**
+   * Short paragraph shown below the section heading
+   */
+  subtitle?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'experience';
@@ -1040,6 +1104,18 @@ export interface HeroBlockSelect<T extends boolean = true> {
         color?: T;
         id?: T;
       };
+  status?: T;
+  title?: T;
+  tagline?: T;
+  photo?: T;
+  location?: T;
+  statusCardText?: T;
+  metaItems?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1048,11 +1124,19 @@ export interface HeroBlockSelect<T extends boolean = true> {
  * via the `definition` "AboutBlock_select".
  */
 export interface AboutBlockSelect<T extends boolean = true> {
-  image?: T;
   sectionLabel?: T;
   heading?: T;
   headingColor?: T;
   description?: T;
+  sectionTitle?: T;
+  openToText?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1121,6 +1205,7 @@ export interface MediaBlockSelect<T extends boolean = true> {
  */
 export interface SkillsBlockSelect<T extends boolean = true> {
   title?: T;
+  subtitle?: T;
   showCloud?: T;
   skills?:
     | T
@@ -1138,6 +1223,7 @@ export interface SkillsBlockSelect<T extends boolean = true> {
  */
 export interface ExperienceBlockSelect<T extends boolean = true> {
   title?: T;
+  subtitle?: T;
   id?: T;
   blockName?: T;
 }

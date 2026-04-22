@@ -15,6 +15,15 @@ export const Skills: Block = {
       defaultValue: 'Skills',
     },
     {
+      name: 'subtitle',
+      type: 'text',
+      label: 'Subtitle',
+      defaultValue: 'Tools I use in production every week — grouped by where they live in the stack.',
+      admin: {
+        description: 'Short paragraph shown below the section heading',
+      },
+    },
+    {
       name: 'showCloud',
       type: 'checkbox',
       label: 'Show Icon Cloud',
