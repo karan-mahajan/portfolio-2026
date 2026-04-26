@@ -4,7 +4,7 @@ import type { HeroBlock as HeroBlockProps, Media } from '@/payload-types'
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
-// ─── Particle canvas ─────────────────────────────────────────────────────────
+// ─── Particle canvas (kept intact, still renders in non-cinematic fallback) ──
 
 const ParticleCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -165,16 +165,13 @@ const TypewriterWord: React.FC<{ words: string[] }> = ({ words }) => {
 // ─── Hero Block ──────────────────────────────────────────────────────────────
 
 const META_ICONS = [
-  // globe — years of experience
   <svg key="globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="12" cy="12" r="10" />
     <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z" />
   </svg>,
-  // checkmark — shipped
   <svg key="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M20 7 9 18l-5-5" />
   </svg>,
-  // layers — full stack
   <svg key="layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M12 2 2 7l10 5 10-5-10-5Z" />
     <path d="m2 17 10 5 10-5M2 12l10 5 10-5" />
@@ -205,32 +202,61 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
 
   const stats = (metaItems ?? []).filter((m): m is { label: string; id?: string | null } => !!m.label)
 
+  // Derive role stack from typewriter strings for the role list
+  const roleWords = words.length > 0 ? words : ['Next.js', 'React', 'TypeScript', 'Node.js']
+
   return (
-    <section id="hero" className="km-hero">
+    <section id="hero" className="km-hero km-cinematic">
       <ParticleCanvas />
 
+      {/* Small circular photo — cinematic top-right */}
+      {photoMedia?.url && (
+        <div className="km-hero-photo-mini">
+          <Image
+            src={photoMedia.url}
+            alt={photoMedia.alt ?? name ?? 'Profile photo'}
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="68px"
+            priority
+          />
+        </div>
+      )}
+
       <div className="km-container km-hero-grid">
-        {/* Left column — copy */}
+        {/* Left/bottom column — copy */}
         <div className="km-hero-copy">
-          <div className="km-hero-status km-reveal">
-            <span className="km-hero-status-dot" />
-            {status ?? 'Based in Ontario · Open to new projects'}
+
+          {/* Eyebrow: amber italic uppercase */}
+          <div className="km-hero-eyebrow km-reveal">
+            {status ?? 'available for work · ontario, canada'}
           </div>
 
+          {/* Massive Syne 800 name */}
           <h1 className="km-reveal">
-            {name ?? 'Full Stack'}
+            {name ?? 'Karan'}
             <br />
-            <span className="km-grad">{title ?? 'Developer.'}</span>
+            <span className="km-grad">{title ?? 'Mahajan.'}</span>
           </h1>
 
-          <div className="km-reveal">
-            <TypewriterWord words={words.length > 0 ? words : ['Next.js', 'React', 'TypeScript', 'Node.js']} />
+          {/* Role stack — small DM Mono, 0.5 opacity */}
+          <div className="km-hero-role-stack km-reveal">
+            {roleWords.slice(0, 4).map((w, i) => (
+              <span key={i} className="km-hero-role-item">{w}</span>
+            ))}
           </div>
 
+          {/* Typewriter */}
+          <div className="km-reveal">
+            <TypewriterWord words={roleWords} />
+          </div>
+
+          {/* Tagline */}
           <p className="km-hero-one-liner km-reveal">
             {tagline ?? 'I build fast, scalable web applications — and I use AI to do it better.'}
           </p>
 
+          {/* CTA buttons */}
           <div className="km-hero-cta km-reveal">
             <a href="#projects" className="km-btn km-btn-primary">
               View My Work
@@ -255,6 +281,7 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
             )}
           </div>
 
+          {/* Meta stats */}
           {stats.length > 0 && (
             <div className="km-hero-meta km-reveal">
               {stats.slice(0, 3).map((item, i) => (
@@ -268,18 +295,17 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
 
           {/* Social links */}
           {(socialLinks?.github || socialLinks?.linkedin) && (
-            <div className="km-hero-socials km-reveal" style={{ marginTop: 32, display: 'flex', gap: 12 }}>
+            <div className="km-hero-socials km-reveal" style={{ marginTop: 28, display: 'flex', gap: 10 }}>
               {socialLinks?.github && (
                 <a
                   href={socialLinks.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub"
-                  className="km-footer-socials"
                   style={{ display: 'inline-flex' }}
                 >
-                  <span style={{ width: 36, height: 36, display: 'grid', placeItems: 'center', borderRadius: 10, border: '1px solid var(--border)', color: 'var(--text-dim)' }}>
-                    <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 16, height: 16 }}>
+                  <span style={{ width: 34, height: 34, display: 'grid', placeItems: 'center', borderRadius: 10, border: '1px solid var(--border)', color: 'var(--text-dim)' }}>
+                    <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 15, height: 15 }}>
                       <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.94c.57.1.78-.25.78-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.7.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.76 2.69 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.3-5.23-1.28-5.23-5.67 0-1.25.45-2.28 1.18-3.08-.12-.3-.51-1.47.11-3.07 0 0 .96-.31 3.16 1.18a11 11 0 0 1 5.75 0c2.2-1.5 3.16-1.18 3.16-1.18.62 1.6.23 2.77.11 3.07.74.8 1.18 1.83 1.18 3.08 0 4.4-2.69 5.37-5.25 5.66.42.36.78 1.05.78 2.12v3.14c0 .3.21.66.78.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z" />
                     </svg>
                   </span>
@@ -293,8 +319,8 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
                   aria-label="LinkedIn"
                   style={{ display: 'inline-flex' }}
                 >
-                  <span style={{ width: 36, height: 36, display: 'grid', placeItems: 'center', borderRadius: 10, border: '1px solid var(--border)', color: 'var(--text-dim)' }}>
-                    <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 16, height: 16 }}>
+                  <span style={{ width: 34, height: 34, display: 'grid', placeItems: 'center', borderRadius: 10, border: '1px solid var(--border)', color: 'var(--text-dim)' }}>
+                    <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 15, height: 15 }}>
                       <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.27 2.38 4.27 5.47v6.27ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.02H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z" />
                     </svg>
                   </span>
@@ -304,7 +330,7 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
           )}
         </div>
 
-        {/* Right column — photo */}
+        {/* Large photo card (hidden via CSS in cinematic mode, kept for non-cinematic) */}
         <div className="km-hero-photo-wrap km-reveal km-reveal-right">
           <div className="km-hero-photo-card tl">
             <span className="km-dot" />

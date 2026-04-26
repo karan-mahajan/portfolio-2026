@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -30,7 +30,6 @@ export interface ProjectData {
 const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ project, index }) => {
   const accent = project.accentColor || '#4f8ef7'
 
-  // Different preview layouts per card slot
   const layouts = [
     // Layout 0 — two-pane editor
     <div
@@ -228,7 +227,6 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
     </div>,
   ]
 
-  // Cycle through layouts or use thumbnail
   const layoutIndex = index % layouts.length
 
   return (
@@ -260,6 +258,60 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
           layouts[layoutIndex]
         )}
       </div>
+    </div>
+  )
+}
+
+// ─── 3D Tilt Card Wrapper ────────────────────────────────────────────────────
+
+const TiltCard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const glareRef = useRef<HTMLDivElement>(null)
+  const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const el = wrapRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width
+    const y = (e.clientY - rect.top) / rect.height
+    const rotY = (x - 0.5) * 18
+    const rotX = -(y - 0.5) * 12
+    el.style.transform = `perspective(1400px) rotateX(${rotX}deg) rotateY(${rotY}deg)`
+    if (glareRef.current) {
+      glareRef.current.style.background = `radial-gradient(circle at ${x * 100}% ${y * 100}%, rgba(255,255,255,0.10) 0%, transparent 65%)`
+      glareRef.current.style.opacity = '1'
+    }
+  }, [])
+
+  const onMouseEnter = useCallback(() => {
+    const el = wrapRef.current
+    if (!el) return
+    if (transitionTimer.current) clearTimeout(transitionTimer.current)
+    el.style.transition = 'transform 0.08s ease'
+  }, [])
+
+  const onMouseLeave = useCallback(() => {
+    const el = wrapRef.current
+    if (!el) return
+    el.style.transition = 'transform 0.65s cubic-bezier(0.23, 1, 0.32, 1)'
+    el.style.transform = 'perspective(1400px) rotateX(0deg) rotateY(0deg)'
+    if (glareRef.current) glareRef.current.style.opacity = '0'
+    transitionTimer.current = setTimeout(() => {
+      if (el) el.style.transition = ''
+    }, 650)
+  }, [])
+
+  return (
+    <div
+      ref={wrapRef}
+      className="km-card-tilt"
+      onMouseMove={onMouseMove}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {children}
+      <div ref={glareRef} className="km-card-glare" aria-hidden="true" />
     </div>
   )
 }
@@ -329,9 +381,9 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
   if (!projects.length) return null
 
   return (
-    <section id="projects">
+    <section id="projects" className="km-cinematic">
       <div className="km-container">
-        <div className="km-eyebrow km-reveal">03 — Projects</div>
+        <div className="km-section-num km-reveal">02 / work</div>
         <h2 className="km-section-title km-reveal">{title ?? 'Selected work.'}</h2>
         <p className="km-section-sub km-reveal">
           Scroll to flip through the deck — each card pins until the next one takes over.
@@ -341,6 +393,7 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
       <div className="km-projects-deck" ref={pinsRef}>
         {projects.map((project, i) => (
           <div className="km-project-pin" key={project.id}>
+            <TiltCard>
             <div className="km-project-card">
               {/* Left — copy */}
               <div className="km-project-copy">
@@ -400,6 +453,7 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
               {/* Right — fake browser */}
               <ProjectPreview project={project} index={i} />
             </div>
+            </TiltCard>
           </div>
         ))}
       </div>

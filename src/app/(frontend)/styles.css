@@ -25,62 +25,62 @@
   --ring: 0 0 0 1px rgba(79, 142, 247, 0.5), 0 0 32px rgba(79, 142, 247, 0.25);
 }
 
-/* Light theme — default */
+/* Light theme — warm espresso dark */
 :root,
 [data-theme='light'] {
-  --bg: #f6f7fb;
-  --bg-1: #ffffff;
-  --bg-2: #eef0f8;
-  --surface: rgba(15, 20, 40, 0.03);
-  --surface-2: rgba(15, 20, 40, 0.06);
-  --border: rgba(15, 20, 40, 0.08);
-  --border-strong: rgba(15, 20, 40, 0.16);
-  --text: #0d1024;
-  --text-dim: #4a4f66;
-  --text-mute: #7a7f96;
-  --nav-bg: rgba(255, 255, 255, 0.72);
-  --card-bg: linear-gradient(135deg, #ffffff, #f3f5fb);
-  --card-bg-solid: #ffffff;
-  --preview-bg: #ffffff;
-  --preview-chrome-bg: rgba(15, 20, 40, 0.04);
-  --ambient-a: rgba(79, 142, 247, 0.14);
-  --ambient-b: rgba(122, 108, 255, 0.1);
-  --ambient-c: rgba(79, 142, 247, 0.07);
-  --loader-bg: #f6f7fb;
-  --stat-grad-from: #0d1024;
-  --stat-grad-to: #7a7f96;
-  --particle-line: 79, 142, 247;
-  --particle-dot: 80, 110, 200;
-  --shadow-card: 0 20px 50px rgba(20, 30, 80, 0.12);
-  --shadow-deep: 0 30px 80px rgba(20, 30, 80, 0.18);
+  --bg: #1c1108;
+  --bg-1: #241509;
+  --bg-2: #2d1c0e;
+  --surface: rgba(245, 200, 145, 0.04);
+  --surface-2: rgba(245, 200, 145, 0.08);
+  --border: rgba(245, 200, 145, 0.09);
+  --border-strong: rgba(245, 200, 145, 0.18);
+  --text: #f0dfc4;
+  --text-dim: #b8946a;
+  --text-mute: #6e4e2f;
+  --nav-bg: rgba(28, 17, 8, 0.78);
+  --card-bg: linear-gradient(135deg, #2a1a0c, #1e1208);
+  --card-bg-solid: #2a1a0c;
+  --preview-bg: #1a0f07;
+  --preview-chrome-bg: rgba(245, 200, 145, 0.04);
+  --ambient-a: rgba(200, 110, 30, 0.16);
+  --ambient-b: rgba(160, 80, 20, 0.12);
+  --ambient-c: rgba(180, 100, 25, 0.08);
+  --loader-bg: #1c1108;
+  --stat-grad-from: #f0dfc4;
+  --stat-grad-to: #b8946a;
+  --particle-line: 180, 130, 70;
+  --particle-dot: 200, 150, 80;
+  --shadow-card: 0 20px 50px rgba(0, 0, 0, 0.55);
+  --shadow-deep: 0 30px 80px rgba(0, 0, 0, 0.65);
 }
 
 [data-theme='dark'] {
   --bg: #070710;
-  --bg-1: #0a0a14;
-  --bg-2: #101024;
-  --surface: rgba(255, 255, 255, 0.03);
-  --surface-2: rgba(255, 255, 255, 0.05);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
-  --text: #e8e9f3;
-  --text-dim: #9ea0b5;
-  --text-mute: #6a6d85;
-  --nav-bg: rgba(10, 10, 20, 0.6);
-  --card-bg: linear-gradient(135deg, #0f0f22, #0a0a18);
-  --card-bg-solid: #0f0f22;
-  --preview-bg: #07070f;
-  --preview-chrome-bg: rgba(255, 255, 255, 0.04);
-  --ambient-a: rgba(79, 142, 247, 0.12);
-  --ambient-b: rgba(122, 108, 255, 0.1);
-  --ambient-c: rgba(79, 142, 247, 0.08);
+  --bg-1: #0a0a16;
+  --bg-2: #10102a;
+  --surface: rgba(160, 170, 255, 0.05);
+  --surface-2: rgba(160, 170, 255, 0.09);
+  --border: rgba(160, 170, 255, 0.13);
+  --border-strong: rgba(160, 170, 255, 0.22);
+  --text: #ecedf8;
+  --text-dim: #a8aac4;
+  --text-mute: #7a7d9a;
+  --nav-bg: rgba(7, 7, 18, 0.72);
+  --card-bg: linear-gradient(135deg, #141435, #0d0d24);
+  --card-bg-solid: #141435;
+  --preview-bg: #0a0a1c;
+  --preview-chrome-bg: rgba(160, 170, 255, 0.05);
+  --ambient-a: rgba(79, 142, 247, 0.15);
+  --ambient-b: rgba(122, 108, 255, 0.13);
+  --ambient-c: rgba(79, 142, 247, 0.09);
   --loader-bg: #070710;
   --stat-grad-from: #ffffff;
-  --stat-grad-to: #9ea0b5;
+  --stat-grad-to: #a8aac4;
   --particle-line: 79, 142, 247;
   --particle-dot: 140, 170, 255;
-  --shadow-card: 0 30px 80px rgba(0, 0, 0, 0.5);
-  --shadow-deep: 0 30px 80px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 30px 80px rgba(0, 0, 0, 0.6);
+  --shadow-deep: 0 40px 100px rgba(0, 0, 0, 0.7);
 }
 
 /* ==========================================================================
@@ -1142,6 +1142,23 @@ section.km-section {
    Projects — stacked deck
    ========================================================================== */
 
+.km-card-tilt {
+  width: 100%;
+  max-width: 1100px;
+  position: relative;
+  will-change: transform;
+}
+
+.km-card-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 5;
+}
+
 .km-projects-deck {
   position: relative;
 }
@@ -1154,12 +1171,11 @@ section.km-section {
   align-items: center;
   justify-content: center;
   padding: 80px 32px;
+  perspective: none;
 }
 
 .km-project-card {
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
   min-height: min(680px, 82vh);
   border-radius: 28px;
   padding: 56px;
@@ -1250,10 +1266,16 @@ section.km-section {
 .km-project-tag {
   padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(79, 142, 247, 0.08);
-  border: 1px solid rgba(79, 142, 247, 0.2);
+  background: rgba(79, 142, 247, 0.10);
+  border: 1px solid rgba(79, 142, 247, 0.28);
   font-family: var(--font-mono);
   font-size: 12px;
+  color: var(--text-dim);
+}
+
+[data-theme='dark'] .km-project-tag {
+  background: rgba(110, 160, 255, 0.13);
+  border-color: rgba(110, 160, 255, 0.32);
   color: var(--text-dim);
 }
 
@@ -1279,7 +1301,12 @@ section.km-section {
 
 .km-project-link:hover {
   border-color: rgba(79, 142, 247, 0.5);
-  background: rgba(79, 142, 247, 0.08);
+  background: rgba(79, 142, 247, 0.10);
+}
+
+[data-theme='dark'] .km-project-link:hover {
+  border-color: rgba(110, 160, 255, 0.55);
+  background: rgba(110, 160, 255, 0.12);
 }
 
 .km-project-link svg {
@@ -2550,5 +2577,629 @@ section.km-section {
   .rs-heading {
     break-after: avoid;
     page-break-after: avoid;
+  }
+}
+
+/* ==========================================================================
+   Cinematic Scroll Experience — Extended styles
+   (Appended — does not replace existing design system)
+   ========================================================================== */
+
+/* ── Extended color & font tokens ───────────────────────────────────────── */
+:root {
+  --accent-amber: #f59e0b;
+  --accent-amber-dim: rgba(245, 158, 11, 0.14);
+  --font-syne: var(--font-syne-var), 'Syne', ui-sans-serif, sans-serif;
+  --font-dm-mono: var(--font-dm-mono-var), 'DM Mono', 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Smooth color transitions on theme change (0.5s per spec) */
+html {
+  transition: background 0.5s ease;
+}
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+}
+/* Override: only fast transitions for transforms/opacity (no animation lag) */
+.km-btn, .km-skill-card, .km-stat-card, .km-project-card, .km-timeline-card,
+.km-nav-links a, .km-project-link, .km-about-signature {
+  transition-duration: 0.25s;
+}
+
+/* ── Cursor override: 10px amber + mix-blend-mode difference ─────────────── */
+.cursor-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--accent-amber);
+  box-shadow: 0 0 14px var(--accent-amber);
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  mix-blend-mode: difference;
+  border-color: rgba(245, 158, 11, 0.55);
+}
+.cursor-ring.hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.9);
+}
+
+/* ── Grain overlay ────────────────────────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ── Particle background canvas ───────────────────────────────────────────── */
+.km-particle-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.km-particle-bg canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Mobile: static gradient fallback */
+@media (max-width: 960px) {
+  .km-particle-bg canvas {
+    display: none;
+  }
+  .km-particle-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 15% 20%, var(--ambient-a), transparent 60%),
+      radial-gradient(ellipse 60% 80% at 85% 80%, var(--ambient-b), transparent 60%);
+  }
+}
+
+/* ── will-change on animated sections ─────────────────────────────────────── */
+#hero, #about, #projects, #skills, #contact, #experience {
+  will-change: transform;
+}
+
+/* ── Scroll hint fade after 5% ────────────────────────────────────────────── */
+.km-hero-scroll {
+  transition: opacity 0.6s ease;
+}
+.km-hero-scroll.faded {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Section number label ─────────────────────────────────────────────────── */
+.km-section-num {
+  display: block;
+  font-family: var(--font-dm-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 20px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO — cinematic restyle (bottom-left, massive Syne 800)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.km-hero.km-cinematic {
+  align-items: flex-end;
+  padding: 0 0 10vh;
+  min-height: 100svh;
+}
+
+.km-hero.km-cinematic .km-hero-grid {
+  grid-template-columns: 1fr;
+  padding-left: clamp(24px, 14vw, 200px);
+  max-width: 100%;
+  gap: 0;
+}
+
+/* Hide the large right-column photo card in cinematic mode */
+.km-hero.km-cinematic .km-hero-photo-wrap {
+  display: none;
+}
+
+/* Small circular mini-photo top-right */
+.km-hero-photo-mini {
+  position: absolute;
+  top: clamp(100px, 12vh, 140px);
+  right: clamp(24px, 5vw, 80px);
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--border-strong);
+  box-shadow: 0 0 0 4px var(--bg), 0 8px 28px rgba(0, 0, 0, 0.25);
+  z-index: 3;
+  flex-shrink: 0;
+}
+
+.km-hero-photo-mini img {
+  object-fit: cover;
+}
+
+/* Eyebrow line */
+.km-hero-eyebrow {
+  font-family: var(--font-dm-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-amber);
+  font-style: italic;
+  margin-bottom: 18px;
+  opacity: 0.85;
+  display: block;
+}
+
+/* Massive Syne name */
+.km-hero.km-cinematic h1 {
+  font-family: var(--font-syne);
+  font-size: clamp(52px, 9.5vw, 120px);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  margin: 0 0 8px;
+}
+
+/* Accent word override — amber instead of blue gradient */
+.km-hero.km-cinematic h1 .km-grad {
+  background: none;
+  -webkit-text-fill-color: var(--accent-amber);
+  color: var(--accent-amber);
+}
+
+/* Role / typewriter stack */
+.km-hero-role-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 14px 0 36px;
+}
+
+.km-hero-role-item {
+  font-family: var(--font-dm-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  opacity: 0.5;
+}
+
+.km-hero-role-item::before {
+  content: '/ ';
+  color: var(--accent-amber);
+  opacity: 0.7;
+}
+
+/* Typewriter in cinematic mode — smaller */
+.km-hero.km-cinematic .km-typewriter {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+/* One-liner in cinematic mode */
+.km-hero.km-cinematic .km-hero-one-liner {
+  font-size: clamp(15px, 1.4vw, 18px);
+  margin-bottom: 32px;
+  font-family: var(--font-dm-mono);
+  opacity: 0.6;
+}
+
+/* Hide status pill in cinematic mode (content shown as eyebrow) */
+.km-hero.km-cinematic .km-hero-status {
+  display: none;
+}
+
+/* Meta items in cinematic mode */
+.km-hero.km-cinematic .km-hero-meta {
+  margin-top: 32px;
+  font-size: 10px;
+  gap: 28px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ABOUT — cinematic restyle (left-aligned, DM Mono body)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#about.km-cinematic {
+  padding-top: 160px;
+  padding-bottom: 160px;
+}
+
+#about.km-cinematic .km-container {
+  padding-left: clamp(24px, 14vw, 200px);
+}
+
+#about.km-cinematic .km-section-title {
+  font-family: var(--font-syne);
+  font-style: italic;
+  font-size: clamp(32px, 4.5vw, 54px);
+}
+
+#about.km-cinematic .km-about-grid {
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: 64px;
+}
+
+#about.km-cinematic .km-about-copy p {
+  font-family: var(--font-dm-mono);
+  font-size: 13.5px;
+  opacity: 0.55;
+  line-height: 2.1;
+  color: var(--text);
+}
+
+#about.km-cinematic .km-about-copy p strong {
+  opacity: 1;
+  color: var(--text);
+}
+
+#about.km-cinematic .km-about-signature {
+  font-family: var(--font-dm-mono);
+  font-size: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PROJECTS — horizontal row list
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#projects.km-cinematic {
+  padding-top: 160px;
+  padding-bottom: 160px;
+}
+
+#projects.km-cinematic .km-section-title {
+  font-family: var(--font-syne);
+  text-align: right;
+}
+
+#projects.km-cinematic .km-section-num {
+  text-align: right;
+}
+
+/* List container */
+.km-projects-list-view {
+  list-style: none;
+  padding: 0;
+  margin: 40px 0 0;
+  border-top: 1px solid var(--border);
+}
+
+/* Each row */
+.km-project-row {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 48px;
+  align-items: center;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  transition: gap 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.km-project-row:hover {
+  gap: 72px;
+}
+
+.km-project-row:hover .km-project-row-name {
+  color: var(--accent-amber);
+}
+
+.km-project-row-num {
+  font-family: var(--font-dm-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+.km-project-row-name {
+  font-family: var(--font-syne);
+  font-size: clamp(18px, 2.2vw, 30px);
+  font-weight: 700;
+  color: var(--text);
+  transition: color 0.2s ease;
+  letter-spacing: -0.015em;
+}
+
+.km-project-row-name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.km-project-row-tech {
+  font-family: var(--font-dm-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SKILLS — 3-column plain text grid
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#skills.km-cinematic {
+  padding-top: 160px;
+  padding-bottom: 160px;
+}
+
+#skills.km-cinematic .km-section-title {
+  font-family: var(--font-syne);
+}
+
+.km-skills-text-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
+}
+
+.km-skill-text-item {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  font-family: var(--font-dm-mono);
+  font-size: 13px;
+  color: var(--text);
+  opacity: 0.42;
+  cursor: default;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.km-skill-text-item:nth-child(3n) {
+  border-right: none;
+}
+
+.km-skill-text-item:hover {
+  opacity: 1;
+  color: var(--accent-amber);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONTACT — cinematic Syne heading
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#contact.km-cinematic .km-contact-title {
+  font-family: var(--font-syne);
+  font-weight: 800;
+}
+
+#contact.km-cinematic .km-contact-title .km-grad {
+  background: linear-gradient(120deg, var(--accent-amber), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.km-contact-email-mono {
+  font-family: var(--font-dm-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  display: block;
+  text-align: center;
+  margin-top: 28px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VERTICAL NAVIGATION — right edge progress dots
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.km-vertical-nav {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.km-vertical-nav-track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 220px;
+  padding: 0;
+}
+
+.km-vertical-nav-line {
+  position: absolute;
+  width: 1px;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--border-strong);
+}
+
+.km-vertical-nav-fill {
+  position: absolute;
+  width: 1px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-amber);
+  transition: height 0.12s linear;
+  min-height: 0;
+}
+
+.km-vertical-nav-dot {
+  position: relative;
+  z-index: 2;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.km-vertical-nav-dot:hover {
+  transform: scale(1.5);
+  border-color: var(--accent-amber);
+}
+
+.km-vertical-nav-dot.active {
+  background: var(--accent-amber);
+  border-color: var(--accent-amber);
+  box-shadow: 0 0 8px var(--accent-amber);
+}
+
+.km-current-section-label {
+  position: fixed;
+  bottom: 32px;
+  left: 32px;
+  font-family: var(--font-dm-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  z-index: 50;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+/* Vertical nav visible on all sizes; smaller track on mobile */
+@media (max-width: 960px) {
+  .km-vertical-nav {
+    right: 16px;
+  }
+
+  .km-vertical-nav-track {
+    height: 160px;
+  }
+
+  .km-vertical-nav-dot {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* ── Floating theme toggle ───────────────────────────────────────────────── */
+.km-float-theme {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 50;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--bg-1) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: grid;
+  place-items: center;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.km-float-theme:hover {
+  border-color: var(--accent-amber);
+  color: var(--accent-amber);
+  transform: scale(1.1) rotate(15deg);
+}
+
+.km-float-theme svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE adjustments
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 960px) {
+  .km-hero.km-cinematic {
+    align-items: center;
+    padding: 120px 0 80px;
+  }
+
+  .km-hero.km-cinematic .km-hero-grid {
+    padding-left: 0;
+  }
+
+  .km-hero-photo-mini {
+    display: none;
+  }
+
+  #about.km-cinematic .km-container {
+    padding-left: 32px;
+  }
+
+  #about.km-cinematic .km-about-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .km-project-row {
+    grid-template-columns: 36px 1fr;
+    gap: 20px;
+  }
+
+  .km-project-row-tech {
+    display: none;
+  }
+
+  .km-skills-text-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .km-skill-text-item:nth-child(3n) {
+    border-right: 1px solid var(--border);
+  }
+
+  .km-skill-text-item:nth-child(2n) {
+    border-right: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .km-hero.km-cinematic h1 {
+    font-size: clamp(44px, 13vw, 72px);
+  }
+
+  .km-skills-text-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .km-skill-text-item {
+    border-right: none;
+  }
+
+  .km-skill-text-item:nth-child(2n) {
+    border-right: none;
   }
 }

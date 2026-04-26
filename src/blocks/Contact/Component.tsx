@@ -34,12 +34,13 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
   }
 
   return (
-    <section id="contact" className="km-section">
+    <section id="contact" className="km-section km-cinematic">
       <div className="km-container">
         <div className="km-contact-wrap">
           <div className="km-eyebrow km-reveal" style={{ justifyContent: 'center' }}>
-            05 — Contact
+            04 / contact
           </div>
+
           <h2 className="km-contact-title km-reveal">
             {title ?? (
               <>
@@ -47,6 +48,7 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
               </>
             )}
           </h2>
+
           <p className="km-contact-sub km-reveal">
             {subtitle ??
               "Got a product to build, a team to augment, or just a sharp idea worth prototyping? I read everything."}
@@ -83,6 +85,13 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
               </a>
             )}
           </div>
+
+          {/* Small monospace email link */}
+          {email && (
+            <a href={`mailto:${email}`} className="km-contact-email-mono km-reveal">
+              {email}
+            </a>
+          )}
 
           <form ref={formRef} onSubmit={handleSubmit} className="km-contact-form km-reveal">
             <div className="km-field">

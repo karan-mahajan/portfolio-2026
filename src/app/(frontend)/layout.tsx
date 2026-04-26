@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import { JetBrains_Mono, Outfit } from 'next/font/google'
+import { DM_Mono, JetBrains_Mono, Outfit, Syne } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
+import { ClientShell } from '@/components/ClientShell'
 import { GlobalInteractions } from '@/components/GlobalInteractions'
-import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -26,6 +26,21 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 })
 
+const syne = Syne({
+  subsets: ['latin'],
+  variable: '--font-syne-var',
+  weight: ['400', '700', '800'],
+  display: 'swap',
+})
+
+const dmMono = DM_Mono({
+  subsets: ['latin'],
+  variable: '--font-dm-mono-var',
+  weight: ['300'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+})
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
@@ -33,7 +48,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${outfit.variable} ${jetbrainsMono.variable}`}
+      className={`${outfit.variable} ${jetbrainsMono.variable} ${syne.variable} ${dmMono.variable}`}
     >
       <head>
         <InitTheme />
@@ -58,7 +73,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
 
           <GlobalInteractions />
-          <Header />
+          <ClientShell />
           <main>{children}</main>
           <Footer />
         </Providers>

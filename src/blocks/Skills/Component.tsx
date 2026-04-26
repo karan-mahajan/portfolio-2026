@@ -43,7 +43,6 @@ function assignGroup(name: string, icon?: string): string {
   return 'Other'
 }
 
-// Two-letter abbreviation from skill name
 function abbrev(name: string): string {
   const words = name.trim().split(/[\s.&+\-\/]+/).filter(Boolean)
   if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase()
@@ -53,91 +52,24 @@ function abbrev(name: string): string {
 export const SkillsBlock: React.FC<Props> = ({ title, subtitle, skills }) => {
   const allSkills = skills ?? []
 
-  // Group skills
-  const grouped = new Map<string, typeof allSkills>()
-  for (const skill of allSkills) {
-    const g = assignGroup(skill.name, skill.icon ?? undefined)
-    if (!grouped.has(g)) grouped.set(g, [])
-    grouped.get(g)!.push(skill)
-  }
-
-  // Order groups by definition order, then Other last
-  const orderedGroups: Array<{ label: string; num: string; items: typeof allSkills }> = []
-  for (const def of SKILL_GROUPS) {
-    if (grouped.has(def.label)) {
-      orderedGroups.push({ label: def.label, num: def.num, items: grouped.get(def.label)! })
-    }
-  }
-  if (grouped.has('Other')) {
-    orderedGroups.push({
-      label: 'Other',
-      num: `/ ${String(orderedGroups.length + 1).padStart(2, '0')}`,
-      items: grouped.get('Other')!,
-    })
-  }
-
-  // Flat grid fallback if no groups matched
-  const useGroups = orderedGroups.length > 0
-  const flatSkills = useGroups ? [] : allSkills
-
   return (
-    <section id="skills" className="km-section">
+    <section id="skills" className="km-section km-cinematic">
       <div className="km-container">
-        <div className="km-eyebrow km-reveal">02 — Skills</div>
+        <div className="km-section-num km-reveal">03 / stack</div>
         <h2 className="km-section-title km-reveal">{title ?? 'The stack I reach for.'}</h2>
-        <p className="km-section-sub km-reveal">
-          {subtitle ?? 'Tools I use in production every week — grouped by where they live in the stack.'}
-        </p>
 
-        {useGroups ? (
-          <div className="km-skills-groups">
-            {orderedGroups.map(({ label, num, items }) => (
-              <div className="km-skill-group" key={label}>
-                <div className="km-skill-group-header km-reveal">
-                  <div className="km-skill-group-num">{num}</div>
-                  <h3 className="km-skill-group-title">{label}</h3>
-                  <div className="km-skill-group-count">{items.length} tools</div>
-                </div>
-
-                <div className="km-skill-cards" data-km-stagger="">
-                  {items.map((skill, i) => {
-                    const iconSrc = skill.icon ? ICON_MAP[skill.icon as IconKey] : undefined
-                    return (
-                      <div className="km-skill-card" key={i}>
-                        <div className="km-skill-icon">
-                          {iconSrc ? (
-                            <img src={iconSrc} alt={skill.name} style={{ width: 20, height: 20, objectFit: 'contain' }} />
-                          ) : (
-                            abbrev(skill.name)
-                          )}
-                        </div>
-                        <div className="km-skill-name">{skill.name}</div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="km-skill-cards" data-km-stagger="">
-            {flatSkills.map((skill, i) => {
-              const iconSrc = skill.icon ? ICON_MAP[skill.icon as IconKey] : undefined
-              return (
-                <div className="km-skill-card" key={i}>
-                  <div className="km-skill-icon">
-                    {iconSrc ? (
-                      <img src={iconSrc} alt={skill.name} style={{ width: 20, height: 20, objectFit: 'contain' }} />
-                    ) : (
-                      abbrev(skill.name)
-                    )}
-                  </div>
-                  <div className="km-skill-name">{skill.name}</div>
-                </div>
-              )
-            })}
-          </div>
+        {subtitle && (
+          <p className="km-section-sub km-reveal">{subtitle}</p>
         )}
+
+        {/* 3-column plain text grid */}
+        <div className="km-skills-text-grid" data-km-stagger="">
+          {allSkills.map((skill, i) => (
+            <div key={i} className="km-skill-text-item">
+              {skill.name}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

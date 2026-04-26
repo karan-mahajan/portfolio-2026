@@ -12,9 +12,9 @@ export const AboutBlockComponent: React.FC<AboutBlockProps> = ({
   )
 
   return (
-    <section id="about" className="km-section">
+    <section id="about" className="km-section km-cinematic">
       <div className="km-container">
-        <div className="km-eyebrow km-reveal">01 — About</div>
+        <div className="km-section-num km-reveal">01 / about</div>
         <h2 className="km-section-title km-reveal">
           {sectionTitle ?? 'A developer who ships — and keeps shipping.'}
         </h2>
