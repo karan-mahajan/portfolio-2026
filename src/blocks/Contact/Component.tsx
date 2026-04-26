@@ -36,8 +36,8 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
   return (
     <section id="contact" className="km-section km-cinematic">
       <div className="km-container">
-        <div className="km-contact-wrap">
-          <div className="km-eyebrow km-reveal" style={{ justifyContent: 'center' }}>
+        <div className="max-w-195 mx-auto text-center">
+          <div className="km-eyebrow km-reveal justify-center">
             04 / contact
           </div>
 
@@ -54,7 +54,7 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
               "Got a product to build, a team to augment, or just a sharp idea worth prototyping? I read everything."}
           </p>
 
-          <div className="km-contact-buttons km-reveal">
+          <div className="flex gap-3.5 justify-center flex-wrap mb-18 km-reveal">
             {email && (
               <a href={`mailto:${email}`} className="km-btn km-btn-primary">
                 <svg

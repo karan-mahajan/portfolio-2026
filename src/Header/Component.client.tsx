@@ -51,7 +51,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <a href="#hero" className="km-nav-logo">
             <span className="km-nav-logo-mark">K</span>
             <span>
-              karan<span style={{ color: 'var(--accent)' }}>.</span>mahajan
+              karan<span className="text-accent">.</span>mahajan
             </span>
           </a>
 
@@ -78,16 +78,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
           {/* Available badge */}
           <a href="#contact" className="km-nav-cta">
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: '#20c070',
-                boxShadow: '0 0 8px #20c070',
-                display: 'inline-block',
-              }}
-            />
+            <span className="inline-block size-1.5 rounded-full bg-[#20c070] shadow-[0_0_8px_#20c070]" />
             Available for work
           </a>
 

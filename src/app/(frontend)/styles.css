@@ -1278,13 +1278,6 @@ section.km-section {
   max-width: 520px;
 }
 
-.km-project-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 36px;
-}
-
 .km-project-tag {
   padding: 6px 12px;
   border-radius: 999px;
@@ -1299,12 +1292,6 @@ section.km-section {
   background: rgba(110, 160, 255, 0.13);
   border-color: rgba(110, 160, 255, 0.32);
   color: var(--text-dim);
-}
-
-.km-project-links {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
 }
 
 .km-project-link {
@@ -1553,12 +1540,6 @@ section.km-section {
    Contact
    ========================================================================== */
 
-.km-contact-wrap {
-  max-width: 780px;
-  margin: 0 auto;
-  text-align: center;
-}
-
 .km-contact-title {
   font-family: var(--font-sans);
   font-size: clamp(48px, 7vw, 88px);
@@ -1580,14 +1561,6 @@ section.km-section {
   font-size: 18px;
   color: var(--text-dim);
   margin: 0 0 48px;
-}
-
-.km-contact-buttons {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 72px;
 }
 
 .km-contact-form {

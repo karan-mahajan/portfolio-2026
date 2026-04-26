@@ -27,7 +27,7 @@ export const AboutBlockComponent: React.FC<AboutBlockProps> = (props) => {
                 src={photoMedia.url}
                 alt={photoMedia.alt ?? 'Profile photo'}
                 fill
-                style={{ objectFit: 'cover' }}
+                className="object-cover"
                 sizes="(max-width: 768px) 100vw, 280px"
               />
             </div>

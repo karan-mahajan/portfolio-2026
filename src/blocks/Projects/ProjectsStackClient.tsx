@@ -160,7 +160,7 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
           position: 'relative',
         }}
       >
-        <svg viewBox="0 0 300 100" preserveAspectRatio="none" style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
+        <svg viewBox="0 0 300 100" preserveAspectRatio="none" className="w-full h-full absolute inset-0">
           <defs>
             <linearGradient id={`g${index}`} x1="0" x2="0" y1="0" y2="1">
               <stop offset="0" stopColor={accent} stopOpacity="0.4" />
@@ -245,14 +245,13 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
         className="km-preview-body"
         style={{
           background: `radial-gradient(ellipse at 30% 20%, ${accent}22, transparent 55%), linear-gradient(135deg, var(--preview-bg), var(--bg-2))`,
-          position: 'relative',
         }}
       >
         {project.thumbnail?.url ? (
           <img
             src={project.thumbnail.url}
             alt={project.thumbnail.alt}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
+            className="w-full h-full object-cover absolute inset-0"
           />
         ) : (
           layouts[layoutIndex]
@@ -403,7 +402,7 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
                 <h3 className="km-project-name">{project.title}</h3>
                 <p className="km-project-desc">{project.description}</p>
 
-                <div className="km-project-tags">
+                <div className="flex flex-wrap gap-2 mb-9">
                   {project.technologies.map(({ tech }, ti) => (
                     <span key={ti} className="km-project-tag">
                       {tech}
@@ -411,7 +410,7 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
                   ))}
                 </div>
 
-                <div className="km-project-links">
+                <div className="flex gap-3.5 flex-wrap">
                   {project.liveUrl && (
                     <a
                       href={project.liveUrl}
@@ -439,7 +438,7 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
                     </a>
                   )}
                   {project.isPrivate && (
-                    <span className="km-project-link" style={{ opacity: 0.5, cursor: 'default' }}>
+                    <span className="km-project-link opacity-50 cursor-default">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                         <path d="M7 11V7a5 5 0 0 1 10 0v4" />
