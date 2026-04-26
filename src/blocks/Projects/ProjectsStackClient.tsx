@@ -1,6 +1,8 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -23,6 +25,11 @@ export interface ProjectData {
   liveUrl: string | null
   githubUrl: string | null
   isPrivate: boolean
+}
+
+function parseHex(hex: string): [number, number, number] {
+  const h = (hex || '#4f8ef7').replace('#', '')
+  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]
 }
 
 // ─── Fake browser preview ────────────────────────────────────────────────────
@@ -251,7 +258,7 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
           <img
             src={project.thumbnail.url}
             alt={project.thumbnail.alt}
-            className="w-full h-full object-cover absolute inset-0"
+            className="km-preview-thumb w-full h-full object-cover absolute inset-0"
           />
         ) : (
           layouts[layoutIndex]
@@ -324,6 +331,23 @@ interface Props {
 
 export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
   const pinsRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const tintRef = useRef<HTMLDivElement>(null)
+  const tintObj = useRef({ r: 0, g: 0, b: 0 })
+  const prevActiveRef = useRef(-1)
+  const [activeIdx, setActiveIdx] = useState(0)
+  const [navVisible, setNavVisible] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => { setMounted(true) }, [])
+
+  // Jump to a specific project card by scrolling the deck
+  const jumpTo = useCallback((idx: number) => {
+    const container = pinsRef.current
+    if (!container) return
+    const deckTop = container.getBoundingClientRect().top + window.scrollY
+    window.scrollTo({ top: deckTop + idx * window.innerHeight, behavior: 'smooth' })
+  }, [])
 
   useEffect(() => {
     const container = pinsRef.current
@@ -332,13 +356,69 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
     const pins = [...container.querySelectorAll<HTMLElement>('.km-project-pin')]
     if (!pins.length) return
 
+    // Seed tint from first project
+    if (projects[0]) {
+      const [r, g, b] = parseHex(projects[0].accentColor)
+      tintObj.current = { r, g, b }
+    }
+
     let rafId: number | null = null
 
     const update = () => {
       const vh = window.innerHeight
+
+      // Active card = last pin whose next sibling hasn't arrived at viewport top yet
+      let newActiveIdx = pins.length - 1
+      for (let i = 0; i < pins.length - 1; i++) {
+        const nextRect = pins[i + 1].getBoundingClientRect()
+        if (nextRect.top > 1) {
+          newActiveIdx = i
+          break
+        }
+      }
+      // Before section is in view
+      if (pins[0].getBoundingClientRect().top > vh * 0.5) newActiveIdx = 0
+
+      // Background tint — GSAP tween on active change
+      if (newActiveIdx !== prevActiveRef.current) {
+        const accent = projects[newActiveIdx]?.accentColor || '#4f8ef7'
+        const [nr, ng, nb] = parseHex(accent)
+        gsap.to(tintObj.current, {
+          r: nr,
+          g: ng,
+          b: nb,
+          duration: 0.75,
+          ease: 'power2.out',
+          overwrite: 'auto',
+          onUpdate: () => {
+            if (tintRef.current) {
+              const { r, g, b } = tintObj.current
+              tintRef.current.style.background = `rgba(${Math.round(r)},${Math.round(g)},${Math.round(b)},0.06)`
+            }
+          },
+        })
+
+        // Entrance glow on the newly-active card
+        const frontPin = pins[newActiveIdx]
+        if (frontPin && newActiveIdx > prevActiveRef.current) {
+          const frontCard = frontPin.querySelector<HTMLElement>('.km-project-card')
+          if (frontCard) {
+            const [cr, cg, cb] = parseHex(projects[newActiveIdx]?.accentColor || '#4f8ef7')
+            frontCard.style.setProperty('--card-glow-color', `${cr},${cg},${cb}`)
+            frontCard.classList.remove('km-card-glow-in')
+            void frontCard.offsetWidth
+            frontCard.classList.add('km-card-glow-in')
+          }
+        }
+
+        prevActiveRef.current = newActiveIdx
+        setActiveIdx(newActiveIdx)
+      }
+
       pins.forEach((pin, i) => {
         const card = pin.querySelector<HTMLElement>('.km-project-card')
         if (!card) return
+
         const next = pins[i + 1]
         if (!next) {
           card.style.transform = ''
@@ -346,15 +426,28 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
           card.style.filter = ''
           return
         }
+
         const nextRect = next.getBoundingClientRect()
         let p = 1 - Math.min(1, Math.max(0, nextRect.top / vh))
         const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2
+
+        // Stack depth blur: cards further behind the front get additional blur
+        const depth = newActiveIdx - i
+        const depthBlur = depth > 1 ? (depth - 1) * 0.35 : 0
+
         const scale = 1 - e * 0.08
         const ty = -e * 24
         const op = 1 - e * 0.35
         card.style.transform = `translateY(${ty}px) scale(${scale})`
         card.style.opacity = String(op)
-        card.style.filter = `blur(${e * 1.2}px)`
+        card.style.filter = `blur(${e * 1.2 + depthBlur}px)`
+
+        // Parallax on thumbnail image as next card arrives
+        const nextCard = next.querySelector<HTMLElement>('.km-project-card')
+        const nextImg = nextCard?.querySelector<HTMLElement>('.km-preview-thumb')
+        if (nextImg) {
+          nextImg.style.transform = `translateY(${(1 - e) * 8}px) scale(1.04)`
+        }
       })
     }
 
@@ -366,6 +459,17 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
       })
     }
 
+    // Section visibility for nav fade
+    const section = sectionRef.current
+    let observer: IntersectionObserver | null = null
+    if (section) {
+      observer = new IntersectionObserver(
+        ([entry]) => setNavVisible(entry.isIntersecting),
+        { threshold: 0.05 },
+      )
+      observer.observe(section)
+    }
+
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
     update()
@@ -374,14 +478,44 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
       if (rafId) cancelAnimationFrame(rafId)
+      observer?.disconnect()
     }
   }, [projects])
 
   if (!projects.length) return null
 
   return (
-    <section id="projects" className="km-cinematic">
-      <div className="km-container">
+    <section id="projects" className="km-cinematic relative" ref={sectionRef}>
+      {/* Background accent tint — GSAP tweened */}
+      <div ref={tintRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }} />
+
+      {/* Nav + mobile counter — portalled to body so fixed positioning is never broken by ancestor transforms */}
+      {mounted && createPortal(
+        <>
+          <nav
+            aria-label="Projects navigation"
+            className={`fixed right-8 top-1/2 -translate-y-1/2 z-9999 flex-col gap-3 items-center hidden md:flex transition-opacity duration-500 ${navVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+          >
+            {projects.map((project, i) => (
+              <button
+                key={project.id}
+                className={`km-projects-nav-dot${i === activeIdx ? ' active' : ''}`}
+                onClick={() => jumpTo(i)}
+                aria-label={`Go to ${project.title}`}
+                title={project.title}
+              />
+            ))}
+          </nav>
+          <div
+            className={`km-projects-mobile-counter md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-9999 pointer-events-none transition-opacity duration-500 ${navVisible ? 'opacity-100' : 'opacity-0'}`}
+          >
+            {String(activeIdx + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+          </div>
+        </>,
+        document.body,
+      )}
+
+      <div className="km-container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="km-section-num km-reveal">02 / work</div>
         <h2 className="km-section-title km-reveal">{title ?? 'Selected work.'}</h2>
         <p className="km-section-sub km-reveal">
@@ -389,75 +523,75 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
         </p>
       </div>
 
-      <div className="km-projects-deck" ref={pinsRef}>
+      <div className="km-projects-deck" ref={pinsRef} style={{ position: 'relative', zIndex: 1 }}>
         {projects.map((project, i) => (
           <div className="km-project-pin" key={project.id}>
             <TiltCard>
-            <div className="km-project-card">
-              {/* Left — copy */}
-              <div className="km-project-copy">
-                <div className="km-project-index">
-                  Project {String(i + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
-                </div>
-                <h3 className="km-project-name">{project.title}</h3>
-                <p className="km-project-desc">{project.description}</p>
+              <div className="km-project-card">
+                {/* Left — copy */}
+                <div className="km-project-copy">
+                  <div className="km-project-index">
+                    Project {String(i + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+                  </div>
+                  <h3 className="km-project-name">{project.title}</h3>
+                  <p className="km-project-desc">{project.description}</p>
 
-                <div className="flex flex-wrap gap-2 mb-9">
-                  {project.technologies.map(({ tech }, ti) => (
-                    <span key={ti} className="km-project-tag">
-                      {tech}
-                    </span>
-                  ))}
+                  <div className="flex flex-wrap gap-2 mb-9">
+                    {project.technologies.map(({ tech }, ti) => (
+                      <span key={ti} className="km-project-tag">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex gap-3.5 flex-wrap">
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="km-project-link"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M15 3h6v6M10 14 21 3M21 14v7h-7M3 10V3h7" />
+                        </svg>
+                        Live demo
+                      </a>
+                    )}
+                    {project.githubUrl && !project.isPrivate && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="km-project-link"
+                      >
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.94c.57.1.78-.25.78-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.7.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.76 2.69 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.3-5.23-1.28-5.23-5.67 0-1.25.45-2.28 1.18-3.08-.12-.3-.51-1.47.11-3.07 0 0 .96-.31 3.16 1.18a11 11 0 0 1 5.75 0c2.2-1.5 3.16-1.18 3.16-1.18.62 1.6.23 2.77.11 3.07.74.8 1.18 1.83 1.18 3.08 0 4.4-2.69 5.37-5.25 5.66.42.36.78 1.05.78 2.12v3.14c0 .3.21.66.78.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z" />
+                        </svg>
+                        GitHub
+                      </a>
+                    )}
+                    {project.isPrivate && (
+                      <span className="km-project-link opacity-50 cursor-default">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        Private repo
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-                <div className="flex gap-3.5 flex-wrap">
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="km-project-link"
-                    >
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M15 3h6v6M10 14 21 3M21 14v7h-7M3 10V3h7" />
-                      </svg>
-                      Live demo
-                    </a>
-                  )}
-                  {project.githubUrl && !project.isPrivate && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="km-project-link"
-                    >
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.94c.57.1.78-.25.78-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.7.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.76 2.69 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.3-5.23-1.28-5.23-5.67 0-1.25.45-2.28 1.18-3.08-.12-.3-.51-1.47.11-3.07 0 0 .96-.31 3.16 1.18a11 11 0 0 1 5.75 0c2.2-1.5 3.16-1.18 3.16-1.18.62 1.6.23 2.77.11 3.07.74.8 1.18 1.83 1.18 3.08 0 4.4-2.69 5.37-5.25 5.66.42.36.78 1.05.78 2.12v3.14c0 .3.21.66.78.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z" />
-                      </svg>
-                      GitHub
-                    </a>
-                  )}
-                  {project.isPrivate && (
-                    <span className="km-project-link opacity-50 cursor-default">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                      </svg>
-                      Private repo
-                    </span>
-                  )}
-                </div>
+                {/* Right — fake browser */}
+                <ProjectPreview project={project} index={i} />
               </div>
-
-              {/* Right — fake browser */}
-              <ProjectPreview project={project} index={i} />
-            </div>
             </TiltCard>
           </div>
         ))}
       </div>
 
-      <div className="km-container">
+      <div className="km-container" style={{ position: 'relative', zIndex: 1 }}>
         <p className="km-project-footer-note">
           More work available on request — <a href="#contact">let&apos;s talk</a>.
         </p>

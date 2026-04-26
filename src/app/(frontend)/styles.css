@@ -18,7 +18,7 @@
    ========================================================================== */
 
 :root {
-  --accent: #4f8ef7;
+  --accent: #60A5FA;
   --accent-2: #7a6cff;
   --accent-cyan: #6fd8ff;
   --accent-glow: rgba(79, 142, 247, 0.35);
@@ -63,9 +63,9 @@
   --surface-2: rgba(160, 170, 255, 0.09);
   --border: rgba(160, 170, 255, 0.13);
   --border-strong: rgba(160, 170, 255, 0.22);
-  --text: #ecedf8;
-  --text-dim: #a8aac4;
-  --text-mute: #7a7d9a;
+  --text: #EFE3CA;
+  --text-dim: #F59E0B;
+  --text-mute: #22D3EE;
   --nav-bg: rgba(7, 7, 18, 0.72);
   --card-bg: linear-gradient(135deg, #141435, #0d0d24);
   --card-bg-solid: #141435;
@@ -234,7 +234,7 @@ button {
 
 .km-loader-name {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.2em;
   color: var(--text-dim);
   display: flex;
@@ -352,7 +352,7 @@ section.km-section {
   position: relative;
   display: block;
   padding: 8px 14px;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-dim);
   border-radius: 8px;
   transition: color 0.2s ease;
@@ -599,7 +599,7 @@ section.km-section {
   gap: 10px;
   padding: 14px 22px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   transition:
     translate 0.6s cubic-bezier(0.23, 1, 0.32, 1),
@@ -861,7 +861,6 @@ section.km-section {
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  opacity: 0.6;
 }
 
 .km-hero-photo-card {
@@ -956,7 +955,7 @@ section.km-section {
 
 .km-about-grid {
   display: grid;
-  grid-template-columns: 260px 1fr 280px;
+  grid-template-columns: 260px 1fr;
   gap: 56px;
   align-items: start;
 }
@@ -992,7 +991,7 @@ section.km-section {
   align-items: center;
   gap: 12px;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-mute);
 }
 
@@ -1177,7 +1176,7 @@ section.km-section {
 }
 
 .km-skill-name {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--text);
 }
@@ -1192,6 +1191,100 @@ section.km-section {
 /* ==========================================================================
    Projects — stacked deck
    ========================================================================== */
+
+/* Navigation dot overlay */
+.km-projects-nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  position: relative;
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.km-projects-nav-dot::before {
+  content: attr(title);
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+  background: color-mix(in srgb, var(--bg-1) 85%, transparent);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+
+.km-projects-nav-dot:hover::before,
+.km-projects-nav-dot.active::before {
+  opacity: 1;
+}
+
+.km-projects-nav-dot:hover {
+  border-color: var(--text-dim);
+  transform: scale(1.6);
+}
+
+.km-projects-nav-dot.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: scale(1.35);
+}
+
+/* Mobile progress counter */
+.km-projects-mobile-counter {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+  background: color-mix(in srgb, var(--bg-1) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+/* Card entrance glow animation */
+@keyframes km-card-glow {
+  0% {
+    box-shadow:
+      var(--shadow-deep),
+      0 0 0 1px rgba(var(--card-glow-color, 79, 142, 247), 0.5),
+      0 0 48px rgba(var(--card-glow-color, 79, 142, 247), 0.28);
+  }
+
+  100% {
+    box-shadow: var(--shadow-deep);
+  }
+}
+
+.km-card-glow-in {
+  animation: km-card-glow 0.55s ease-out forwards;
+}
+
+/* Thumbnail parallax — transform managed by JS */
+.km-preview-thumb {
+  transition: transform 0.12s linear;
+  will-change: transform;
+}
 
 .km-card-tilt {
   width: 100%;
@@ -1418,7 +1511,7 @@ section.km-section {
 
 .km-timeline {
   position: relative;
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -1550,8 +1643,8 @@ section.km-section {
 }
 
 .km-timeline-bullets li {
-  font-size: 14px;
-  color: var(--text-dim);
+  font-size: 16px;
+  color: #D1D5DB;
   line-height: 1.55;
   position: relative;
   padding-left: 18px;
@@ -2076,7 +2169,7 @@ section.km-section {
 
 .resume-title {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--accent);
   letter-spacing: 0.08em;
   margin: 0 0 18px;
@@ -2233,7 +2326,7 @@ section.km-section {
 }
 
 .rs-edu-degree {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   margin: 0 0 2px;
   color: var(--text);
@@ -2349,7 +2442,7 @@ section.km-section {
 }
 
 .rs-exp-bullets li {
-  font-size: 13.5px;
+  font-size: 14.5px;
   line-height: 1.55;
   color: var(--text-dim);
   position: relative;
@@ -2387,7 +2480,7 @@ section.km-section {
 }
 
 .rs-proj-name {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   margin: 0;
   color: var(--text);
@@ -2851,7 +2944,6 @@ body::after {
   color: var(--accent-amber);
   font-style: italic;
   margin-bottom: 18px;
-  opacity: 0.85;
   display: block;
 }
 
@@ -2885,7 +2977,6 @@ body::after {
   font-size: 11px;
   letter-spacing: 0.12em;
   color: var(--text-dim);
-  opacity: 0.75;
 }
 
 .km-hero-role-item::before {
@@ -2896,7 +2987,7 @@ body::after {
 
 /* Typewriter in cinematic mode — smaller */
 .km-hero.km-cinematic .km-typewriter {
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 6px;
 }
 
@@ -2905,7 +2996,6 @@ body::after {
   font-size: clamp(15px, 1.4vw, 18px);
   margin-bottom: 32px;
   font-family: var(--font-dm-mono);
-  opacity: 0.85;
 }
 
 /* Hide status pill in cinematic mode (content shown as eyebrow) */
@@ -2936,7 +3026,7 @@ body::after {
 }
 
 #about.km-cinematic .km-about-grid {
-  grid-template-columns: 260px 1fr 280px;
+  grid-template-columns: 260px 1fr;
   gap: 56px;
 }
 
@@ -2947,8 +3037,7 @@ body::after {
 
 #about.km-cinematic .km-about-copy p {
   font-family: var(--font-dm-mono);
-  font-size: 13.5px;
-  opacity: 0.75;
+  font-size: 14.5px;
   line-height: 2.1;
   color: var(--text);
 }
@@ -2960,7 +3049,7 @@ body::after {
 
 #about.km-cinematic .km-about-signature {
   font-family: var(--font-dm-mono);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -3040,7 +3129,7 @@ body::after {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SKILLS — 3-column plain text grid
+   SKILLS — categorized pill grid + sphere
    ═══════════════════════════════════════════════════════════════════════════ */
 
 #skills.km-cinematic {
@@ -3052,32 +3141,168 @@ body::after {
   font-family: var(--font-syne);
 }
 
-.km-skills-text-grid {
+/* Pill category grid */
+.km-skills-cats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--border);
-  margin-top: 48px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 56px;
 }
 
-.km-skill-text-item {
-  padding: 18px 20px;
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  font-family: var(--font-dm-mono);
-  font-size: 13px;
+.km-skill-cat {
+  --cat-hue: 79, 142, 247;
+  padding: 26px 24px 22px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s ease;
+}
+
+.km-skill-cat::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 0% 0%, rgba(var(--cat-hue), 0.07), transparent 55%);
+  pointer-events: none;
+}
+
+.km-skill-cat:hover {
+  border-color: rgba(var(--cat-hue), 0.3);
+}
+
+.km-skill-cat--blue {
+  --cat-hue: 79, 142, 247;
+}
+
+.km-skill-cat--amber {
+  --cat-hue: 214, 140, 60;
+}
+
+.km-skill-cat--green {
+  --cat-hue: 71, 215, 138;
+}
+
+.km-skill-cat--purple {
+  --cat-hue: 122, 108, 255;
+}
+
+.km-skill-cat--cyan {
+  --cat-hue: 111, 216, 255;
+}
+
+.km-skill-cat--neutral {
+  --cat-hue: 160, 160, 170;
+}
+
+.km-skill-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.km-skill-cat-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(var(--cat-hue), 1);
+  letter-spacing: 0.18em;
+}
+
+.km-skill-cat-label {
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text);
-  opacity: 0.65;
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+
+.km-skill-cat-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-mute);
+  background: rgba(var(--cat-hue), 0.1);
+  border: 1px solid rgba(var(--cat-hue), 0.2);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.km-skill-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.km-skill-pill {
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(var(--cat-hue), 1);
+  border: 1px solid rgba(var(--cat-hue), 0.2);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: white;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
   cursor: default;
-  transition: opacity 0.2s ease, color 0.2s ease;
 }
 
-.km-skill-text-item:nth-child(3n) {
-  border-right: none;
+.km-skill-pill:hover {
+  background: rgba(var(--cat-hue), 0.15);
+  border-color: rgba(var(--cat-hue), 0.45);
+  color: var(--text);
 }
 
-.km-skill-text-item:hover {
-  opacity: 1;
-  color: var(--accent-amber);
+/* Skill sphere */
+.km-sphere-section {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.km-sphere-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.km-skill-sphere-wrap {
+  max-width: 800px;
+  max-width: 100%;
+  max-height: 800px;
+  perspective: 900px;
+  cursor: default;
+  position: relative;
+}
+
+.km-sphere-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.km-sphere-tag {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 20px !important;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+  user-select: none;
+  padding: 3px 9px;
+  border-radius: 999px;
+  transition: color 0.18s ease, font-weight 0.18s ease;
+  pointer-events: auto;
+}
+
+.km-sphere-tag:hover {
+  color: var(--accent) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -3287,16 +3512,8 @@ body::after {
     display: none;
   }
 
-  .km-skills-text-grid {
+  .km-skills-cats {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .km-skill-text-item:nth-child(3n) {
-    border-right: 1px solid var(--border);
-  }
-
-  .km-skill-text-item:nth-child(2n) {
-    border-right: none;
   }
 }
 
@@ -3327,15 +3544,12 @@ body::after {
     font-size: 9px;
   }
 
-  .km-skills-text-grid {
+  .km-skills-cats {
     grid-template-columns: 1fr;
   }
 
-  .km-skill-text-item {
-    border-right: none;
-  }
-
-  .km-skill-text-item:nth-child(2n) {
-    border-right: none;
+  .km-skill-sphere-wrap {
+    width: 320px;
+    height: 320px;
   }
 }

@@ -1,3 +1,4 @@
+import RichText from '@/components/RichText'
 import type { AboutBlock as AboutBlockProps, Media } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
@@ -20,22 +21,37 @@ export const AboutBlockComponent: React.FC<AboutBlockProps> = (props) => {
         </h2>
 
         <div className="km-about-grid">
-          {/* Col 1 — photo */}
-          {photoMedia?.url && (
-            <div className="km-about-photo km-reveal km-reveal-left">
-              <Image
-                src={photoMedia.url}
-                alt={photoMedia.alt ?? 'Profile photo'}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 280px"
-              />
-            </div>
-          )}
+          <div className="flex flex-col gap-4">
+            {photoMedia?.url && (
+              <div className="km-about-photo km-reveal km-reveal-left">
+                <Image
+                  src={photoMedia.url}
+                  alt={photoMedia.alt ?? 'Profile photo'}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 280px"
+                />
+              </div>
+            )}
+
+            {/* Col 3 — stats */}
+            {statItems.length > 0 && (
+              <div className="km-stats-grid km-reveal km-reveal-right">
+                {statItems.map((stat, i) => (
+                  <div className="km-stat-card" key={stat.id ?? i}>
+                    <div className="km-stat-value" data-count={stat.value}>
+                      {stat.value}
+                    </div>
+                    <div className="km-stat-label">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Col 2 — bio */}
           <div className="km-about-copy km-reveal">
-            <p>{description}</p>
+            {description && <RichText data={description} enableGutter={false} />}
 
             <div className="km-about-signature">
               <svg
@@ -51,18 +67,6 @@ export const AboutBlockComponent: React.FC<AboutBlockProps> = (props) => {
               {openToText ?? 'Currently open to senior full-stack and contract roles.'}
             </div>
           </div>
-
-          {/* Col 3 — stats */}
-          {statItems.length > 0 && (
-            <div className="km-stats-grid km-reveal km-reveal-right">
-              {statItems.map((stat, i) => (
-                <div className="km-stat-card" key={stat.id ?? i}>
-                  <div className="km-stat-value" data-count={stat.value}>{stat.value}</div>
-                  <div className="km-stat-label">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </section>

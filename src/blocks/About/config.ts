@@ -1,4 +1,13 @@
 import { Block } from 'payload'
+import {
+  BoldFeature,
+  ItalicFeature,
+  UnderlineFeature,
+  ParagraphFeature,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 
 export const AboutBlock: Block = {
   slug: 'aboutBlock',
@@ -43,9 +52,19 @@ export const AboutBlock: Block = {
     },
     {
       name: 'description',
-      type: 'textarea',
+      type: 'richText',
       required: true,
       label: 'Description',
+      editor: lexicalEditor({
+        features: () => [
+          ParagraphFeature(),
+          BoldFeature(),
+          ItalicFeature(),
+          UnderlineFeature(),
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+        ],
+      }),
     },
     {
       name: 'sectionTitle',

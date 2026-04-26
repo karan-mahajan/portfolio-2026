@@ -422,7 +422,21 @@ export interface AboutBlock {
    * Circular profile photo shown on the left side of the about section
    */
   photo?: (number | null) | Media;
-  description: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   /**
    * Large heading shown below the eyebrow label
    */
