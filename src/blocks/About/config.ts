@@ -33,6 +33,15 @@ export const AboutBlock: Block = {
       },
     },
     {
+      name: 'photo',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Profile Photo',
+      admin: {
+        description: 'Circular profile photo shown on the left side of the about section',
+      },
+    },
+    {
       name: 'description',
       type: 'textarea',
       required: true,

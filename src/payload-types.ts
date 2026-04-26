@@ -418,6 +418,10 @@ export interface AboutBlock {
    * Hex color for the heading text, e.g. #16f2b3
    */
   headingColor?: string | null;
+  /**
+   * Circular profile photo shown on the left side of the about section
+   */
+  photo?: (number | null) | Media;
   description: string;
   /**
    * Large heading shown below the eyebrow label
@@ -1127,6 +1131,7 @@ export interface AboutBlockSelect<T extends boolean = true> {
   sectionLabel?: T;
   heading?: T;
   headingColor?: T;
+  photo?: T;
   description?: T;
   sectionTitle?: T;
   openToText?: T;

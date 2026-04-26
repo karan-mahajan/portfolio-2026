@@ -1,12 +1,12 @@
-import type { AboutBlock as AboutBlockProps } from '@/payload-types'
+import type { AboutBlock as AboutBlockProps, Media } from '@/payload-types'
+import Image from 'next/image'
 import React from 'react'
 
-export const AboutBlockComponent: React.FC<AboutBlockProps> = ({
-  description,
-  sectionTitle,
-  openToText,
-  stats,
-}) => {
+export const AboutBlockComponent: React.FC<AboutBlockProps> = (props) => {
+  const { description, sectionTitle, openToText, stats } = props
+  const photo = (props as any).photo
+  const photoMedia = photo && typeof photo === 'object' ? (photo as Media) : null
+
   const statItems = (stats ?? []).filter(
     (s): s is { value: string; label: string; id?: string | null } => !!(s.value && s.label),
   )
@@ -20,8 +20,21 @@ export const AboutBlockComponent: React.FC<AboutBlockProps> = ({
         </h2>
 
         <div className="km-about-grid">
-          {/* Left — copy */}
-          <div className="km-about-copy km-reveal km-reveal-left">
+          {/* Col 1 — photo */}
+          {photoMedia?.url && (
+            <div className="km-about-photo km-reveal km-reveal-left">
+              <Image
+                src={photoMedia.url}
+                alt={photoMedia.alt ?? 'Profile photo'}
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, 280px"
+              />
+            </div>
+          )}
+
+          {/* Col 2 — bio */}
+          <div className="km-about-copy km-reveal">
             <p>{description}</p>
 
             <div className="km-about-signature">
@@ -39,7 +52,7 @@ export const AboutBlockComponent: React.FC<AboutBlockProps> = ({
             </div>
           </div>
 
-          {/* Right — stats */}
+          {/* Col 3 — stats */}
           {statItems.length > 0 && (
             <div className="km-stats-grid km-reveal km-reveal-right">
               {statItems.map((stat, i) => (
