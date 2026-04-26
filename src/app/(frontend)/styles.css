@@ -186,6 +186,23 @@ button {
   border-color: rgba(79, 142, 247, 0.8);
 }
 
+.km-cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle, rgba(79, 142, 247, 0.06) 0%, transparent 70%);
+  will-change: transform;
+}
+
+[data-theme='dark'] .km-cursor-glow {
+  background: radial-gradient(circle, rgba(79, 142, 247, 0.10) 0%, transparent 70%);
+}
+
 @media (hover: none) {
 
   .cursor-dot,
@@ -371,7 +388,10 @@ section.km-section {
   background: linear-gradient(135deg, rgba(79, 142, 247, 0.15), rgba(122, 108, 255, 0.15));
   border: 1px solid rgba(79, 142, 247, 0.3);
   margin-left: 8px;
-  transition: all 0.2s ease;
+  transition:
+    translate 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .km-nav-cta:hover {
@@ -582,6 +602,7 @@ section.km-section {
   font-size: 14px;
   font-weight: 500;
   transition:
+    translate 0.6s cubic-bezier(0.23, 1, 0.32, 1),
     transform 0.25s ease,
     box-shadow 0.25s ease,
     background 0.25s ease,
@@ -674,6 +695,14 @@ section.km-section {
   background: #20c070;
   box-shadow: 0 0 10px #20c070;
   animation: kmPulse 2s ease-in-out infinite;
+}
+
+.km-pulse-dot {
+  animation: kmPulse 2s ease-in-out infinite;
+}
+
+.km-pulse-dot.fast {
+  animation-duration: 0.5s;
 }
 
 @keyframes kmPulse {
@@ -1408,6 +1437,20 @@ section.km-section {
   transform: translateX(-0.5px);
 }
 
+.km-timeline-progress {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 0%;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+  transform: translateX(-50%);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 50%, transparent);
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 1px;
+}
+
 .km-timeline-entry {
   position: relative;
   display: grid;
@@ -1809,6 +1852,10 @@ section.km-section {
   }
 
   .km-timeline::before {
+    left: 20px;
+  }
+
+  .km-timeline-progress {
     left: 20px;
   }
 

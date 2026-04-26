@@ -107,6 +107,56 @@ const ParticleCanvas: React.FC = () => {
   return <canvas ref={canvasRef} className="km-hero-canvas w-full h-full" />
 }
 
+// ─── Scramble text ───────────────────────────────────────────────────────────
+
+const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&'
+
+const ScrambleText: React.FC<{ text: string; className?: string; delay?: number }> = ({
+  text,
+  className,
+  delay = 0,
+}) => {
+  const [display, setDisplay] = useState(text)
+  const rafRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReduced) return
+
+    const timer = setTimeout(() => {
+      const duration = 900
+      const start = performance.now()
+
+      const tick = (now: number) => {
+        const t = Math.min((now - start) / duration, 1)
+        const resolvedCount = Math.floor(t * text.length)
+        const scrambled = [...text]
+          .map((char, i) => {
+            if (char === ' ') return ' '
+            if (i < resolvedCount) return char
+            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]
+          })
+          .join('')
+        setDisplay(scrambled)
+        if (t < 1) {
+          rafRef.current = requestAnimationFrame(tick)
+        } else {
+          setDisplay(text)
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(tick)
+    }, delay)
+
+    return () => {
+      clearTimeout(timer)
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
+    }
+  }, [text, delay])
+
+  return <span className={className}>{display}</span>
+}
+
 // ─── Typewriter ──────────────────────────────────────────────────────────────
 
 const TypewriterWord: React.FC<{ words: string[] }> = ({ words }) => {
@@ -234,9 +284,9 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
 
           {/* Massive Syne 800 name */}
           <h1 className="km-reveal">
-            {name ?? 'Karan'}
+            <ScrambleText text={name ?? 'Karan'} delay={800} />
             <br />
-            <span className="km-grad">{title ?? 'Mahajan.'}</span>
+            <ScrambleText text={title ?? 'Mahajan.'} className="km-grad" delay={1000} />
           </h1>
 
           {/* Role stack — small DM Mono, 0.5 opacity */}

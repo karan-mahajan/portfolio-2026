@@ -57,7 +57,7 @@ export const AboutBlockComponent: React.FC<AboutBlockProps> = (props) => {
             <div className="km-stats-grid km-reveal km-reveal-right">
               {statItems.map((stat, i) => (
                 <div className="km-stat-card" key={stat.id ?? i}>
-                  <div className="km-stat-value">{stat.value}</div>
+                  <div className="km-stat-value" data-count={stat.value}>{stat.value}</div>
                   <div className="km-stat-label">{stat.label}</div>
                 </div>
               ))}

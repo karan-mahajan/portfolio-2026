@@ -66,6 +66,7 @@ export const ExperienceBlockComponent: React.FC<ExperienceBlockProps> = async ({
         </p>
 
         <div className="km-timeline">
+          <div className="km-timeline-progress" aria-hidden="true" />
           {items.map((item, i) => (
             <TimelineEntry
               key={item.id}

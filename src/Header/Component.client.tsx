@@ -78,7 +78,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
           {/* Available badge */}
           <a href="#contact" className="km-nav-cta">
-            <span className="inline-block size-1.5 rounded-full bg-[#20c070] shadow-[0_0_8px_#20c070]" />
+            <span className="inline-block size-1.5 rounded-full bg-[#20c070] shadow-[0_0_8px_#20c070] km-pulse-dot" />
             Available for work
           </a>
 
