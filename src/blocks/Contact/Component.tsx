@@ -1,5 +1,6 @@
 'use client'
 
+import emailjs from '@emailjs/browser'
 import React, { useRef, useState } from 'react'
 
 interface ContactBlockProps {
@@ -22,15 +23,31 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!formRef.current) return
     setSubmitting(true)
-    // Placeholder — wire up your preferred form backend (Resend, Formspree, etc.)
-    await new Promise((r) => setTimeout(r, 800))
-    setSubmitted(true)
-    setSubmitting(false)
-    formRef.current?.reset()
-    setTimeout(() => setSubmitted(false), 4000)
+    try {
+      const form = formRef.current
+      const data = new FormData(form)
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        {
+          from_name: data.get('name') as string,
+          from_email: data.get('email') as string,
+          message: data.get('message') as string,
+        },
+        { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY! },
+      )
+      setSubmitted(true)
+      form.reset()
+      setTimeout(() => setSubmitted(false), 4000)
+    } catch {
+      alert('Something went wrong. Please try emailing me directly.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
