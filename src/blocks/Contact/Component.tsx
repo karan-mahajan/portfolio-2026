@@ -37,9 +37,7 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
     <section id="contact" className="km-section km-cinematic">
       <div className="km-container">
         <div className="max-w-195 mx-auto text-center">
-          <div className="km-eyebrow km-reveal justify-center">
-            04 / contact
-          </div>
+          <div className="km-eyebrow km-reveal justify-center">04 / contact</div>
 
           <h2 className="km-contact-title km-reveal">
             {title ?? (
@@ -51,7 +49,7 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
 
           <p className="km-contact-sub km-reveal">
             {subtitle ??
-              "Got a product to build, a team to augment, or just a sharp idea worth prototyping? I read everything."}
+              'Got a product to build, a team to augment, or just a sharp idea worth prototyping? I read everything.'}
           </p>
 
           <div className="flex gap-3.5 justify-center flex-wrap mb-18 km-reveal">
@@ -86,13 +84,6 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
             )}
           </div>
 
-          {/* Small monospace email link */}
-          {email && (
-            <a href={`mailto:${email}`} className="km-contact-email-mono km-reveal">
-              {email}
-            </a>
-          )}
-
           <form ref={formRef} onSubmit={handleSubmit} className="km-contact-form km-reveal">
             <div className="km-field">
               <input id="c-name" type="text" placeholder=" " required name="name" />
@@ -109,11 +100,12 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
             <button
               type="submit"
               className="km-btn km-btn-primary"
+              aria-label={
+                submitted ? 'Message sent' : submitting ? 'Sending message' : 'Send message'
+              }
               disabled={submitting || submitted}
               style={
-                submitted
-                  ? { background: 'linear-gradient(135deg, #47d78a, #4f8ef7)' }
-                  : undefined
+                submitted ? { background: 'linear-gradient(135deg, #47d78a, #4f8ef7)' } : undefined
               }
             >
               {submitted ? (

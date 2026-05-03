@@ -58,6 +58,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </Script>
       </head>
       <body>
+        <a href="#main-content" className="km-skip-link">Skip to main content</a>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-MC74PWVQ"
@@ -86,7 +87,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
           <GlobalInteractions />
           <ClientShell />
-          <main>{children}</main>
+          <main id="main-content">{children}</main>
           <Footer />
         </Providers>
       </body>

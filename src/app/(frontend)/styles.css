@@ -37,7 +37,7 @@
   --border-strong: rgba(245, 200, 145, 0.18);
   --text: #f0dfc4;
   --text-dim: #cfa876;
-  --text-mute: #9a7450;
+  --text-mute: #a07856;
   --nav-bg: rgba(28, 17, 8, 0.78);
   --card-bg: linear-gradient(135deg, #2a1a0c, #1e1208);
   --card-bg-solid: #2a1a0c;
@@ -109,6 +109,35 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   transition: background 0.35s ease, color 0.35s ease;
+  cursor: none;
+}
+
+@media (hover: none) {
+  body { cursor: auto; }
+}
+
+/* Skip-to-content link — visually hidden until focused */
+.km-skip-link {
+  position: fixed;
+  top: -100%;
+  left: 0;
+  z-index: 99999;
+  padding: 12px 20px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border-radius: 0 0 10px 0;
+  transition: top 0.2s ease;
+  text-decoration: none;
+}
+
+.km-skip-link:focus {
+  top: 0;
+  outline: 3px solid #fff;
+  outline-offset: -3px;
 }
 
 /* Ambient gradient overlay */
@@ -132,6 +161,7 @@ svg {
 a {
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
 }
 
 button {
@@ -140,6 +170,16 @@ button {
   border: 0;
   background: none;
   color: inherit;
+}
+
+a, button, input, textarea, select, [role='button'], label[for] {
+  cursor: pointer;
+}
+
+body:has(a:hover, button:hover, input:hover, textarea:hover, select:hover, [role='button']:hover) .cursor-dot,
+body:has(a:hover, button:hover, input:hover, textarea:hover, select:hover, [role='button']:hover) .cursor-ring {
+  opacity: 0;
+  transition: opacity 0.1s;
 }
 
 /* ==========================================================================
@@ -383,7 +423,7 @@ section.km-section {
   padding: 8px 14px;
   border-radius: 8px;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text);
   background: linear-gradient(135deg, rgba(79, 142, 247, 0.15), rgba(122, 108, 255, 0.15));
   border: 1px solid rgba(79, 142, 247, 0.3);
@@ -682,7 +722,7 @@ section.km-section {
   background: rgba(79, 142, 247, 0.08);
   border: 1px solid rgba(79, 142, 247, 0.2);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.05em;
   color: var(--text-dim);
   margin-bottom: 32px;
@@ -1051,7 +1091,7 @@ section.km-section {
 
 .km-stat-label {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-mute);
@@ -1087,7 +1127,7 @@ section.km-section {
 
 .km-skill-group-num {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--accent);
   letter-spacing: 0.15em;
   margin-bottom: 8px;
@@ -1103,7 +1143,7 @@ section.km-section {
 
 .km-skill-group-count {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-mute);
 }
 
@@ -1183,7 +1223,7 @@ section.km-section {
 
 .km-skill-level {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-mute);
   letter-spacing: 0.05em;
 }
@@ -1251,7 +1291,7 @@ section.km-section {
 /* Mobile progress counter */
 .km-projects-mobile-counter {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.2em;
   color: var(--text-mute);
   background: color-mix(in srgb, var(--bg-1) 80%, transparent);
@@ -1365,7 +1405,7 @@ section.km-section {
 
 .km-project-index {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--accent);
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1396,8 +1436,55 @@ section.km-section {
   font-size: 16px;
   color: var(--text-dim);
   line-height: 1.7;
-  margin: 0 0 28px;
+  margin: 0;
   max-width: 520px;
+  white-space: pre-line;
+}
+
+.km-project-desc-outer {
+  position: relative;
+  margin-bottom: 28px;
+}
+
+.km-project-desc-outer--clamped {
+  max-height: 284px;
+  overflow: hidden;
+}
+
+.km-project-desc-outer--clamped::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, var(--card-bg-solid));
+  pointer-events: none;
+}
+
+.km-desc-expand {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+  transition: opacity 0.2s;
+}
+
+.km-desc-expand:hover {
+  opacity: 0.7;
+}
+
+.km-desc-expand svg {
+  width: 13px;
+  height: 13px;
 }
 
 .km-project-tag {
@@ -1406,7 +1493,7 @@ section.km-section {
   background: rgba(79, 142, 247, 0.10);
   border: 1px solid rgba(79, 142, 247, 0.28);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
 }
 
@@ -1424,7 +1511,7 @@ section.km-section {
   border-radius: 10px;
   background: var(--surface-2);
   border: 1px solid var(--border-strong);
-  font-size: 13px;
+  font-size: 14px;
   font-family: var(--font-mono);
   color: var(--text);
   transition: all 0.2s ease;
@@ -1482,6 +1569,37 @@ section.km-section {
   padding: 3px 10px;
   background: var(--surface);
   border-radius: 6px;
+}
+
+.km-project-preview-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.km-preview-demo-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.km-preview-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  padding: 4px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+
+.km-preview-visit:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .km-preview-body {
@@ -1611,7 +1729,7 @@ section.km-section {
 
 .km-timeline-date {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.1em;
   color: var(--accent);
   margin-bottom: 10px;
@@ -1644,7 +1762,7 @@ section.km-section {
 
 .km-timeline-bullets li {
   font-size: 16px;
-  color: #D1D5DB;
+  color: var(--text-dim);
   line-height: 1.55;
   position: relative;
   padding-left: 18px;
@@ -1734,16 +1852,18 @@ section.km-section {
   width: 100%;
   padding: 18px;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: 12px;
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 15px;
-  outline: none;
+  font-size: 16px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
-    background 0.2s ease;
+    background 0.2s ease,
+    outline-color 0.2s ease;
   resize: none;
 }
 
@@ -1761,7 +1881,8 @@ section.km-section {
 
 .km-field input:focus,
 .km-field textarea:focus {
-  box-shadow: 0 0 0 4px rgba(79, 142, 247, 0.08), 0 0 24px rgba(79, 142, 247, 0.15);
+  outline-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(79, 142, 247, 0.18), 0 0 24px rgba(79, 142, 247, 0.15);
 }
 
 .km-field input:focus+label,
@@ -1769,7 +1890,7 @@ section.km-section {
 .km-field textarea:focus+label,
 .km-field textarea:not(:placeholder-shown)+label {
   top: -8px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--accent);
   background: var(--bg);
 }
@@ -2887,7 +3008,7 @@ body::after {
 .km-section-num {
   display: block;
   font-family: var(--font-dm-mono);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-mute);
@@ -3006,7 +3127,7 @@ body::after {
 /* Meta items in cinematic mode */
 .km-hero.km-cinematic .km-hero-meta {
   margin-top: 32px;
-  font-size: 10px;
+  font-size: 12px;
   gap: 28px;
 }
 
@@ -3323,7 +3444,7 @@ body::after {
 
 .km-contact-email-mono {
   font-family: var(--font-dm-mono);
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-mute);

@@ -269,6 +269,7 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
             className="object-cover"
             sizes="68px"
             priority
+            loading="eager"
           />
         </div>
       )}
@@ -395,6 +396,7 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
                 className="object-cover"
                 sizes="(max-width: 768px) 240px, 320px"
                 priority
+                loading="eager"
               />
             ) : (
               <div className="km-hero-photo-placeholder">

@@ -25,6 +25,11 @@ export const plugins: Plugin[] = [
         collections: {
           media: {
             prefix: 'media',
+            generateFileURL: ({ filename, prefix }) => {
+              const bucket = process.env.S3_BUCKET!
+              const supabaseUrl = process.env.SUPABASE_URL!
+              return `${supabaseUrl}/storage/v1/object/public/${bucket}/${prefix}/${filename}`
+            },
           }
         },
         bucket: process.env.S3_BUCKET!,

@@ -84,9 +84,24 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
           gap: 10,
         }}
       >
-        <div style={{ height: 14, width: '60%', background: 'rgba(255,255,255,0.15)', borderRadius: 4 }} />
+        <div
+          style={{
+            height: 14,
+            width: '60%',
+            background: 'rgba(255,255,255,0.15)',
+            borderRadius: 4,
+          }}
+        />
         {[95, 88, 92, 70].map((w, i) => (
-          <div key={i} style={{ height: 6, width: `${w}%`, background: 'rgba(255,255,255,0.08)', borderRadius: 3 }} />
+          <div
+            key={i}
+            style={{
+              height: 6,
+              width: `${w}%`,
+              background: 'rgba(255,255,255,0.08)',
+              borderRadius: 3,
+            }}
+          />
         ))}
         <div
           style={{
@@ -111,7 +126,13 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
     // Layout 1 — product grid
     <div
       key="1"
-      style={{ position: 'absolute', inset: 16, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12 }}
+      style={{
+        position: 'absolute',
+        inset: 16,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3,1fr)',
+        gap: 12,
+      }}
     >
       {[0, 1, 2].map((i) => (
         <div
@@ -125,8 +146,18 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
           }}
         >
           <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10 }}>
-            <div style={{ height: 8, width: '70%', background: 'rgba(255,255,255,0.6)', borderRadius: 3, marginBottom: 6 }} />
-            <div style={{ height: 6, width: '40%', background: accent, borderRadius: 3, opacity: 0.8 }} />
+            <div
+              style={{
+                height: 8,
+                width: '70%',
+                background: 'rgba(255,255,255,0.6)',
+                borderRadius: 3,
+                marginBottom: 6,
+              }}
+            />
+            <div
+              style={{ height: 6, width: '40%', background: accent, borderRadius: 3, opacity: 0.8 }}
+            />
           </div>
         </div>
       ))}
@@ -135,7 +166,13 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
     // Layout 2 — dashboard stats
     <div
       key="2"
-      style={{ position: 'absolute', inset: 16, display: 'grid', gridTemplateRows: 'auto 1fr', gap: 12 }}
+      style={{
+        position: 'absolute',
+        inset: 16,
+        display: 'grid',
+        gridTemplateRows: 'auto 1fr',
+        gap: 12,
+      }}
     >
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10 }}>
         {[
@@ -153,7 +190,16 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
               padding: 10,
             }}
           >
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-mute)', marginBottom: 4 }}>{label}</div>
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 9,
+                color: 'var(--text-mute)',
+                marginBottom: 4,
+              }}
+            >
+              {label}
+            </div>
             <div style={{ fontSize: 18, fontWeight: 600, color }}>{val}</div>
           </div>
         ))}
@@ -167,7 +213,11 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
           position: 'relative',
         }}
       >
-        <svg viewBox="0 0 300 100" preserveAspectRatio="none" className="w-full h-full absolute inset-0">
+        <svg
+          viewBox="0 0 300 100"
+          preserveAspectRatio="none"
+          className="w-full h-full absolute inset-0"
+        >
           <defs>
             <linearGradient id={`g${index}`} x1="0" x2="0" y1="0" y2="1">
               <stop offset="0" stopColor={accent} stopOpacity="0.4" />
@@ -191,10 +241,18 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
     // Layout 3 — editorial / CMS
     <div
       key="3"
-      style={{ position: 'absolute', inset: 16, display: 'grid', gridTemplateRows: 'auto 1fr', gap: 12 }}
+      style={{
+        position: 'absolute',
+        inset: 16,
+        display: 'grid',
+        gridTemplateRows: 'auto 1fr',
+        gap: 12,
+      }}
     >
       <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-        <div style={{ height: 10, width: 90, background: 'rgba(255,255,255,0.6)', borderRadius: 3 }} />
+        <div
+          style={{ height: 10, width: 90, background: 'rgba(255,255,255,0.6)', borderRadius: 3 }}
+        />
         <div style={{ flex: 1 }} />
         <div style={{ height: 6, width: 40, background: accent, borderRadius: 3 }} />
       </div>
@@ -211,8 +269,17 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
             border: '1px solid var(--border)',
           }}
         >
-          <div style={{ height: 14, width: '80%', background: 'rgba(255,255,255,0.8)', borderRadius: 3 }} />
-          <div style={{ height: 8, width: '50%', background: accent, opacity: 0.7, borderRadius: 3 }} />
+          <div
+            style={{
+              height: 14,
+              width: '80%',
+              background: 'rgba(255,255,255,0.8)',
+              borderRadius: 3,
+            }}
+          />
+          <div
+            style={{ height: 8, width: '50%', background: accent, opacity: 0.7, borderRadius: 3 }}
+          />
         </div>
         <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', gap: 10 }}>
           {[0, 1].map((i) => (
@@ -225,8 +292,24 @@ const ProjectPreview: React.FC<{ project: ProjectData; index: number }> = ({ pro
                 padding: 12,
               }}
             >
-              <div style={{ height: 8, width: '75%', background: 'rgba(255,255,255,0.6)', borderRadius: 3, marginBottom: 6 }} />
-              <div style={{ height: 6, width: '40%', background: accent, opacity: 0.7, borderRadius: 3 }} />
+              <div
+                style={{
+                  height: 8,
+                  width: '75%',
+                  background: 'rgba(255,255,255,0.6)',
+                  borderRadius: 3,
+                  marginBottom: 6,
+                }}
+              />
+              <div
+                style={{
+                  height: 6,
+                  width: '40%',
+                  background: accent,
+                  opacity: 0.7,
+                  borderRadius: 3,
+                }}
+              />
             </div>
           ))}
         </div>
@@ -338,8 +421,11 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
   const [activeIdx, setActiveIdx] = useState(0)
   const [navVisible, setNavVisible] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [expandedDescs, setExpandedDescs] = useState<Set<number>>(new Set())
 
-  useEffect(() => { setMounted(true) }, [])
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Jump to a specific project card by scrolling the deck
   const jumpTo = useCallback((idx: number) => {
@@ -463,10 +549,9 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
     const section = sectionRef.current
     let observer: IntersectionObserver | null = null
     if (section) {
-      observer = new IntersectionObserver(
-        ([entry]) => setNavVisible(entry.isIntersecting),
-        { threshold: 0.05 },
-      )
+      observer = new IntersectionObserver(([entry]) => setNavVisible(entry.isIntersecting), {
+        threshold: 0.05,
+      })
       observer.observe(section)
     }
 
@@ -490,30 +575,31 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
       <div ref={tintRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }} />
 
       {/* Nav + mobile counter — portalled to body so fixed positioning is never broken by ancestor transforms */}
-      {mounted && createPortal(
-        <>
-          <nav
-            aria-label="Projects navigation"
-            className={`fixed right-8 top-1/2 -translate-y-1/2 z-9999 flex-col gap-3 items-center hidden md:flex transition-opacity duration-500 ${navVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-          >
-            {projects.map((project, i) => (
-              <button
-                key={project.id}
-                className={`km-projects-nav-dot${i === activeIdx ? ' active' : ''}`}
-                onClick={() => jumpTo(i)}
-                aria-label={`Go to ${project.title}`}
-                title={project.title}
-              />
-            ))}
-          </nav>
-          <div
-            className={`km-projects-mobile-counter md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-9999 pointer-events-none transition-opacity duration-500 ${navVisible ? 'opacity-100' : 'opacity-0'}`}
-          >
-            {String(activeIdx + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
-          </div>
-        </>,
-        document.body,
-      )}
+      {mounted &&
+        createPortal(
+          <>
+            <nav
+              aria-label="Projects navigation"
+              className={`fixed right-20 top-1/2 -translate-y-1/2 z-9999 flex-col gap-3 items-center hidden md:flex transition-opacity duration-500 ${navVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+            >
+              {projects.map((project, i) => (
+                <button
+                  key={project.id}
+                  className={`km-projects-nav-dot${i === activeIdx ? ' active' : ''}`}
+                  onClick={() => jumpTo(i)}
+                  aria-label={`Go to ${project.title}`}
+                  title={project.title}
+                />
+              ))}
+            </nav>
+            <div
+              className={`km-projects-mobile-counter md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-9999 pointer-events-none transition-opacity duration-500 ${navVisible ? 'opacity-100' : 'opacity-0'}`}
+            >
+              {String(activeIdx + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+            </div>
+          </>,
+          document.body,
+        )}
 
       <div className="km-container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="km-section-num km-reveal">02 / work</div>
@@ -531,10 +617,52 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
                 {/* Left — copy */}
                 <div className="km-project-copy">
                   <div className="km-project-index">
-                    Project {String(i + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+                    Project {String(i + 1).padStart(2, '0')} /{' '}
+                    {String(projects.length).padStart(2, '0')}
                   </div>
                   <h3 className="km-project-name">{project.title}</h3>
-                  <p className="km-project-desc">{project.description}</p>
+
+                  {(() => {
+                    const isExpanded = expandedDescs.has(project.id)
+                    const needsExpand = project.description.length > 400
+                    const toggleExpand = () =>
+                      setExpandedDescs((prev) => {
+                        const next = new Set(prev)
+                        isExpanded ? next.delete(project.id) : next.add(project.id)
+                        return next
+                      })
+                    return (
+                      <>
+                        <div
+                          className={`km-project-desc-outer${needsExpand && !isExpanded ? ' km-project-desc-outer--clamped' : ''}`}
+                        >
+                          <p className="km-project-desc">
+                            {project.description.split('\n').map((line, li, arr) => (
+                              <React.Fragment key={li}>
+                                {line}
+                                {li < arr.length - 1 && <br />}
+                              </React.Fragment>
+                            ))}
+                          </p>
+                        </div>
+                        {needsExpand && (
+                          <button className="km-desc-expand" onClick={toggleExpand}>
+                            {isExpanded ? 'Show less' : 'Read more'}
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d={isExpanded ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'} />
+                            </svg>
+                          </button>
+                        )}
+                      </>
+                    )
+                  })()}
 
                   <div className="flex flex-wrap gap-2 mb-9">
                     {project.technologies.map(({ tech }, ti) => (
@@ -545,19 +673,6 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
                   </div>
 
                   <div className="flex gap-3.5 flex-wrap">
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="km-project-link"
-                      >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M15 3h6v6M10 14 21 3M21 14v7h-7M3 10V3h7" />
-                        </svg>
-                        Live demo
-                      </a>
-                    )}
                     {project.githubUrl && !project.isPrivate && (
                       <a
                         href={project.githubUrl}
@@ -573,7 +688,14 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
                     )}
                     {project.isPrivate && (
                       <span className="km-project-link opacity-50 cursor-default">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
@@ -584,7 +706,24 @@ export const ProjectsStackClient: React.FC<Props> = ({ projects, title }) => {
                 </div>
 
                 {/* Right — fake browser */}
-                <ProjectPreview project={project} index={i} />
+                <div className="km-project-preview-col">
+                  {project.liveUrl && (
+                    <div className="km-preview-demo-row">
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="km-preview-visit"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="11" height="11">
+                          <path d="M15 3h6v6M10 14 21 3M21 14v7h-7M3 10V3h7" />
+                        </svg>
+                        Live demo
+                      </a>
+                    </div>
+                  )}
+                  <ProjectPreview project={project} index={i} />
+                </div>
               </div>
             </TiltCard>
           </div>
