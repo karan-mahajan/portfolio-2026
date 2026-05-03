@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateAllPages } from '@/utilities/revalidateAll'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
@@ -76,5 +77,9 @@ export const Media: CollectionConfig = {
         crop: 'center',
       },
     ],
+  },
+  hooks: {
+    afterChange: [({ req }) => revalidateAllPages(req.payload)],
+    afterDelete: [({ req }) => revalidateAllPages(req.payload)],
   },
 }

@@ -1,5 +1,6 @@
 import { authenticated } from '@/access/authenticated'
 import type { CollectionConfig } from 'payload'
+import { revalidateAllPages } from '@/utilities/revalidateAll'
 
 export const Experience: CollectionConfig = {
   slug: 'experiences',
@@ -96,4 +97,8 @@ export const Experience: CollectionConfig = {
     },
   ],
   timestamps: true,
+  hooks: {
+    afterChange: [({ req }) => revalidateAllPages(req.payload)],
+    afterDelete: [({ req }) => revalidateAllPages(req.payload)],
+  },
 }
