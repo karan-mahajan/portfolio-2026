@@ -97,6 +97,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  title: {
+    default: 'Karan Mahajan — Full Stack Developer',
+    template: '%s | Karan Mahajan',
+  },
+  description:
+    'Full stack developer with 5+ years building fast, scalable web apps. Next.js · React · TypeScript · WordPress. Based in Ontario, Canada.',
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -107,6 +113,5 @@ export const metadata: Metadata = {
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@payloadcms',
   },
 }

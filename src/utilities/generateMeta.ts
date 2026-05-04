@@ -25,8 +25,8 @@ export const generateMeta = async (args: { doc: Partial<Page> | null }): Promise
   const ogImage = getImageURL(doc?.meta?.image)
 
   const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Karan Mahajan Portfolio'
-    : 'Karan Mahajan Portfolio'
+    ? doc?.meta?.title + ' | Karan Mahajan'
+    : 'Karan Mahajan — Full Stack Developer'
 
   return {
     description: doc?.meta?.description,
