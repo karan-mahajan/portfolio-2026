@@ -6,6 +6,8 @@ import type { Experience } from '@/payload-types'
 
 import { ResumeActions } from './ResumeActions'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Resume — Karan Mahajan',
   description: 'Karan Mahajan — full stack web developer based in Ontario. Resume.',

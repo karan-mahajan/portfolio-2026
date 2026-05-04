@@ -8,7 +8,7 @@ export function LikeButton() {
   const [liked, setLiked] = useState(false)
   const [visible, setVisible] = useState(false)
   const [popping, setPopping] = useState(false)
-  const cleanupRef = useRef<() => void>()
+  const cleanupRef = useRef<(() => void) | undefined>(undefined)
 
   useEffect(() => {
     setLiked(!!localStorage.getItem(STORAGE_KEY))
