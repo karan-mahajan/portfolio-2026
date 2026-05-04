@@ -17,12 +17,18 @@ const CinematicScroll = dynamic(
   { ssr: false },
 )
 
+const LikeButton = dynamic(
+  () => import('@/components/LikeButton').then((m) => ({ default: m.LikeButton })),
+  { ssr: false },
+)
+
 export function ClientShell() {
   return (
     <>
       <ParticleBackground />
       <CinematicNav />
       <CinematicScroll />
+      <LikeButton />
     </>
   )
 }

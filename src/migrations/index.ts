@@ -2,6 +2,7 @@ import * as migration_20260407_164508 from './20260407_164508';
 import * as migration_20260407_185032 from './20260407_185032';
 import * as migration_20260412_000000 from './20260412_000000';
 import * as migration_20260426_about_description_richtext from './20260426_about_description_richtext';
+import * as migration_20260503_portfolio_likes from './20260503_portfolio_likes';
 
 export const migrations = [
   {
@@ -23,5 +24,10 @@ export const migrations = [
     up: migration_20260426_about_description_richtext.up,
     down: migration_20260426_about_description_richtext.down,
     name: '20260426_about_description_richtext',
+  },
+  {
+    up: migration_20260503_portfolio_likes.up,
+    down: migration_20260503_portfolio_likes.down,
+    name: '20260503_portfolio_likes',
   },
 ];

@@ -103,15 +103,15 @@ export const ContactBlockComponent: React.FC<ContactBlockProps> = ({
 
           <form ref={formRef} onSubmit={handleSubmit} className="km-contact-form km-reveal">
             <div className="km-field">
-              <input id="c-name" type="text" placeholder=" " required name="name" />
+              <input id="c-name" type="text" placeholder=" " required name="name" autoComplete="name" />
               <label htmlFor="c-name">Your name</label>
             </div>
             <div className="km-field">
-              <input id="c-email" type="email" placeholder=" " required name="email" />
+              <input id="c-email" type="email" placeholder=" " required name="email" autoComplete="email" />
               <label htmlFor="c-email">Email</label>
             </div>
             <div className="km-field full">
-              <textarea id="c-msg" placeholder=" " required name="message" />
+              <textarea id="c-msg" placeholder=" " required name="message" autoComplete="off" />
               <label htmlFor="c-msg">Message</label>
             </div>
             <button

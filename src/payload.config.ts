@@ -12,6 +12,7 @@ import { Pages } from './collections/Pages'
 import { Projects } from './collections/Projects'
 import { Users } from './collections/Users'
 import { Header } from './Header/config'
+import { Likes } from './Likes/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -46,7 +47,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Pages, Experience, Projects],
-  globals: [Header],
+  globals: [Header, Likes],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

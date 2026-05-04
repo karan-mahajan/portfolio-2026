@@ -103,9 +103,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     header: Header;
+    'portfolio-likes': PortfolioLike;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
+    'portfolio-likes': PortfolioLikesSelect<false> | PortfolioLikesSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1421,6 +1423,21 @@ export interface Header {
   createdAt?: string | null;
 }
 /**
+ * Total number of likes the portfolio has received.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio-likes".
+ */
+export interface PortfolioLike {
+  id: number;
+  /**
+   * Number of times visitors have liked the portfolio.
+   */
+  count?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -1439,6 +1456,16 @@ export interface HeaderSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio-likes_select".
+ */
+export interface PortfolioLikesSelect<T extends boolean = true> {
+  count?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
