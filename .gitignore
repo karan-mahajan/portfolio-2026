@@ -54,6 +54,8 @@ node_modules/
 .mcp.json
 skills-lock.json
 memory/
+.superpowers/
+docs/
 
 # local test env
 test.env

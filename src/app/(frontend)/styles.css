@@ -118,7 +118,9 @@ body {
 }
 
 @media (hover: none) {
-  body { cursor: auto; }
+  body {
+    cursor: auto;
+  }
 }
 
 /* Skip-to-content link — visually hidden until focused */
@@ -177,7 +179,13 @@ button {
   color: inherit;
 }
 
-a, button, input, textarea, select, [role='button'], label[for] {
+a,
+button,
+input,
+textarea,
+select,
+[role='button'],
+label[for] {
   cursor: pointer;
 }
 
@@ -3042,25 +3050,6 @@ body::after {
   display: none;
 }
 
-/* Small circular mini-photo top-right */
-.km-hero-photo-mini {
-  position: absolute;
-  top: clamp(100px, 12vh, 140px);
-  right: clamp(24px, 5vw, 80px);
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid var(--border-strong);
-  box-shadow: 0 0 0 4px var(--bg), 0 8px 28px rgba(0, 0, 0, 0.25);
-  z-index: 3;
-  flex-shrink: 0;
-}
-
-.km-hero-photo-mini img {
-  object-fit: cover;
-}
-
 /* Eyebrow line */
 .km-hero-eyebrow {
   font-family: var(--font-dm-mono);
@@ -3567,7 +3556,7 @@ body::after {
 .km-float-theme {
   position: fixed;
   bottom: 28px;
-  right: 28px;
+  right: 8px;
   z-index: 50;
   width: 40px;
   height: 40px;
@@ -3601,8 +3590,8 @@ body::after {
 /* ── Floating like button ────────────────────────────────────────────────── */
 .km-like-btn {
   position: fixed;
-  bottom: 78px;
-  right: 28px;
+  top: 90px;
+  right: 56px;
   z-index: 50;
   width: 40px;
   height: 40px;
@@ -3625,11 +3614,12 @@ body::after {
 
 @keyframes km-like-enter {
   from {
-    transform: translateX(64px);
+    transform: translateY(-20px);
     opacity: 0;
   }
+
   to {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
@@ -3660,17 +3650,28 @@ body::after {
 }
 
 @keyframes km-like-pop {
-  0%   { transform: scale(1); }
-  35%  { transform: scale(1.4) rotate(-8deg); }
-  65%  { transform: scale(0.88) rotate(4deg); }
-  100% { transform: scale(1) rotate(0deg); }
+  0% {
+    transform: scale(1);
+  }
+
+  35% {
+    transform: scale(1.4) rotate(-8deg);
+  }
+
+  65% {
+    transform: scale(0.88) rotate(4deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
 }
 
 /* ── Floating page link (Resume ↔ Portfolio) ─────────────────────────────── */
 .km-float-page-link {
   position: fixed;
-  bottom: 128px;
-  right: 28px;
+  top: 90px;
+  right: 8px;
   z-index: 50;
   width: 40px;
   height: 40px;
@@ -3753,10 +3754,6 @@ body::after {
 
   .km-hero.km-cinematic .km-hero-grid {
     padding-left: 0;
-  }
-
-  .km-hero-photo-mini {
-    display: none;
   }
 
   #about.km-cinematic .km-container {

@@ -242,15 +242,16 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
   statusCardText,
   metaItems,
 }) => {
-  const words =
-    (typewriterStrings ?? []).map((s) => s.text).filter((t): t is string => !!t)
+  const words = (typewriterStrings ?? []).map((s) => s.text).filter((t): t is string => !!t)
 
   const resumeMedia = resume && typeof resume === 'object' ? (resume as Media) : null
   const resumeUrl = resumeMedia?.url ?? null
 
   const photoMedia = photo && typeof photo === 'object' ? (photo as Media) : null
 
-  const stats = (metaItems ?? []).filter((m): m is { label: string; id?: string | null } => !!m.label)
+  const stats = (metaItems ?? []).filter(
+    (m): m is { label: string; id?: string | null } => !!m.label,
+  )
 
   // Derive role stack from typewriter strings for the role list
   const roleWords = words.length > 0 ? words : ['Next.js', 'React', 'TypeScript', 'Node.js']
@@ -259,25 +260,9 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
     <section id="hero" className="km-hero km-cinematic">
       <ParticleCanvas />
 
-      {/* Small circular photo — cinematic top-right */}
-      {photoMedia?.url && (
-        <div className="km-hero-photo-mini">
-          <Image
-            src={photoMedia.url}
-            alt={photoMedia.alt ?? name ?? 'Profile photo'}
-            fill
-            className="object-cover"
-            sizes="68px"
-            priority
-            loading="eager"
-          />
-        </div>
-      )}
-
       <div className="km-container km-hero-grid">
         {/* Left/bottom column — copy */}
         <div className="km-hero-copy">
-
           {/* Eyebrow: amber italic uppercase */}
           <div className="km-hero-eyebrow km-reveal">
             {status ?? 'available for work · ontario, canada'}
@@ -293,7 +278,9 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
           {/* Role stack — small DM Mono, 0.5 opacity */}
           <div className="km-hero-role-stack km-reveal">
             {roleWords.slice(0, 4).map((w, i) => (
-              <span key={i} className="km-hero-role-item">{w}</span>
+              <span key={i} className="km-hero-role-item">
+                {w}
+              </span>
             ))}
           </div>
 
@@ -311,21 +298,47 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
           <div className="km-hero-cta km-reveal">
             <a href="#projects" className="km-btn km-btn-primary">
               View My Work
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M5 12h14M13 5l7 7-7 7" />
               </svg>
             </a>
             <a href={contactHref ?? '#contact'} className="km-btn km-btn-ghost">
               Get In Touch
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <rect x="3" y="5" width="18" height="14" rx="2" />
                 <path d="m3 7 9 6 9-6" />
               </svg>
             </a>
             {resumeUrl && (
-              <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="km-btn km-btn-ghost">
+              <a
+                href={resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="km-btn km-btn-ghost"
+              >
                 Résumé
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
                 </svg>
               </a>
@@ -401,7 +414,14 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
             ) : (
               <div className="km-hero-photo-placeholder">
                 <div className="km-initials">
-                  {name ? name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase() : 'KM'}
+                  {name
+                    ? name
+                        .split(' ')
+                        .map((w) => w[0])
+                        .join('')
+                        .slice(0, 2)
+                        .toUpperCase()
+                    : 'KM'}
                 </div>
                 <div className="km-ph-label">Upload a photo in the CMS</div>
               </div>

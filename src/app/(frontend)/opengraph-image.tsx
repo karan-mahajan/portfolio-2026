@@ -7,11 +7,22 @@ export const contentType = 'image/png'
 async function getSyneFont(): Promise<ArrayBuffer> {
   const css = await fetch(
     'https://fonts.googleapis.com/css2?family=Syne:wght@800',
-    { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ImageResponse/1.0)' } },
-  ).then((r) => r.text())
-  const url = css.match(/src:\s*url\(([^)]+)\)/)?.[1]
-  if (!url) throw new Error('Could not parse Syne font URL from Google Fonts')
-  return fetch(url).then((r) => r.arrayBuffer())
+    {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ImageResponse/1.0)' },
+      signal: AbortSignal.timeout(4000),
+    },
+  ).then((r) => {
+    if (!r.ok) throw new Error(`Google Fonts CSS fetch failed: ${r.status}`)
+    return r.text()
+  })
+  // Latin block is always last in Google Fonts output
+  const latinBlock = css.split('/* latin */').pop() ?? ''
+  const url = latinBlock.match(/src:\s*url\(([^)]+)\)/)?.[1]
+  if (!url) throw new Error('Could not parse Syne Latin font URL from Google Fonts')
+  return fetch(url, { signal: AbortSignal.timeout(4000) }).then((r) => {
+    if (!r.ok) throw new Error(`Syne font fetch failed: ${r.status}`)
+    return r.arrayBuffer()
+  })
 }
 
 const PILLS = ['Next.js', 'React', 'TypeScript', 'Ontario, CA']
@@ -34,7 +45,6 @@ export default async function Image() {
           fontFamily: 'system-ui, sans-serif',
         }}
       >
-        {/* Center glow blob */}
         <div
           style={{
             position: 'absolute',
@@ -47,7 +57,6 @@ export default async function Image() {
           }}
         />
 
-        {/* Content column */}
         <div
           style={{
             display: 'flex',
@@ -56,7 +65,6 @@ export default async function Image() {
             position: 'relative',
           }}
         >
-          {/* Badge */}
           <div
             style={{
               fontFamily: 'Syne',
@@ -71,7 +79,6 @@ export default async function Image() {
             PORTFOLIO
           </div>
 
-          {/* Name — Syne 800, gradient fill */}
           <div
             style={{
               fontFamily: 'Syne',
@@ -79,17 +86,13 @@ export default async function Image() {
               fontWeight: 800,
               letterSpacing: '-0.02em',
               lineHeight: 1,
-              background: 'linear-gradient(135deg, #EFE3CA 30%, #60A5FA)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              color: 'transparent',
+              color: '#EFE3CA',
               marginBottom: '10px',
             }}
           >
             Karan Mahajan
           </div>
 
-          {/* Role */}
           <div
             style={{
               fontSize: '26px',
@@ -101,7 +104,6 @@ export default async function Image() {
             Full Stack Developer
           </div>
 
-          {/* Divider */}
           <div
             style={{
               width: '56px',
@@ -112,7 +114,6 @@ export default async function Image() {
             }}
           />
 
-          {/* Pills */}
           <div style={{ display: 'flex', gap: '10px' }}>
             {PILLS.map((pill) => (
               <div
@@ -132,7 +133,6 @@ export default async function Image() {
           </div>
         </div>
 
-        {/* Corner URL */}
         <div
           style={{
             position: 'absolute',
