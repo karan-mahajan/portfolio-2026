@@ -2020,7 +2020,7 @@ section.km-section {
 
 @media (max-width: 960px) {
   .km-section {
-    padding: 100px 0;
+    padding: 72px 0;
   }
 
   .km-container {
@@ -3666,6 +3666,81 @@ body::after {
   100% { transform: scale(1) rotate(0deg); }
 }
 
+/* ── Floating page link (Resume ↔ Portfolio) ─────────────────────────────── */
+.km-float-page-link {
+  position: fixed;
+  bottom: 128px;
+  right: 28px;
+  z-index: 50;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--bg-1) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: grid;
+  place-items: center;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.km-float-page-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+.km-float-page-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ─── Back to top ────────────────────────────────────────────────────────── */
+.km-back-to-top {
+  position: fixed;
+  bottom: 28px;
+  left: 28px;
+  z-index: 50;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--bg-1) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: grid;
+  place-items: center;
+  color: var(--text-dim);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.km-back-to-top--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.km-back-to-top:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+.km-back-to-top svg {
+  width: 16px;
+  height: 16px;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    RESPONSIVE adjustments
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -3713,11 +3788,19 @@ body::after {
 
 @media (max-width: 560px) {
   .km-container {
-    padding: 0 24px;
+    padding: 0 20px;
+  }
+
+  .km-section {
+    padding: 56px 0;
   }
 
   .km-hero.km-cinematic {
     padding: 104px 0 60px;
+  }
+
+  .km-hero.km-cinematic .km-hero-grid {
+    padding: 0 20px;
   }
 
   .km-hero.km-cinematic h1 {

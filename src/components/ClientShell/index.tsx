@@ -22,6 +22,16 @@ const LikeButton = dynamic(
   { ssr: false },
 )
 
+const FloatingPageLink = dynamic(
+  () => import('@/components/FloatingPageLink').then((m) => ({ default: m.FloatingPageLink })),
+  { ssr: false },
+)
+
+const BackToTop = dynamic(
+  () => import('@/components/BackToTop').then((m) => ({ default: m.BackToTop })),
+  { ssr: false },
+)
+
 export function ClientShell() {
   return (
     <>
@@ -29,6 +39,8 @@ export function ClientShell() {
       <CinematicNav />
       <CinematicScroll />
       <LikeButton />
+      <FloatingPageLink />
+      <BackToTop />
     </>
   )
 }
