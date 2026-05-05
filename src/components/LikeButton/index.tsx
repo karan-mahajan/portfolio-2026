@@ -58,6 +58,7 @@ export function LikeButton() {
     <button
       className={`km-like-btn${liked ? ' km-like-btn--liked' : ''}${popping ? ' km-like-btn--pop' : ''}`}
       onClick={handleLike}
+      id="portfolio-like-button"
       aria-label={liked ? 'Thanks for the like!' : 'Like this portfolio'}
       title={liked ? 'Thanks!' : 'Like this portfolio'}
     >

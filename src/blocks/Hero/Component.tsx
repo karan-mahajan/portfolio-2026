@@ -255,7 +255,6 @@ export const HeroBlockComponent: React.FC<HeroBlockProps> = ({
 
   // Derive role stack from typewriter strings for the role list
   const roleWords = words.length > 0 ? words : ['Next.js', 'React', 'TypeScript', 'Node.js']
-
   return (
     <section id="hero" className="km-hero km-cinematic">
       <ParticleCanvas />

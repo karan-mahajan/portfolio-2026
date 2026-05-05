@@ -13,6 +13,7 @@ export function FloatingPageLink() {
       className="km-float-page-link"
       aria-label={isResume ? 'Back to portfolio' : 'View resume'}
       title={isResume ? 'Back to portfolio' : 'View resume'}
+      id="portfolio-resume-page-link"
     >
       {isResume ? (
         <svg
