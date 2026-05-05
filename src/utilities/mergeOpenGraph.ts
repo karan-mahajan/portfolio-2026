@@ -7,7 +7,10 @@ const defaultOpenGraph: Metadata['openGraph'] = {
     'Full stack developer with 5+ years building fast, scalable web apps. Next.js · React · TypeScript · WordPress. Based in Ontario, Canada.',
   images: [
     {
-      url: `${getServerSideURL()}/website-template-OG.webp`,
+      url: `${getServerSideURL()}/opengraph-image`,
+      width: 1200,
+      height: 630,
+      alt: 'Karan Mahajan — Full Stack Developer',
     },
   ],
   siteName: 'Karan Mahajan',

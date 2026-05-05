@@ -37,7 +37,7 @@
   --border-strong: rgba(15, 23, 42, 0.15);
   --text: #0F172A;
   --text-dim: #334155;
-  --text-mute: #64748B;
+  --text-mute: #5c6b7d;
   --nav-bg: rgba(244, 245, 247, 0.85);
   --card-bg: linear-gradient(135deg, #ECEEF2, #E8EBF1);
   --card-bg-solid: #ECEEF2;
@@ -3826,4 +3826,54 @@ body::after {
     width: 320px;
     height: 320px;
   }
+}
+
+/* ── 404 ─────────────────────────────────────────────────── */
+.km-404 {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.km-404__label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+  text-transform: uppercase;
+}
+
+.km-404__heading {
+  font-family: var(--font-syne-var, var(--font-sans));
+  font-size: clamp(6rem, 20vw, 14rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text);
+  margin: 0;
+}
+
+.km-404__body {
+  font-size: 1.125rem;
+  color: var(--text-dim);
+  max-width: 30ch;
+}
+
+.km-404__back {
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
 }

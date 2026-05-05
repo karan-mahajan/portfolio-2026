@@ -5,18 +5,15 @@ import type { Config, Media, Page } from '../payload-types'
 import { getServerSideURL } from './getURL'
 import { mergeOpenGraph } from './mergeOpenGraph'
 
-const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
+const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null): string | undefined => {
   const serverUrl = getServerSideURL()
-
-  let url = serverUrl + '/website-template-OG.webp'
 
   if (image && typeof image === 'object' && 'url' in image) {
     const ogUrl = image.sizes?.og?.url
-
-    url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
+    return ogUrl ? serverUrl + ogUrl : serverUrl + image.url
   }
 
-  return url
+  return undefined
 }
 
 export const generateMeta = async (args: { doc: Partial<Page> | null }): Promise<Metadata> => {

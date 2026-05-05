@@ -49,6 +49,9 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 
+# Screenshots
+/screenshots/
+
 # Claude Code
 .agents/
 .mcp.json

@@ -53,6 +53,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <head>
         <InitTheme />
+        <Script id="json-ld" type="application/ld+json" strategy="beforeInteractive">
+          {`{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://karanmahajan.ca/#person","name":"Karan Mahajan","url":"https://karanmahajan.ca","jobTitle":"Full Stack Developer","description":"Full-stack web developer based in Ontario, Canada with 5+ years building production applications — from headless CMS architectures to AI-integrated SaaS platforms.","email":"karanmahajan321@gmail.com","address":{"@type":"PostalAddress","addressRegion":"Ontario","addressCountry":"CA"},"alumniOf":{"@type":"CollegeOrUniversity","name":"University of Windsor","sameAs":"https://www.uwindsor.ca"},"hasCredential":{"@type":"EducationalOccupationalCredential","name":"Master of Applied Computing","credentialCategory":"degree"},"worksFor":{"@type":"Organization","name":"Skylar Media Group"},"knowsAbout":["Next.js","React","TypeScript","GraphQL","WordPress","Drupal","Node.js","Python","PostgreSQL","MongoDB","Django","AWS","CI/CD","WCAG Accessibility","Core Web Vitals"]},{"@type":"WebSite","@id":"https://karanmahajan.ca/#website","url":"https://karanmahajan.ca","name":"Karan Mahajan — Full Stack Developer","description":"Portfolio of Karan Mahajan, a full-stack web developer based in Ontario, Canada.","author":{"@id":"https://karanmahajan.ca/#person"}}]}`}
+        </Script>
         <Script id="gtm-head" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MC74PWVQ');`}
         </Script>
@@ -109,8 +112,11 @@ export const metadata: Metadata = {
     icon: [
       { url: '/favicon.ico' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [{ url: '/favicon-192x192.png', sizes: '192x192', type: 'image/png' }],
+    shortcut: '/favicon-192x192.png',
   },
   openGraph: mergeOpenGraph(),
   twitter: {

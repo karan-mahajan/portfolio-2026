@@ -8,6 +8,7 @@ export function FloatingPageLink() {
   const isResume = pathname === '/resume'
 
   return (
+    <nav aria-label="Page shortcuts">
     <Link
       href={isResume ? '/' : '/resume'}
       className="km-float-page-link"
@@ -50,5 +51,6 @@ export function FloatingPageLink() {
         </svg>
       )}
     </Link>
+    </nav>
   )
 }
