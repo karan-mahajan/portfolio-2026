@@ -12,6 +12,7 @@ import { defaultOpenGraphImage, mergeOpenGraph } from '@/utilities/mergeOpenGrap
 import { draftMode } from 'next/headers'
 
 import Footer from '@/components/Footer'
+import { WorldBanner } from '@/components/WorldBanner'
 import { getServerSideURL } from '@/utilities/getURL'
 import './styles.css'
 
@@ -92,6 +93,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
           <GlobalInteractions />
           <ClientShell />
+          <WorldBanner />
           <main id="main-content">{children}</main>
           <Footer />
         </Providers>
