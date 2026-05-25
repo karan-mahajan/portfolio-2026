@@ -8,7 +8,7 @@ import { ClientShell } from '@/components/ClientShell'
 import { GlobalInteractions } from '@/components/GlobalInteractions'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
-import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { defaultOpenGraphImage, mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
 import Footer from '@/components/Footer'
@@ -121,5 +121,6 @@ export const metadata: Metadata = {
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
+    images: [defaultOpenGraphImage],
   },
 }
