@@ -1,0 +1,37 @@
+# Karan Mahajan — Full Stack Developer
+
+> Karan Mahajan is a full-stack web developer based in Ontario, Canada, with 5+ years building fast, scalable web applications. Core stack: Next.js, React, TypeScript, and WordPress, with hands-on AI integration in production workflows. Open to senior and contract roles, remote worldwide.
+
+## About
+
+- **Name:** Karan Mahajan
+- **Role:** Full Stack Developer
+- **Location:** Ontario, Canada (remote, global)
+- **Experience:** 5+ years, 20+ shipped projects
+- **Email:** karanmahajan321@gmail.com
+- **Education:** Master of Applied Computing, University of Windsor
+- **Focus:** Headless CMS architectures, AI-integrated SaaS platforms, performance (Core Web Vitals), and accessibility (WCAG).
+
+## Tech stack
+
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS, GSAP, Framer Motion, Three.js
+- **CMS:** Payload CMS, WordPress, Drupal
+- **Backend & APIs:** Node.js, Python, Django, GraphQL, PostgreSQL, MongoDB, MySQL
+- **DevOps & Tools:** AWS, Vercel, Git, CI/CD
+- **AI & Workflow:** LLM integration in production applications
+
+## Key pages
+
+- [Portfolio home](https://karanmahajan.ca): Overview, work, skills, and contact.
+- [Resume](https://karanmahajan.ca/resume): Full work history, education, skills, and selected projects.
+- [Interactive 3D Portfolio](https://world.karanmahajan.ca): An immersive, real-time 3D world built with Three.js — walk through the projects, tech stack, and contact points.
+
+## Interactive 3D Portfolio
+
+The interactive 3D portfolio at https://world.karanmahajan.ca is a separate, immersive experience built with Three.js. Visitors can explore Karan Mahajan's work, technology stack, and contact points inside a real-time rendered 3D world rather than a traditional scrolling page.
+
+## Contact
+
+- Email: karanmahajan321@gmail.com
+- Website: https://karanmahajan.ca
+- 3D Portfolio: https://world.karanmahajan.ca

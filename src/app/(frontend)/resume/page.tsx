@@ -4,13 +4,24 @@ import { getPayload } from 'payload'
 import React from 'react'
 import type { Experience } from '@/payload-types'
 
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+
 import { ResumeActions } from './ResumeActions'
 
 export const dynamic = 'force-dynamic'
 
+const RESUME_DESCRIPTION =
+  'Resume of Karan Mahajan — full stack developer with 5+ years across Next.js, React, TypeScript, and WordPress. Based in Ontario, Canada. Open to senior and contract roles.'
+
 export const metadata: Metadata = {
-  title: 'Resume — Karan Mahajan',
-  description: 'Karan Mahajan — full stack web developer based in Ontario. Resume.',
+  title: 'Resume',
+  description: RESUME_DESCRIPTION,
+  alternates: { canonical: '/resume' },
+  openGraph: mergeOpenGraph({
+    title: 'Resume | Karan Mahajan',
+    description: RESUME_DESCRIPTION,
+    url: '/resume',
+  }),
 }
 
 const SKILL_GROUPS = [
