@@ -2,7 +2,7 @@
 
 **Stack:** Next.js 16 App Router · Payload CMS · PostgreSQL · GSAP 3 · Framer Motion · Tailwind CSS · Three.js
 
-## Styling
+### Styling
 - All CSS → `src/app/(frontend)/styles.css`; no SCSS modules
 - Tailwind for layout/spacing/flex/grid; `.km-*` classes for pseudo-elements, keyframes, hover chains
 - Tokens only: `--accent --bg --bg-1 --bg-2 --surface --border --text --text-dim --text-mute --accent-glow --shadow-deep`; no hardcoded colors; light+dark must both work
